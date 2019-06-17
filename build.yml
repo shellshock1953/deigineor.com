@@ -8,9 +8,9 @@ releases:
 
 - artist: DEIGINEOR 
   title: BLACK CURRANT
-  album: BFG
-  label: BBFG
-  date: 12-2022
+ # album: BFG
+ # label: BBFG
+ # date: 12-2022
   img:  Night_1.jpg # INSERT MEDIA HERE
   social:
   - type: soundcloud
