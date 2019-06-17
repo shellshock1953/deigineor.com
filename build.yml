@@ -5,30 +5,7 @@ seo:
   long_title: Apora Music - Discover some great EDM tracks!
 
 releases:
-- artist: APORA & MODERON
-  title: Mind Over Matter
-  album: Nocturnal 002
-  label: DAYS like NIGHTS
-  date: 08-2018
-  img: release_nocturnal.jpg
-  social:
-  - type: spotify
-    url: https://open.spotify.com/track/0i4SxWUjzWhAs79jtTSfrI
-  - type: beatport
-    url: https://www.beatport.com/track/mind-over-matter-extended-mix/10842862
-- artist: APORA & MODERON
-  title: Sandcastle Empire (Original Mix)
-  album: Assembly 05
-  label: EIN2
-  date: 12-2017
-  img: release_assembly_05.jpg
-  social:
-  - type: spotify
-    url: https://open.spotify.com/track/3GeZWZ0Npf4D1yLSEr4eNZ?si=g4-K7hOGSxGMli1j7ynTxA
-  - type: soundcloud
-    url: https://soundcloud.com/ein2/apora-moderon-sandcastle-empire
-  - type: beatport
-    url: https://www.beatport.com/track/sandcastle-empire-original-mix/10020102
+
 - artist: DEIGINEOR 
   title: BLACK CURRANT
   album: BFG
