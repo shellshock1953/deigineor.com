@@ -2,6 +2,8 @@ stages:
 - build
 
 build:
+  tags:
+  - deigineor
   stage: build
   script:
   - uname -a
