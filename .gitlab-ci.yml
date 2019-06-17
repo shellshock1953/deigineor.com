@@ -6,8 +6,9 @@ build:
   - deigineor
   stage: build
   script:
-  - uname -a
-  - pwd
-  - ls -l
-  - ls -l ~/
-  - whoami
+  - bin/build
+  - docker build -t deig:latest .
+  - docker stop deig || echo "not running"
+  - docker run --name deig --rm -p 0.0.0.0:80:80 -d deig:latest
+  - docker logs deig
+  - echo "done"
