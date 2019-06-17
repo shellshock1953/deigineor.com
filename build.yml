@@ -29,15 +29,15 @@ releases:
     url: https://soundcloud.com/ein2/apora-moderon-sandcastle-empire
   - type: beatport
     url: https://www.beatport.com/track/sandcastle-empire-original-mix/10020102
-- artist: SAMPLE
-  title: This is a song (Original Mix)
+- artist: DEIGINEOR 
+  title: BLACK CURRANT
   album: BFG
   label: BBFG
   date: 12-2022
-  img: release_assembly_05.jpg # INSERT MEDIA HERE
+  img:  Night_1.jpg # INSERT MEDIA HERE
   social:
   - type: soundcloud
-    url: https://soundcloud.com/polo-g/polo-g-feat-lil-tjay-pop-out
+    url: https://soundcloud.com/deigineor/black-currant
 
 social:
 - type: facebook
