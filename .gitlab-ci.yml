@@ -6,6 +6,7 @@ build:
   - deigineor
   stage: build
   script:
+  - yarn install
   - bin/build
   - docker build -t deig:latest .
   - docker stop deig || echo "not running"
