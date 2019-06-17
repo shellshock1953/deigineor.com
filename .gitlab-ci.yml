@@ -4,4 +4,8 @@ stages:
 build:
   stage: build
   script:
+  - uname -a
+  - pwd
+  - ls -l
+  - ls -l ~/
   - whoami
