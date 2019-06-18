@@ -8,6 +8,6 @@ rsync -avz fonts build/
 rsync -avz img build/
 
 
-docker build -t deing:latest .
-docker stop deig:latest
+docker build -t deig:latest .
+docker stop deig
 docker run --name deig -p 0.0.0.0:80:80 --rm -d deig:latest
