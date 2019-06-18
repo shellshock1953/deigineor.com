@@ -41,9 +41,7 @@
                   = " - "
                   = release.date
                 .release__social.u-margin-top
-                - each social_link in release.social
-                  %a.social-link{href: social_link.url, target: "_blank", title: release.title + " on " + social_link.type, class: "icon icon--" + social_link.type}
-                    != icons[social_link.type]
+                .release__link!= release.embed
 
     %section#contact.u-margin-top
       %h2.section-title CONTACT
