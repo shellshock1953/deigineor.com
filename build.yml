@@ -5,21 +5,45 @@ seo:
   long_title: Apora Music - Discover some great EDM tracks!
 
 releases:
-
 - artist: DEIGINEOR
   title: BLACK CURRANT
   album: Comercial Track
   label: Mixcder Headphone
   date: Release
-  img:  sopli-52.png # INSERT MEDIA HERE
+  img: black_currant.jpg
   embed: '<iframe width="100%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/637192104&color=%231f1d22&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>'
+
 - artist: DEIGINEOR
   title: ANABIOZ
   album: Comercial Track
   label: Mixcder Headphone
   date: Release
-  img:  sopli-52.png # INSERT MEDIA HERE
+  img:  anabioz.jpg
   embed: '<iframe width="100%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/523946676&color=%231a1b21&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>'
+
+- artist: DEIGINEOR
+  title: MORNING
+  album: Comercial Track
+  label: Mixcder Headphone
+  date: Release
+  img:  morning.jpg
+  embed: '<iframe width="100%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/317633344&color=%231a1b21&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>'
+
+- artist: DEIGINEOR
+  title: KRAY
+  album: Comercial Track
+  label: Mixcder Headphone
+  date: Release
+  img:  kray.jpg
+  embed: '<iframe width="100%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/313514599&color=%231a1b21&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>'
+
+- artist: DEIGINEOR
+  title: SPRING
+  album: Comercial Track
+  label: Mixcder Headphone
+  date: Release
+  img:  spring.jpg
+  embed: '<iframe width="100%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/312673806&color=%231a1b21&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>'
 
 social:
 - type: facebook
