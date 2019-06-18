@@ -2,14 +2,10 @@ stages:
 - build
 
 build:
-  tags:
-  - deigineor
   stage: build
   script:
   - yarn install
   - bin/build
-  - docker build -t deig:latest .
-  - docker stop deig || echo "not running"
-  - docker run --name deig --rm -p 0.0.0.0:80:80 -d deig:latest
   - docker logs deig
-  - echo "done"
+  tags:
+  - deigineor

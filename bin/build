@@ -6,3 +6,9 @@ rm -rf build/
 rsync -avz css  build/
 rsync -avz fonts build/
 rsync -avz img build/
+
+
+docker build -t deing:latest .
+docker stop deig:latest
+docker run --name deig -p 127.0.0.1:80:80 --rm -d deing
+
