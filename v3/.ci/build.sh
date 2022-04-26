@@ -3,8 +3,12 @@
 # TODO: check basedir - should be root
 
 _build() {
-  echo "[hugo] build static"
-  npm run build
+  echo "[hugo] build static for ${MODE}"
+  if [[ "${MODE}" == "prod" ]]; then
+    npm run build
+  else
+    npm run build_${MODE}
+  fi
   echo "[docker] build image"
   docker build -t "2xnone/deigineor.com:${IMAGE}" -f .ci/Dockerfile .
 }
@@ -18,12 +22,14 @@ _deploy() {
 
 case "${1}" in
   demo)
+    MODE=demo
     IMAGE=demo
     DEPLOYMENT=demo-deigineor
     _build
     _deploy 
     ;;
   prod)
+    MODE=prod
     IMAGE=latest
     DEPLOYMENT=deigineor
     _build
