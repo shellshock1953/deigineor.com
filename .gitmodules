@@ -1,0 +1,6 @@
+[submodule "v3/themes/ananke"]
+	path = v3/themes/ananke
+	url = https://github.com/theNewDynamic/gohugo-theme-ananke.git
+[submodule "v3/themes/Blonde"]
+	path = v3/themes/Blonde
+	url = https://github.com/opera7133/Blonde

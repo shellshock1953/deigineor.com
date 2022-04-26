@@ -1,0 +1,58 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deigineor
+  labels:
+    app: deigineor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deigineor
+  template:
+    metadata:
+      labels:
+        app: deigineor
+    spec:
+      containers:
+      - name: deigineor
+        image: 2xnone/deigineor.com:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: deigineor
+spec:
+  selector:
+    app: deigineor
+  ports:
+    - protocol: TCP
+      port: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: deigineor.dnull.systems
+  annotations:
+    kubernetes.io/ingress.class: public
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/tls-acme: "true"
+spec:
+  tls:
+  - hosts:
+    - "deigineor.dnull.systems"
+    secretName: "deigineor.dnull.systems"
+  rules:
+  - host: "deigineor.dnull.systems"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: deigineor
+            port:
+              number: 80
