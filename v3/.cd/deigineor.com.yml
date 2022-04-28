@@ -18,6 +18,7 @@ spec:
       containers:
       - name: deigineor
         image: 2xnone/deigineor.com:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
 ---
