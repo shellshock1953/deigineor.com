@@ -15,9 +15,11 @@ spec:
       labels:
         app: demo-deigineor
     spec:
+      imagePullSecrets:
+        - name: docker.dnull.systems
       containers:
       - name: demo-deigineor
-        image: 2xnone/deigineor.com:demo
+        image: docker.dnull.systems/deigineor.com:demo
         imagePullPolicy: Always
         ports:
         - containerPort: 80
