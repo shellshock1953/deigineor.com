@@ -1,11 +1,11 @@
 ---
 author: "Hugo Authors"
-title: "Deigineor - Clastrophobic"
+title: "Deigineor - Claustrophobic"
 date: "2022-04-18"
-description: "Deigineor - Clastrophobic"
+description: "Deigineor - Claustrophobic"
 image: "img/claustrophobic.jpg"
 tags: [
-    "instrumentail",
+    "instrumental",
     "industrial",
     "metal",
 ]
