@@ -1,15 +1,15 @@
 ---
 author: "shellshock"
 title: "Deigineor - Decay"
-date: "2022-05-11"
+date: "2022-05-18"
 description: "Deigineor - Decay"
 image: "img/decay.jpg"
 tags: [
+    "rock",
     "electronic",
-    "cyberwave",
 ]
 categories: [
-    "electronic"
+    "Guitar"
 ]
 archives: ["2020/05"]
 ---
