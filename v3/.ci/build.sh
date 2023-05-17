@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 # TODO: check basedir - should be root
-IMAGE=docker.dnull.systems/deigineor.com
+# IMAGE=docker.dnull.systems/deigineor.com
+IMAGE=2xnone/deigineor.com
 
 _build() {
   echo "[hugo] build static for ${MODE}"
@@ -27,13 +28,13 @@ case "${1}" in
     TAG=demo
     DEPLOYMENT=demo-deigineor
     _build
-    _deploy 
+    # _deploy 
     ;;
   prod)
     MODE=prod
-    TAG=latest
+    TAG=v3
     DEPLOYMENT=deigineor
     _build
-    _deploy 
+    # _deploy 
     ;;
 esac
