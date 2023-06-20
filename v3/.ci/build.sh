@@ -18,8 +18,8 @@ _build() {
 _deploy() {
   echo "[docker] push"
   docker push "${IMAGE}:${TAG}"
-  echo "[k8s] restart deployment"
-  kubectl rollout restart "deployment/${DEPLOYMENT}"
+  # echo "[k8s] restart deployment"
+  # kubectl rollout restart "deployment/${DEPLOYMENT}"
 }
 
 case "${1}" in
@@ -32,9 +32,9 @@ case "${1}" in
     ;;
   prod)
     MODE=prod
-    TAG=v3
+    TAG=v3_singularity
     DEPLOYMENT=deigineor
     _build
-    # _deploy 
+    _deploy 
     ;;
 esac
