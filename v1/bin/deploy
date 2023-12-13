@@ -1,7 +1,0 @@
-#!/bin/sh
-
-echo "Building.."
-bin/build
-
-echo "Syncig build to s3 bucket"
-aws s3 sync build s3://aporamusic.com/
