@@ -7,5 +7,4 @@ build:
   - yarn install
   - bin/build
   - docker logs deig
-  tags:
-  - deigineor
+  - git submodule update --remote --merge
