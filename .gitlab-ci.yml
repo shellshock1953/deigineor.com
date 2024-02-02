@@ -18,5 +18,5 @@ build:
    - tags 
   except:
    - branches
-  tags:
-    - sirius
+  # tags:
+  #   - sirius
