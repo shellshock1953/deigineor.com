@@ -1,7 +1,5 @@
 version: "3.3"
-
 services:
-
   traefik:
     image: "traefik:v2.10"
     container_name: "traefik"
@@ -24,11 +22,8 @@ services:
     volumes:
       - "./letsencrypt:/letsencrypt"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-
-  deigineor:
-    image: "2xnone/deigineor.com:stable"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.deigineor.rule=Host(`deigineor.com`)"
-      - "traefik.http.routers.deigineor.entrypoints=websecure"
-      - "traefik.http.routers.deigineor.tls.certresolver=resolver"
+    networks:
+      - shared
+networks:
+  shared:
+    driver: bridge

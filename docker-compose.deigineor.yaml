@@ -1,0 +1,13 @@
+version: "3.3"
+services:
+  deigineor:
+    image: "2xnone/deigineor.com:stable"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.deigineor.rule=Host(`deigineor.com`)"
+      - "traefik.http.routers.deigineor.entrypoints=websecure"
+      - "traefik.http.routers.deigineor.tls.certresolver=resolver"
+    networks:
+      - shared
+networks:
+  shared:
