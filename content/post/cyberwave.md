@@ -1,9 +1,9 @@
 ---
 author: "shellshock"
-title: "Deigineor - Cyberwave"
+title: "Deigineor - Cyberware"
 date: "2024-04-02"
-description: "Deigineor - Cyberwave"
-image: "img/cyberwave.jpg"
+description: "Deigineor - Cyberware"
+image: "img/cyberware.jpg"
 tags: [
     "electronic",
     "cyberwave",
