@@ -1,7 +1,7 @@
 ---
 author: "shellshock"
 title: "Deigineor - Quantum Dawn"
-date: "2022-06-05"
+date: "2024-09-19"
 description: "Deigineor - Quantum Dawn"
 image: "img/quantum_dawn.jpg"
 tags: [
