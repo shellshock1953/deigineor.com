@@ -20,7 +20,7 @@ archives: ["2024/09"]
 
 
 ## YouTube
-{{< youtube X0fBZbIFTXo?si=rAWEiU8afT_qJkpe >}}
+{{< youtube X0fBZbIFTXo >}}
 
 
 ## Apple Music / iTunes
