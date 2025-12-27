@@ -38,7 +38,7 @@ jobs:
 
           wget -O ${{ runner.temp }}/hugo.tar.gz https://github.com/gohugoio/hugo/releases/download/v0.111.3/hugo_0.111.3_Linux-64bit.tar.gz \
           && tar -zxvf ${{ runner.temp }}/hugo.tar.gz -C ${{runner.temp}}/ \
-          && cp ${{ runner.temp }}/hugo /bin/ && hugo version
+          && sudo cp ${{ runner.temp }}/hugo /bin/ && hugo version
       - name: Checkout
         uses: actions/checkout@v4
         with:
