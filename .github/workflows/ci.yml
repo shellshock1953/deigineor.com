@@ -1,0 +1,34 @@
+name: CI
+
+# Minimal PR gate on the self-hosted runner (ARC scale set deigineor-runners on
+# libra-worker-ci-1 / sirius). Image builds and deploys stay in app.yml.
+on:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: deigineor-runners
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install pnpm
+        run: npm install -g pnpm@12.6.0
+      - name: Install dependencies
+        working-directory: v2/app
+        run: pnpm install --frozen-lockfile
+      - name: Lint
+        working-directory: v2/app
+        run: pnpm run lint
+      - name: Typecheck
+        working-directory: v2/app
+        run: pnpm run typecheck
+      - name: Test
+        working-directory: v2/app
+        run: pnpm run test
