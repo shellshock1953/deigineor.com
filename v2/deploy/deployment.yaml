@@ -1,60 +1,107 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deigineor-web
+  name: deigineor
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   template:
     spec:
       securityContext:
         runAsNonRoot: true
-        fsGroup: 65533
+        runAsUser: 1001  # nextjs in v2/app/Dockerfile; USER is a name, kubelet needs the uid
+        runAsGroup: 1001
+        fsGroup: 1001
       containers:
-        - name: git-sync
-          image: registry.k8s.io/git-sync/git-sync:v4.4.0
-          args:
-            - --repo=https://github.com/shellshock1953/deigineor.com.git
-            - --ref=main
-            - --root=/git
-            - --link=current
-            - --period=60s
-            - --depth=1
-          securityContext:
-            runAsUser: 65533
-            runAsNonRoot: true
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities: {drop: [ALL]}
-          resources:
-            requests: {cpu: 5m, memory: 32Mi}
-            limits: {memory: 128Mi}
-          volumeMounts:
-            - {name: git, mountPath: /git}
-            - {name: git-sync-tmp, mountPath: /tmp}
         - name: web
-          image: nginxinc/nginx-unprivileged:1.27-alpine
+          image: ghcr.io/shellshock1953/deigineor.com/app:latest
           ports:
-            - {name: http, containerPort: 8080}
+            - name: http
+              containerPort: 3000
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities: {drop: [ALL]}
+            # Next ISR writes rendered pages under /app/.next/server; shortcut: writable root, upgrade to a custom cacheHandler if hardening matters
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
           resources:
-            requests: {cpu: 5m, memory: 16Mi}
-            limits: {memory: 64Mi}
+            requests:
+              cpu: 50m
+              memory: 256Mi
+            limits:
+              memory: 512Mi
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: deigineor-postgres-app
+                  key: uri
+            - name: PAYLOAD_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: deigineor-app
+                  key: PAYLOAD_SECRET
+            - name: ADMIN_EMAIL
+              value: admin@deigineor.com
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: deigineor-admin
+                  key: ADMIN_PASSWORD
+            - name: MEDIA_DIR
+              value: /data/media
+            - name: NEXT_PUBLIC_SITE_URL
+              value: https://v2.deigineor.com
+            - name: SENTRY_DSN
+              valueFrom:
+                secretKeyRef:
+                  name: deigineor-glitchtip
+                  key: SENTRY_DSN
+                  optional: true
+            - name: SENTRY_ENVIRONMENT
+              value: production
+            - name: SENTRY_RELEASE
+              value: latest
+            - name: OPENPANEL_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: deigineor-openpanel
+                  key: OPENPANEL_CLIENT_ID
+                  optional: true
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 5
+            timeoutSeconds: 5
+            failureThreshold: 60
           readinessProbe:
-            httpGet: {path: /healthz, port: http}
+            httpGet:
+              path: /readyz
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 5
           livenessProbe:
-            httpGet: {path: /healthz, port: http}
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 15
+            timeoutSeconds: 5
           volumeMounts:
-            - {name: git, mountPath: /git, readOnly: true}
-            - {name: nginx-conf, mountPath: /etc/nginx/conf.d/default.conf, subPath: default.conf, readOnly: true}
-            - {name: web-tmp, mountPath: /tmp}
+            - name: media
+              mountPath: /data/media
+            - name: tmp
+              mountPath: /tmp
+            - name: next-cache
+              mountPath: /app/.next/cache
       volumes:
-        - {name: git, emptyDir: {}}
-        - {name: git-sync-tmp, emptyDir: {}}
-        - {name: web-tmp, emptyDir: {}}
-        - name: nginx-conf
-          configMap:
-            name: deigineor-web-nginx
+        - name: media
+          persistentVolumeClaim:
+            claimName: deigineor-media
+        - name: tmp
+          emptyDir: {}
+        - name: next-cache
+          emptyDir: {}

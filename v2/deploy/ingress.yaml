@@ -1,13 +1,15 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: deigineor-web
+  name: deigineor
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/proxy-body-size: 50m
 spec:
   ingressClassName: nginx
   tls:
-    - hosts: [v2.deigineor.com]
+    - hosts:
+        - v2.deigineor.com
       secretName: v2-deigineor-com-tls
   rules:
     - host: v2.deigineor.com
@@ -17,5 +19,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: deigineor-web
-                port: {name: http}
+                name: deigineor
+                port:
+                  name: http
