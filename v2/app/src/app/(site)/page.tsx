@@ -22,7 +22,7 @@ export default async function Home() {
   ])
 
   const featured = releases.find((r) => r.featured) ?? releases[0]
-  const latest = releases.slice(0, 6)
+  const latest = releases.filter((r) => r.id !== featured?.id).slice(0, 6)
   const slugs = releases.map((r) => r.slug)
   const reel = videos.find((v) => v.category === 'wwise') ?? videos[0]
   const strip = libraries.slice(0, 3)
