@@ -96,7 +96,14 @@ export default async function InstrumentPage({ params }: { params: Promise<{ slu
 
           <div className="detail__links">
             {actionUrl && (
-              <a className="btn btn--primary" href={actionUrl} rel="noopener noreferrer">
+              <a
+                className="btn btn--primary"
+                href={actionUrl}
+                rel="noopener noreferrer"
+                data-track="library_get"
+                data-library={l.slug}
+                data-action={isPaid ? 'buy' : 'download'}
+              >
                 {isPaid ? `Buy — ${priceLabel(l.price ?? 0, l.currency)}` : 'Download on Pianobook'}
               </a>
             )}

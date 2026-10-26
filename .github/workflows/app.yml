@@ -1,5 +1,7 @@
 name: App CI/CD
 
+# Build + deploy run on our own ARC runner (deigineor-runners, dind, libra-worker-ci-1 / sirius).
+
 on:
   push:
     branches: [main]
@@ -16,7 +18,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: deigineor-runners
     outputs:
       short_sha: ${{ steps.vars.outputs.short_sha }}
     steps:
@@ -47,7 +49,7 @@ jobs:
   deploy:
     needs: build
     if: github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
+    runs-on: deigineor-runners
     concurrency:
       group: deploy-main
       cancel-in-progress: false

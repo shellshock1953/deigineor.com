@@ -61,6 +61,9 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
           <OpenPanelComponent
             clientId={openPanelClientId}
             trackScreenViews={true}
+            // link_out {href} for every external link (streaming, Pianobook, stores), plus data-track buttons
+            trackOutgoingLinks={true}
+            trackAttributes={true}
             apiUrl="https://openpanel.libra.dnull.systems/api"
             scriptUrl="https://openpanel.libra.dnull.systems/op1.js"
           />
