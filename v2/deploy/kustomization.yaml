@@ -6,7 +6,6 @@ labels:
       app.kubernetes.io/name: deigineor-web
     includeSelectors: true
 resources:
-  - namespace.yaml
   - deployment.yaml
   - service.yaml
   - ingress.yaml
