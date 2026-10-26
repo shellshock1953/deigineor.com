@@ -14,7 +14,8 @@
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "migrate": "pnpm payload migrate",
     "migrate:create": "pnpm payload migrate:create",
-    "seed": "cross-env NODE_OPTIONS=--no-deprecation payload run src/seed.ts"
+    "seed": "cross-env NODE_OPTIONS=--no-deprecation payload run src/seed.ts",
+    "build:logo": "node scripts/build-logo.mjs"
   },
   "engines": {
     "node": ">=22"
@@ -41,6 +42,7 @@
     "@types/react-dom": "^19.3.0",
     "eslint": "^9.39.5",
     "eslint-config-next": "16.4.3",
+    "opentype.js": "^2.0.0",
     "prettier": "^3.9.10",
     "tsx": "^4.23.15",
     "typescript": "~5.7.3"

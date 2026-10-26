@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { isAuthed, linkFields, publishedOrAuthed, slugField } from '../fields'
+import { revalidateSite } from '../lib/revalidate'
 
 export const Libraries: CollectionConfig = {
   slug: 'libraries',
@@ -10,6 +11,7 @@ export const Libraries: CollectionConfig = {
   },
   defaultSort: 'order',
   access: { read: publishedOrAuthed, create: isAuthed, update: isAuthed, delete: isAuthed },
+  hooks: { afterChange: [() => revalidateSite()] },
   fields: [
     { name: 'title', type: 'text', required: true },
     slugField,
