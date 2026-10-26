@@ -6,10 +6,26 @@ labels:
       app.kubernetes.io/name: deigineor-web
     includeSelectors: true
 resources:
+  - postgres.yaml
+  - media-pvc.yaml
+  - external-secrets.yaml
   - deployment.yaml
   - service.yaml
   - ingress.yaml
-configMapGenerator:
-  - name: deigineor-web-nginx
-    files:
-      - default.conf
+images:
+  - name: ghcr.io/shellshock1953/deigineor.com/app
+    newTag: latest
+replacements:
+  - source:
+      kind: Deployment
+      name: deigineor-web
+      fieldPath: spec.template.spec.containers.[name=web].image
+      options:
+        delimiter: ':'
+        index: 1
+    targets:
+      - select:
+          kind: Deployment
+          name: deigineor-web
+        fieldPaths:
+          - spec.template.spec.containers.[name=web].env.[name=SENTRY_RELEASE].value
