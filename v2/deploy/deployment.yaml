@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deigineor-web
+  name: deigineor
 spec:
   replicas: 1
   strategy:

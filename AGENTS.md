@@ -9,8 +9,8 @@ Portfolio of the music project "Deigineor" (owner: shellshock1953). Two sites li
 - **v2 (new)**: Next.js + Payload CMS 3 app in `v2/app/`, live at https://v2.deigineor.com.
   Admin interface at https://v2.deigineor.com/admin. Database is CloudNativePG (`deigineor-postgres`),
   and uploaded media is stored on a PersistentVolumeClaim (`deigineor-media`) at `/data/media`.
-- **Deploy manifests**: `v2/deploy/` (kustomize), synced by the ArgoCD app `deigineor-web`, defined in
-  `shellshock1953/UES` at `services/helm/argocd-apps/libra.yaml`. Namespace `deigineor-web`.
+- **Deploy manifests**: `v2/deploy/` (kustomize), synced by the ArgoCD app `deigineor`, defined in
+  `shellshock1953/UES` at `services/helm/argocd-apps/libra.yaml`. Namespace `deigineor`.
   Deployed automatically on push to `main` via image build + kustomize image tag bump.
 
 ## Workflow

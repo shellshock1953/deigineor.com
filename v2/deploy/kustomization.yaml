@@ -1,9 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: deigineor-web
+namespace: deigineor
 labels:
   - pairs:
-      app.kubernetes.io/name: deigineor-web
+      app.kubernetes.io/name: deigineor
     includeSelectors: true
 resources:
   - postgres.yaml
@@ -18,7 +18,7 @@ images:
 replacements:
   - source:
       kind: Deployment
-      name: deigineor-web
+      name: deigineor
       fieldPath: spec.template.spec.containers.[name=web].image
       options:
         delimiter: ':'
@@ -26,6 +26,6 @@ replacements:
     targets:
       - select:
           kind: Deployment
-          name: deigineor-web
+          name: deigineor
         fieldPaths:
           - spec.template.spec.containers.[name=web].env.[name=SENTRY_RELEASE].value
