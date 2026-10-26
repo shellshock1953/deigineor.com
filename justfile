@@ -1,3 +1,5 @@
+kube_ara := env_var_or_default("KUBECONFIG_ARA", env_var("HOME") + "/.kube/dnull/ara")
+
 # Render deploy manifests and sanity-check the v2 site (local links, HTML parse)
 check:
     kubectl kustomize v2/deploy > /dev/null
@@ -11,6 +13,15 @@ serve:
 status:
     curl -sI https://v2.deigineor.com | head -1
     KUBECONFIG=~/.kube/dnull/libra kubectl -n deigineor-web get pods
+
+# Sync Grafana dashboard to monitoring namespace on ara
+dashboard-sync:
+    kubectl --kubeconfig {{kube_ara}} -n monitoring create configmap deigineor-dashboard \
+      --from-file=deigineor.json=dashboards/deigineor.json \
+      --dry-run=client -o yaml \
+      | kubectl --kubeconfig {{kube_ara}} label --local -f - grafana_dashboard=1 -o yaml \
+      | kubectl --kubeconfig {{kube_ara}} apply -f -
+    @echo "synced -> https://grafana.ara.dnull.systems"
 
 export CHECK := '''
 import glob, os, sys

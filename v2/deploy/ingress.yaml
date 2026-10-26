@@ -4,10 +4,12 @@ metadata:
   name: deigineor-web
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/proxy-body-size: 50m
 spec:
   ingressClassName: nginx
   tls:
-    - hosts: [v2.deigineor.com]
+    - hosts:
+        - v2.deigineor.com
       secretName: v2-deigineor-com-tls
   rules:
     - host: v2.deigineor.com
@@ -18,4 +20,5 @@ spec:
             backend:
               service:
                 name: deigineor-web
-                port: {name: http}
+                port:
+                  name: http

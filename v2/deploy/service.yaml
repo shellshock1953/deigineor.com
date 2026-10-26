@@ -4,4 +4,6 @@ metadata:
   name: deigineor-web
 spec:
   ports:
-    - {name: http, port: 80, targetPort: http}
+    - name: http
+      port: 80
+      targetPort: http
