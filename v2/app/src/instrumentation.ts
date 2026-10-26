@@ -1,6 +1,6 @@
 /**
  * Next.js instrumentation hook, runs once per server process before any request:
- * error reporting to GlitchTip, database migrations, initial content seeding, and safe first admin creation.
+ * error reporting to GlitchTip, Prometheus metrics server, database migrations, initial content seeding, and safe first admin creation.
  */
 export async function register() {
   if (process.env.NEXT_RUNTIME !== 'nodejs') return
@@ -14,8 +14,14 @@ export async function register() {
       // GlitchTip ignores tracing sampling but accepts the events; keep it cheap.
       tracesSampleRate: Number(process.env.SENTRY_TRACES_SAMPLE_RATE ?? 0),
       initialScope: { tags: { service: 'deigineor-app' } },
+      // The visitor closed the connection while a page was still streaming (navigated away, bot): not our bug.
+      ignoreErrors: ['The destination stream closed early.'],
     })
   }
+
+  // Before the Payload boot below, so metrics are up even if migrations/seeding are slow.
+  const { startMetricsServer } = await import('./lib/metrics')
+  await startMetricsServer()
 
   // Booting Payload applies `prodMigrations`; fail the start loudly if the DB is unreachable.
   if (process.env.NODE_ENV === 'production') {

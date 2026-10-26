@@ -39,6 +39,10 @@ jobs:
         if: hashFiles('v2/app/package.json') != ''
         working-directory: v2/app
         run: pnpm run typecheck
+      - name: Test
+        if: hashFiles('v2/app/package.json') != ''
+        working-directory: v2/app
+        run: pnpm run test
 
   build:
     runs-on: ubuntu-latest

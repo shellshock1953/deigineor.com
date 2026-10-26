@@ -7,3 +7,7 @@ spec:
     - name: http
       port: 80
       targetPort: http
+    # The port name must match the VMServiceScrape endpoint or vmagent never discovers it.
+    - name: metrics
+      port: 9464
+      targetPort: metrics
