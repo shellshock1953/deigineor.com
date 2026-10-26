@@ -14,6 +14,10 @@ status:
     curl -sI https://v2.deigineor.com | head -1
     KUBECONFIG=~/.kube/dnull/libra kubectl -n deigineor-web get pods
 
+# Print the initial admin password from the libra cluster
+admin-password:
+    KUBECONFIG=~/.kube/dnull/libra kubectl -n deigineor-web get secret deigineor-admin -o jsonpath='{.data.ADMIN_PASSWORD}' | base64 -d; echo
+
 # Run the Next + Payload app in dev mode (needs Postgres, see v2/app/README.md)
 app-dev:
     cd v2/app && pnpm dev

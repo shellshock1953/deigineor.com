@@ -43,6 +43,13 @@ spec:
                 secretKeyRef:
                   name: deigineor-app
                   key: PAYLOAD_SECRET
+            - name: ADMIN_EMAIL
+              value: admin@deigineor.com
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: deigineor-admin
+                  key: ADMIN_PASSWORD
             - name: MEDIA_DIR
               value: /data/media
             - name: NEXT_PUBLIC_SITE_URL

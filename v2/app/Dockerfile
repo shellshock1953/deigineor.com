@@ -22,6 +22,7 @@ RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs \
   && mkdir -p /data/media && chown nextjs:nodejs /data/media
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/seed ./seed
 USER nextjs
 EXPOSE 3000
 VOLUME /data/media

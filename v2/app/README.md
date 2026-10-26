@@ -27,6 +27,8 @@ From the repo root: `just app-dev`, `just app-seed`, `just app-check`, `just app
 | --- | --- |
 | `DATABASE_URL` | Postgres connection string (required) |
 | `PAYLOAD_SECRET` | Payload secret (required) |
+| `ADMIN_EMAIL` | Initial admin email created on first boot when `users` is empty (default `admin@deigineor.com` in deploy) |
+| `ADMIN_PASSWORD` | Initial admin password created on first boot when `users` is empty (generated via ESO in deploy) |
 | `MEDIA_DIR` | Upload directory, default `./media`. Use an absolute path for the standalone server (it runs from `.next/standalone`) |
 | `NEXT_PUBLIC_SITE_URL` | Public URL (metadata base). Inlined at build time: a Docker build argument |
 | `SENTRY_DSN`, `SENTRY_ENVIRONMENT`, `SENTRY_RELEASE` | Error reporting to GlitchTip (off without DSN) |
@@ -47,7 +49,19 @@ docker run --rm -p 3000:3000 -v deig-media:/data/media -e DATABASE_URL=... -e PA
 
 Port 3000, non-root user, uploads in the `/data/media` volume.
 
-## Seed data
+## Seed data and first boot bootstrap
 
 `seed/data.json` and `seed/img/` hold the real releases (from the v1/v2 sites), the two Wwise reels and the six
 Pianobook packs (text and images fetched from pianobook.co.uk, "Stay tuned" lines dropped). `pnpm seed` upserts by slug.
+
+On production boot (when `releases` has 0 docs), the app automatically runs the seed logic from images bundled
+into the image. Once seeded, subsequent boots will never re-seed existing data (artist edits win).
+
+If `users` is empty and `ADMIN_EMAIL` and `ADMIN_PASSWORD` are set, an initial admin user is created on first boot
+so the public site does not expose Payload's "create first user" prompt to strangers.
+
+To access the admin panel:
+1. Print the generated admin password: `just admin-password`
+2. Log in at `https://v2.deigineor.com/admin` as `admin@deigineor.com`
+3. Create the artist's own user account with administrative access
+4. Optionally change the `admin@deigineor.com` email or password
