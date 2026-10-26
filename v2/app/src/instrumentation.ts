@@ -22,16 +22,42 @@ export async function register() {
     const { getPayload } = await import('payload')
     const payload = await getPayload({ config: (await import('@payload-config')).default })
 
-    // 1. Seed initial content if releases collection is empty
-    try {
-      const releases = await payload.find({
-        collection: 'releases',
-        limit: 1,
-        depth: 0,
+    // 1. Ensure initial admin user exists before serving requests (prevents unauthenticated first-register).
+    const users = await payload.find({
+      collection: 'users',
+      limit: 1,
+      depth: 0,
+      overrideAccess: true,
+    })
+    if ((users.totalDocs ?? users.docs.length) === 0) {
+      const email = process.env.ADMIN_EMAIL
+      const password = process.env.ADMIN_PASSWORD
+      if (!email || !password) {
+        throw new Error('Users collection is empty, but ADMIN_EMAIL or ADMIN_PASSWORD is not set.')
+      }
+      await payload.create({
+        collection: 'users',
+        data: { email, password },
         overrideAccess: true,
       })
-      if ((releases.totalDocs ?? releases.docs.length) === 0) {
-        console.log('Database has 0 releases. Seeding initial content...')
+      console.log(`Created initial admin user: ${email}`)
+    } else {
+      console.log(`Users collection already populated (${users.totalDocs} users found).`)
+    }
+
+    // 2. Seed initial content if any core collection is empty (seed() is idempotent by slug).
+    try {
+      const [releases, libraries, videos] = await Promise.all([
+        payload.find({ collection: 'releases', limit: 1, depth: 0, overrideAccess: true }),
+        payload.find({ collection: 'libraries', limit: 1, depth: 0, overrideAccess: true }),
+        payload.find({ collection: 'videos', limit: 1, depth: 0, overrideAccess: true }),
+      ])
+      const empty =
+        (releases.totalDocs ?? releases.docs.length) === 0 ||
+        (libraries.totalDocs ?? libraries.docs.length) === 0 ||
+        (videos.totalDocs ?? videos.docs.length) === 0
+      if (empty) {
+        console.log('Database has empty collections. Seeding initial content...')
         const imgDir = process.env.SEED_IMG_DIR || '/app/seed/img'
         const { seed } = await import('./seed/run')
         await seed(payload, { imgDir })
@@ -48,42 +74,6 @@ export async function register() {
           Sentry.captureException(err)
         } catch (sentryErr) {
           console.error('Failed to report seed error to Sentry:', sentryErr)
-        }
-      }
-    }
-
-    // 2. Create initial admin user if users collection is empty and credentials are provided
-    try {
-      const users = await payload.find({
-        collection: 'users',
-        limit: 1,
-        depth: 0,
-        overrideAccess: true,
-      })
-      if ((users.totalDocs ?? users.docs.length) === 0) {
-        const email = process.env.ADMIN_EMAIL
-        const password = process.env.ADMIN_PASSWORD
-        if (email && password) {
-          await payload.create({
-            collection: 'users',
-            data: { email, password },
-            overrideAccess: true,
-          })
-          console.log(`Created initial admin user: ${email}`)
-        } else {
-          console.warn('Users collection is empty, but ADMIN_EMAIL or ADMIN_PASSWORD is not set.')
-        }
-      } else {
-        console.log(`Users collection already populated (${users.totalDocs} users found).`)
-      }
-    } catch (err) {
-      console.error('Failed to create initial admin user:', err)
-      if (process.env.SENTRY_DSN) {
-        try {
-          const Sentry = await import('@sentry/nextjs')
-          Sentry.captureException(err)
-        } catch (sentryErr) {
-          console.error('Failed to report admin user creation error to Sentry:', sentryErr)
         }
       }
     }

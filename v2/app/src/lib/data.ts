@@ -9,26 +9,46 @@ import { getPayload } from 'payload'
 const payload = () => getPayload({ config })
 
 export async function getSite() {
-  return payload().then((p) => p.findGlobal({ slug: 'site' }))
+  return payload().then((p) => p.findGlobal({ slug: 'site', overrideAccess: false }))
 }
 
 export async function getReleases() {
   const { docs } = await payload().then((p) =>
-    p.find({ collection: 'releases', sort: '-releaseDate', depth: 1, limit: 200, pagination: false }),
+    p.find({
+      collection: 'releases',
+      sort: '-releaseDate',
+      depth: 1,
+      limit: 200,
+      pagination: false,
+      overrideAccess: false,
+    }),
   )
   return docs
 }
 
 export async function getReleaseBySlug(slug: string) {
   const { docs } = await payload().then((p) =>
-    p.find({ collection: 'releases', where: { slug: { equals: slug } }, depth: 1, limit: 1 }),
+    p.find({
+      collection: 'releases',
+      where: { slug: { equals: slug } },
+      depth: 1,
+      limit: 1,
+      overrideAccess: false,
+    }),
   )
   return docs[0] ?? null
 }
 
 export async function getVideos() {
   const { docs } = await payload().then((p) =>
-    p.find({ collection: 'videos', sort: 'order', depth: 1, limit: 100, pagination: false }),
+    p.find({
+      collection: 'videos',
+      sort: 'order',
+      depth: 1,
+      limit: 100,
+      pagination: false,
+      overrideAccess: false,
+    }),
   )
   // Wwise reels first, everything else after — within a category by `order`.
   const rank = (c: string) => (c === 'wwise' ? 0 : c === 'showreel' ? 1 : 2)
@@ -37,14 +57,27 @@ export async function getVideos() {
 
 export async function getLibraries() {
   const { docs } = await payload().then((p) =>
-    p.find({ collection: 'libraries', sort: 'order', depth: 1, limit: 100, pagination: false }),
+    p.find({
+      collection: 'libraries',
+      sort: 'order',
+      depth: 1,
+      limit: 100,
+      pagination: false,
+      overrideAccess: false,
+    }),
   )
   return docs
 }
 
 export async function getLibraryBySlug(slug: string) {
   const { docs } = await payload().then((p) =>
-    p.find({ collection: 'libraries', where: { slug: { equals: slug } }, depth: 1, limit: 1 }),
+    p.find({
+      collection: 'libraries',
+      where: { slug: { equals: slug } },
+      depth: 1,
+      limit: 1,
+      overrideAccess: false,
+    }),
   )
   return docs[0] ?? null
 }

@@ -8,7 +8,7 @@ export const Videos: CollectionConfig = {
   admin: { useAsTitle: 'title', defaultColumns: ['title', 'category', 'order'] },
   defaultSort: 'order',
   access: { read: () => true, create: isAuthed, update: isAuthed, delete: isAuthed },
-  hooks: { afterChange: [() => revalidateSite()] },
+  hooks: { afterChange: [() => revalidateSite()], afterDelete: [() => revalidateSite()] },
   fields: [
     { name: 'title', type: 'text', required: true },
     slugField,

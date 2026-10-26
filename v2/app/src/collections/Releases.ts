@@ -8,7 +8,7 @@ export const Releases: CollectionConfig = {
   defaultSort: '-releaseDate',
   access: { read: publishedOrAuthed, create: isAuthed, update: isAuthed, delete: isAuthed },
   // Admin edits appear on the public site right away (on-demand ISR revalidation).
-  hooks: { afterChange: [() => revalidateSite()] },
+  hooks: { afterChange: [() => revalidateSite()], afterDelete: [() => revalidateSite()] },
   fields: [
     { name: 'title', type: 'text', required: true },
     slugField,

@@ -11,7 +11,7 @@ export const Libraries: CollectionConfig = {
   },
   defaultSort: 'order',
   access: { read: publishedOrAuthed, create: isAuthed, update: isAuthed, delete: isAuthed },
-  hooks: { afterChange: [() => revalidateSite()] },
+  hooks: { afterChange: [() => revalidateSite()], afterDelete: [() => revalidateSite()] },
   fields: [
     { name: 'title', type: 'text', required: true },
     slugField,

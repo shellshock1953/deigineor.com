@@ -9,7 +9,7 @@ export const Media: CollectionConfig = {
   admin: { useAsTitle: 'alt' },
   upload: {
     staticDir: path.resolve(/* turbopackIgnore: true */ process.env.MEDIA_DIR || './media'),
-    mimeTypes: ['image/*'],
+    mimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/avif', 'image/gif'],
     adminThumbnail: 'thumb',
     imageSizes: [
       { name: 'thumb', width: 400 },
