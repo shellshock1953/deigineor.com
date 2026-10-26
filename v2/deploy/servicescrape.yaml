@@ -1,0 +1,13 @@
+# Scraped by libra's vmagent, which remote-writes to VictoriaMetrics on ara.
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: deigineor
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: deigineor
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: 30s
