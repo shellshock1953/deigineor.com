@@ -1,11 +1,14 @@
 import type { CollectionConfig } from 'payload'
 import { isAuthed, linkFields, publishedOrAuthed, slugField } from '../fields'
+import { revalidateSite } from '../lib/revalidate'
 
 export const Releases: CollectionConfig = {
   slug: 'releases',
   admin: { useAsTitle: 'title', defaultColumns: ['title', 'kind', 'releaseDate', 'published'] },
   defaultSort: '-releaseDate',
   access: { read: publishedOrAuthed, create: isAuthed, update: isAuthed, delete: isAuthed },
+  // Admin edits appear on the public site right away (on-demand ISR revalidation).
+  hooks: { afterChange: [() => revalidateSite()] },
   fields: [
     { name: 'title', type: 'text', required: true },
     slugField,

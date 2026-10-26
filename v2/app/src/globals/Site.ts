@@ -1,5 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthed } from '../fields'
+import { revalidateSite } from '../lib/revalidate'
 
 const platformFields = [
   { name: 'platform', type: 'text', required: true },
@@ -10,6 +11,7 @@ export const Site: GlobalConfig = {
   slug: 'site',
   label: 'Site settings',
   access: { read: () => true, update: isAuthed },
+  hooks: { afterChange: [() => revalidateSite()] },
   fields: [
     { name: 'tagline', type: 'text' },
     { name: 'shortBio', type: 'textarea' },

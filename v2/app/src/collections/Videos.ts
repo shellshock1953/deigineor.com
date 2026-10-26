@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { isAuthed, slugField } from '../fields'
+import { revalidateSite } from '../lib/revalidate'
 
 export const Videos: CollectionConfig = {
   slug: 'videos',
@@ -7,6 +8,7 @@ export const Videos: CollectionConfig = {
   admin: { useAsTitle: 'title', defaultColumns: ['title', 'category', 'order'] },
   defaultSort: 'order',
   access: { read: () => true, create: isAuthed, update: isAuthed, delete: isAuthed },
+  hooks: { afterChange: [() => revalidateSite()] },
   fields: [
     { name: 'title', type: 'text', required: true },
     slugField,
