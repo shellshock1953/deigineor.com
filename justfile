@@ -12,6 +12,22 @@ status:
     curl -sI https://v2.deigineor.com | head -1
     KUBECONFIG=~/.kube/dnull/libra kubectl -n deigineor-web get pods
 
+# Run the Next + Payload app in dev mode (needs Postgres, see v2/app/README.md)
+app-dev:
+    cd v2/app && pnpm dev
+
+# Production build of the app
+app-build:
+    cd v2/app && pnpm build
+
+# Import the real content into the app database (idempotent)
+app-seed:
+    cd v2/app && pnpm seed
+
+# Lint, typecheck and build the app
+app-check:
+    cd v2/app && pnpm lint && pnpm typecheck && pnpm build
+
 export CHECK := '''
 import glob, os, sys
 from html.parser import HTMLParser

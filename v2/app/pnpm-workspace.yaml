@@ -1,0 +1,6 @@
+# Dependency build scripts pnpm may run on install (everything else is blocked).
+allowBuilds:
+  sharp: true
+  esbuild: true
+  unrs-resolver: true
+  "@sentry/cli": false

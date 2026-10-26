@@ -1,0 +1,604 @@
+{
+  "site": {
+    "tagline": "Ambition Music Development",
+    "shortBio": "Soundproducer from Ukraine. From Dark Ambient to massive electronic grooves.",
+    "about": [
+      "Hi, I'm Deigineor, soundproducer from Ukraine and I love creating, looking for a new sound to my compositions.",
+      "From an early age I was fascinated by creating music.",
+      "For 7 years now, I've been making tracks in completely different genres so that each of you can feel how I feel.",
+      "Experience solitude from Dark Ambient to massive electronic grooves."
+    ],
+    "platformLinks": [
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/channel/UC47vqawmWVk7IHtbcYqYBNw"
+      },
+      {
+        "platform": "Spotify",
+        "url": "https://open.spotify.com/artist/0nK8PxMNI2dpZ3SSPchHRB"
+      },
+      {
+        "platform": "Deezer",
+        "url": "https://www.deezer.com/us/artist/111255102"
+      },
+      {
+        "platform": "Apple Music",
+        "url": "https://music.apple.com/us/artist/deigineor/1537308317"
+      },
+      {
+        "platform": "Napster",
+        "url": "https://us.napster.com/artist/deigineor"
+      },
+      {
+        "platform": "Amazon Music",
+        "url": "https://www.amazon.com/s?k=Deigineor&i=digital-music&search-type=ss&ref=ntt_srch_drd_B08NCN1RPY"
+      }
+    ],
+    "socialLinks": [
+      {
+        "platform": "Facebook",
+        "url": "https://www.facebook.com/DEIGINEOR/"
+      },
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/deigineor"
+      },
+      {
+        "platform": "Telegram",
+        "url": "https://t.me/deigineor_official"
+      }
+    ]
+  },
+  "releases": [
+    {
+      "title": "Quantum Dawn",
+      "slug": "quantum-dawn",
+      "kind": "ost",
+      "releaseDate": "2024-09-19",
+      "cover": "releases/quantum_dawn.jpg",
+      "coverAlt": "Cover art for Quantum Dawn",
+      "genres": [
+        "ost",
+        "cinematic",
+        "soundtrack"
+      ],
+      "youtubeId": "X0fBZbIFTXo",
+      "spotifyUrl": "https://open.spotify.com/album/3qvDt5U2J10VnOxMBoGTx4",
+      "appleMusicUrl": "https://music.apple.com/ca/album/quantum-dawn-original-game-soundtrack/1769779862",
+      "hyperfollowUrl": "https://distrokid.com/hyperfollow/deigineor/quantum-dawn-original-game-soundtrack",
+      "featured": true
+    },
+    {
+      "title": "Peak",
+      "slug": "peak",
+      "kind": "single",
+      "releaseDate": "2024-04-07",
+      "cover": "releases/peak.jpg",
+      "coverAlt": "Cover art for Peak",
+      "genres": [
+        "electronic",
+        "cyberwave"
+      ],
+      "youtubeId": "Uq9rDL24wqM",
+      "spotifyUrl": "https://open.spotify.com/track/3TuIm2Ecy7VGdu9kAUy91i",
+      "appleMusicUrl": "https://music.apple.com/us/album/peak/1740034608",
+      "hyperfollowUrl": "https://distrokid.com/hyperfollow/deigineor/peak",
+      "featured": false
+    },
+    {
+      "title": "Cyberware",
+      "slug": "cyberware",
+      "kind": "single",
+      "releaseDate": "2024-04-02",
+      "cover": "releases/cyberware.jpg",
+      "coverAlt": "Cover art for Cyberware",
+      "genres": [
+        "electronic",
+        "cyberwave"
+      ],
+      "youtubeId": "u0oyeUb3GjU",
+      "spotifyUrl": "https://open.spotify.com/track/4w03lIabB2kxuWSaMjxIum",
+      "appleMusicUrl": "https://music.apple.com/us/album/cyberware/1739118309",
+      "hyperfollowUrl": "https://distrokid.com/hyperfollow/deigineor/cyberware",
+      "featured": false
+    },
+    {
+      "title": "Precision",
+      "slug": "precision",
+      "kind": "single",
+      "releaseDate": "2024-02-15",
+      "cover": "releases/precision.jpg",
+      "coverAlt": "Cover art for Precision",
+      "genres": [
+        "electronic",
+        "cyberwave"
+      ],
+      "youtubeId": "0wv9g_T5UnM",
+      "spotifyUrl": "https://open.spotify.com/track/7axgzbsHmFFBaxlEsGS4rt",
+      "appleMusicUrl": "https://music.apple.com/us/album/precision/1731589446",
+      "hyperfollowUrl": "https://distrokid.com/hyperfollow/deigineor/precision",
+      "featured": false
+    },
+    {
+      "title": "Enhanced Acid",
+      "slug": "enhanced-acid",
+      "kind": "single",
+      "releaseDate": "2023-07-05",
+      "cover": "releases/enhanced_acid.jpg",
+      "coverAlt": "Cover art for Enhanced Acid",
+      "genres": [
+        "electronic",
+        "cyberwave"
+      ],
+      "youtubeId": "jbBW1azFwAA",
+      "spotifyUrl": "https://open.spotify.com/track/6ZcVgcgVB1ShPtpAwhdEig",
+      "appleMusicUrl": "https://music.apple.com/us/album/enhanced-acid/1695874645",
+      "hyperfollowUrl": "https://distrokid.com/hyperfollow/deigineor/enhanced-acid",
+      "featured": false
+    },
+    {
+      "title": "Singularity",
+      "slug": "singularity",
+      "kind": "album",
+      "releaseDate": "2023-06-16",
+      "cover": "releases/singularity.jpg",
+      "coverAlt": "Cover art for Singularity",
+      "genres": [
+        "electronic",
+        "cyberwave"
+      ],
+      "youtubeId": "JmKlt4RWjDk",
+      "spotifyUrl": "https://open.spotify.com/album/64qQ4ZeBs6gkHAY7TxHCOw",
+      "appleMusicUrl": "https://music.apple.com/us/album/singularity/1692998231",
+      "hyperfollowUrl": "https://distrokid.com/hyperfollow/deigineor/singularity",
+      "featured": false
+    },
+    {
+      "title": "Princess' Peas",
+      "slug": "princess-peas",
+      "kind": "ost",
+      "releaseDate": "2022-07-29",
+      "cover": "releases/princess_peas.jpg",
+      "coverAlt": "Cover art for Princess' Peas",
+      "genres": [
+        "ost",
+        "cinematic",
+        "soundtrack"
+      ],
+      "youtubeId": "4YLqYt4s0Jk",
+      "spotifyUrl": "https://open.spotify.com/album/2Dj4FpLCRSfwiq84FcYHkY",
+      "appleMusicUrl": "https://music.apple.com/us/album/princess-peas-original-game-soundtrack/1637498849",
+      "hyperfollowUrl": "https://distrokid.com/hyperfollow/deigineor/princess-peas-original-game-soundtrack",
+      "featured": false
+    },
+    {
+      "title": "Dystopia",
+      "slug": "dystopia",
+      "kind": "single",
+      "releaseDate": "2022-07-18",
+      "cover": "releases/dystopia.jpg",
+      "coverAlt": "Cover art for Dystopia",
+      "genres": [
+        "electronic",
+        "cyberwave"
+      ],
+      "youtubeId": "k6TPoENK9Gw",
+      "spotifyUrl": "https://open.spotify.com/track/6LfDdN5eYw8IPvxzQyveeT",
+      "appleMusicUrl": "https://music.apple.com/us/album/dystopia/1635143604",
+      "hyperfollowUrl": "https://distrokid.com/hyperfollow/deigineor/dystopia",
+      "featured": false
+    },
+    {
+      "title": "Assimilation",
+      "slug": "assimilation",
+      "kind": "single",
+      "releaseDate": "2022-06-16",
+      "cover": "releases/assimilation.jpg",
+      "coverAlt": "Cover art for Assimilation",
+      "genres": [
+        "electronic",
+        "cyberwave"
+      ],
+      "youtubeId": "v-U2cGqPp4A",
+      "spotifyUrl": "https://open.spotify.com/track/1vcwuvec2OdxSiGZDeJJ5S",
+      "appleMusicUrl": "https://music.apple.com/us/album/assimilation/1630202881",
+      "hyperfollowUrl": "https://distrokid.com/hyperfollow/deigineor/assimilation",
+      "featured": false
+    },
+    {
+      "title": "Arkan",
+      "slug": "arkan",
+      "kind": "single",
+      "releaseDate": "2022-06-05",
+      "cover": "releases/arkan.jpg",
+      "coverAlt": "Cover art for Arkan",
+      "genres": [
+        "guitar",
+        "folk"
+      ],
+      "youtubeId": "TaLwf3MBl4w",
+      "spotifyUrl": "https://open.spotify.com/track/4oxE8yzkhVluKbQkcOoqee",
+      "appleMusicUrl": "https://music.apple.com/us/album/arkan/1628016185",
+      "hyperfollowUrl": "https://distrokid.com/hyperfollow/deigineor/arkan",
+      "featured": false
+    },
+    {
+      "title": "Decay",
+      "slug": "decay",
+      "kind": "single",
+      "releaseDate": "2022-05-18",
+      "cover": "releases/decay.jpg",
+      "coverAlt": "Cover art for Decay",
+      "genres": [
+        "rock",
+        "electronic"
+      ],
+      "youtubeId": "z-4dw5O3OxQ",
+      "spotifyUrl": "https://open.spotify.com/track/3htZeoy6f3J44PFH1Euiea",
+      "appleMusicUrl": "https://music.apple.com/us/album/decay/1624875888",
+      "hyperfollowUrl": "https://distrokid.com/hyperfollow/deigineor/decay",
+      "featured": false
+    },
+    {
+      "title": "Nongrad",
+      "slug": "nongrad",
+      "kind": "single",
+      "releaseDate": "2022-05-11",
+      "cover": "releases/nongrad.jpg",
+      "coverAlt": "Cover art for Nongrad",
+      "genres": [
+        "electronic",
+        "cyberwave"
+      ],
+      "youtubeId": "Qi9v8yQDHD4",
+      "spotifyUrl": "https://open.spotify.com/track/3e72QoizrskHbwTsGCcoXv",
+      "appleMusicUrl": "https://music.apple.com/us/album/nongrad/1623569448",
+      "hyperfollowUrl": "https://distrokid.com/hyperfollow/deigineor/nongrad",
+      "featured": false
+    },
+    {
+      "title": "Tessellation",
+      "slug": "tessellation",
+      "kind": "album",
+      "releaseDate": "2022-05-08",
+      "cover": "releases/tessellation.jpg",
+      "coverAlt": "Cover art for Tessellation",
+      "genres": [
+        "electronic",
+        "house"
+      ],
+      "youtubeId": "bQ2laJQtQNM",
+      "spotifyUrl": "https://open.spotify.com/album/2V9MIT3dbL7DVJvjvS6W1p",
+      "appleMusicUrl": "",
+      "hyperfollowUrl": "https://distrokid.com/hyperfollow/deigineor/tessellation",
+      "featured": false
+    },
+    {
+      "title": "Voltage Forms",
+      "slug": "voltage-forms",
+      "kind": "single",
+      "releaseDate": "2022-04-27",
+      "cover": "releases/voltage_forms.jpg",
+      "coverAlt": "Cover art for Voltage Forms",
+      "genres": [
+        "electronic",
+        "cyberwave"
+      ],
+      "youtubeId": "XmzZtXQ5lRU",
+      "spotifyUrl": "https://open.spotify.com/track/5vdfY7JYXO8RE6khUqkKgE",
+      "appleMusicUrl": "https://music.apple.com/us/album/voltage-forms/1621266190",
+      "hyperfollowUrl": "https://distrokid.com/hyperfollow/deigineor/voltage-forms",
+      "featured": false
+    },
+    {
+      "title": "Claustrophobic",
+      "slug": "claustrophobic",
+      "kind": "single",
+      "releaseDate": "2022-04-18",
+      "cover": "releases/claustrophobic.jpg",
+      "coverAlt": "Cover art for Claustrophobic",
+      "genres": [
+        "instrumental",
+        "industrial",
+        "metal"
+      ],
+      "youtubeId": "BiPl3X8nQqo",
+      "spotifyUrl": "https://open.spotify.com/track/3W4UP9LZVANXMFNVxTipjC",
+      "appleMusicUrl": "https://music.apple.com/us/album/claustrophobic/1619783353",
+      "hyperfollowUrl": "https://distrokid.com/hyperfollow/deigineor/claustrophobic",
+      "featured": false
+    },
+    {
+      "title": "Polaris",
+      "slug": "polaris",
+      "kind": "single",
+      "releaseDate": "2020-10-25",
+      "cover": "releases/polaris.jpg",
+      "coverAlt": "Cover art for Polaris",
+      "genres": [
+        "lyrics",
+        "chill"
+      ],
+      "youtubeId": "m-oZrwvae4A",
+      "spotifyUrl": "https://open.spotify.com/track/6XTtGsD2nsjB9miRWeGvVY",
+      "appleMusicUrl": "https://music.apple.com/us/album/polaris-single/1537311074",
+      "hyperfollowUrl": "https://distrokid.com/hyperfollow/deigineor/polaris",
+      "featured": false
+    },
+    {
+      "title": "Places",
+      "slug": "places",
+      "kind": "single",
+      "releaseDate": "2020-10-11",
+      "cover": "releases/places.jpg",
+      "coverAlt": "Cover art for Places",
+      "genres": [
+        "guitar"
+      ],
+      "youtubeId": "oktO5I4PdYw",
+      "spotifyUrl": "https://open.spotify.com/track/1PLYjOER6xJwKqR5XxOkKn",
+      "appleMusicUrl": "https://music.apple.com/us/album/places-single/1539998485",
+      "hyperfollowUrl": "https://distrokid.com/hyperfollow/deigineor/places",
+      "featured": false
+    },
+    {
+      "title": "Grains",
+      "slug": "grains",
+      "kind": "single",
+      "releaseDate": "2020-10-03",
+      "cover": "releases/grains.jpg",
+      "coverAlt": "Cover art for Grains",
+      "genres": [
+        "trap",
+        "electronic"
+      ],
+      "youtubeId": "PB5mOIAAk0Y",
+      "spotifyUrl": "https://open.spotify.com/track/73j0VbmvniJRls1iir7rOk",
+      "appleMusicUrl": "https://music.apple.com/us/album/grains-single/1538715529",
+      "hyperfollowUrl": "https://distrokid.com/hyperfollow/deigineor/grains",
+      "featured": false
+    }
+  ],
+  "videos": [
+    {
+      "title": "Wwise & Unreal Engine 5 Audio Implementation Demo Reel - Dark Ruins Megascans",
+      "slug": "wwise-ue5-demo-reel-dark-ruins-megascans",
+      "youtubeId": "9lXDt2ftYU4",
+      "category": "wwise",
+      "tools": [
+        "Wwise",
+        "Unreal Engine 5"
+      ],
+      "order": 1
+    },
+    {
+      "title": "Wwise & Unreal Engine 5 Audio Implementation Demo Reel - Forest Temple",
+      "slug": "wwise-ue5-demo-reel-forest-temple",
+      "youtubeId": "3zV9yIXMx_8",
+      "category": "wwise",
+      "tools": [
+        "Wwise",
+        "Unreal Engine 5"
+      ],
+      "order": 2
+    }
+  ],
+  "libraries": [
+    {
+      "title": "Sanctum",
+      "slug": "sanctum",
+      "tagline": "Cinematic library with deeply atmospheric soundscapes, pads, and bass",
+      "description": [
+        {
+          "type": "p",
+          "text": "The library was sampled in combination with the Microfreak synthesizer and VST Serum, then processed in the Phase Plant granular engine."
+        },
+        {
+          "type": "p",
+          "text": "Sanctum is a Kontakt library that unlocks new possibilities in cinematic and electronic sound design. Create your own monumental, epic, and deeply atmospheric soundscapes.\n\nDesigned for composers, sound designers, and producers seeking a distinctive sonic palette, this library is ideally suited for crafting soundtracks for films, games, and other multimedia projects, as well as for developing dark, experimental electronic music.\n\nSanctum transforms each note into a luminous space where sound takes form, cultivating a sense of boundless scene and environment."
+        },
+        {
+          "type": "p",
+          "text": "At the core of Sanctum lies the Sanctum Designer, a central patch offering a well-conceived approach to patch sound design.\n\nIt is equipped with four individually controlled menu groups, empowering users to precisely tailor every element of their sound design.\n\nThe XY-pad facilitates convenient volume control between these groups, providing flexibility in mixing.\n\nFurthermore, individual faders allow for detailed command over each sound group."
+        },
+        {
+          "type": "p",
+          "text": "For further sound sculpting, Sanctum features three distinct effects panels:\n\nADSR, FX, and EQ, which provide a broad spectrum of possibilities for flexible and precise adjustments.\n\nEach of the four menus contains 14 diverse sound groups, ranging from deep basses to atmospheric pads, thus expanding creative avenues.\n\nAdditionally, Sanctum includes 12 meticulously crafted presets, serving as excellent starting points or ready-to-use solutions that demonstrate the library’s potential."
+        },
+        {
+          "type": "p",
+          "text": "Operating Sanctum is straightforward and intuitive.\n\nTo access the group menus, simply click on the name of the respective group and select the desired option from the drop-down menu.\n\nSimilarly, the presets section is accessible in the same manner. The effects and settings panels are conveniently concealed behind their corresponding icons.\n\nA key control element is the XY-pad, which can be manipulated either with a mouse cursor or via a MIDI controller.\n\nThis allows for dynamic volume control of the groups by simply directing the cursor towards them, ensuring smooth and expressive modulation."
+        },
+        {
+          "type": "p",
+          "text": "Sanctum is a tool engineered to inspire and support your creative process.\n\nIt will assist you in forging profound, captivating sounds that elevate your musical and sound projects to a new echelon.\n\nExperience the monumentality of sound with Sanctum."
+        }
+      ],
+      "image": "libraries/sanctum.jpg",
+      "imageAlt": "Sanctum Kontakt library by Deigineor",
+      "format": "Kontakt (full version)",
+      "downloadUrl": "https://www.pianobook.co.uk/packs/sanctum/",
+      "demoLinks": [
+        {
+          "label": "Announce Teaser",
+          "url": "https://youtu.be/yD0ia8F4ViU"
+        }
+      ],
+      "collaborator": "",
+      "order": 1
+    },
+    {
+      "title": "Arrival",
+      "slug": "arrival",
+      "tagline": "Powerful cinematic pads and textures",
+      "description": [
+        {
+          "type": "p",
+          "text": "At the heart of ARRIVAL lies the sound of the Arturia Microfreak synthesizer with its unusual and signature sound design."
+        },
+        {
+          "type": "p",
+          "text": "The ARRIVAL library immerses you in the world of cinematic sound. It contains a rich collection of Pad sounds and deep basses, Soundscapes, and unique textures which are deep, resonant, and striking sounds that create a sense of scale and weightlessness, ideally suited for emphasizing key moments and building tension in your projects.\n\nThey add that intangible quality to the sound which is both unsettling and captivating."
+        },
+        {
+          "type": "p",
+          "text": "The central element of the library is the Arrival Designer patch. It offers an intuitive interface with three key control panels: ADSR for precise envelope shaping, FX for adding effects, and EQ for sculpting the frequency spectrum.\n\nA visual highlight of the Arrival Designer are the two animated waveforms displaying the samples in real-time, while convenient menus above them allow for instant selection and combination of different sound layers, opening up space for experimentation.\n\nThe interface is complemented by a captivating animated background that enhances the sense of immersion in the creative process."
+        },
+        {
+          "type": "p",
+          "text": "In addition to the versatile Arrival Designer, ARRIVAL also includes 8 separate Individual Instruments, each offering a unique preset ready for use in your production. These instruments are ideally suited for quick access to a specific sound and its integration into your mix."
+        },
+        {
+          "type": "p",
+          "text": "ARRIVAL is more than just a collection of sounds. It’s a tool crafted for inspiration. It encourages experimentation, allowing you to easily create unique soundscapes ideally suited for film scores, games, trailers, as well as electronic music and ambient.\n\nThanks to its deep and cinematic sound, ARRIVAL will become an indispensable assistant for anyone seeking to add a professional and atmospheric dimension to their creations."
+        }
+      ],
+      "image": "libraries/arrival.jpg",
+      "imageAlt": "Arrival Kontakt library by Deigineor",
+      "format": "Kontakt (full version)",
+      "downloadUrl": "https://www.pianobook.co.uk/packs/arrival/",
+      "demoLinks": [
+        {
+          "label": "Announce Teaser",
+          "url": "https://youtu.be/Cs96TsvciZw"
+        },
+        {
+          "label": "SoundCloud demos",
+          "url": "https://soundcloud.com/pianobook/sets/arrival"
+        }
+      ],
+      "collaborator": "",
+      "order": 2
+    },
+    {
+      "title": "Glukofon",
+      "slug": "glukofon",
+      "tagline": "Fabulous sound of Steel Tongue Drum",
+      "description": [
+        {
+          "type": "p",
+          "text": "This is a Christmas present for my brother. He was very pleased with it, but I was even more pleased when I took it to sample."
+        },
+        {
+          "type": "p",
+          "text": "There are three different types of sounds in the groups section"
+        },
+        {
+          "type": "ol",
+          "items": [
+            "Soft stick",
+            "The microphone position is close",
+            "Finger punch"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Use the faders to set the volume level for sound combinations or press the bypass button to disable/enable the group you need"
+        }
+      ],
+      "image": "libraries/glukofon.jpg",
+      "imageAlt": "Glukofon Kontakt library by Deigineor",
+      "format": "Kontakt (full version)",
+      "downloadUrl": "https://www.pianobook.co.uk/packs/glukofon/",
+      "demoLinks": [],
+      "collaborator": "",
+      "order": 3
+    },
+    {
+      "title": "Triola Nature",
+      "slug": "triola-nature",
+      "tagline": "Triola is a vintage children's musical instrument. Made in GDR, 1970-80s This library is my collaboration with @jha1982",
+      "description": [
+        {
+          "type": "p",
+          "text": "Vintage triola – Child musical instrument. Made in GDR, 1970-80s.\n\nThis is my friend’s childhood toy, which we decided to turn into a Kontakt library.\n\nDespite the fact that it is a toy instrument, the sound is very good and pleasant."
+        },
+        {
+          "type": "p",
+          "text": "The sound of the instrument is recorded on a Shure SM58"
+        },
+        {
+          "type": "p",
+          "text": "We hope you enjoy our library"
+        }
+      ],
+      "image": "libraries/triola-nature.jpg",
+      "imageAlt": "Triola Nature Kontakt library by Deigineor",
+      "format": "Kontakt (full version)",
+      "downloadUrl": "https://www.pianobook.co.uk/packs/triola-nature/",
+      "demoLinks": [],
+      "collaborator": "@jha1982",
+      "order": 4
+    },
+    {
+      "title": "Rhythmic Kalimba",
+      "slug": "rhythmic-kalimba",
+      "tagline": "Kalimba Library with Arpeggiator for more inspiration",
+      "description": [
+        {
+          "type": "p",
+          "text": "Rhythmic Kalimba.\n\nNot so long ago I became the owner of this wonderful tool. However, one mode of C major was not enough for me, so I decided to incorporate its sound into the Kontakt library. Almost immediately, the idea arose to add an arpeggiator where you could create your own grooves. This is how the Rhythmic Kalimba library appeared, which I want to present to you"
+        },
+        {
+          "type": "p",
+          "text": "To activate the arpeggiator, press the Arp button, it is highlighted in green. In the arpeggiator table, all the functions are available to make your own groove, such as Rate, Swing, Octave and Steps. Thanks to three different velocities, the sound is fabulous and pleasant\n\nThe library also has recorded percussion and glissando sounds."
+        },
+        {
+          "type": "p",
+          "text": "Percussion samples perfectly match the general mood of the library, creating a cozy atmosphere."
+        },
+        {
+          "type": "p",
+          "text": "The library was recorded on two different microphones, a condenser microphone and a Zoom H4n stereo microphone. Thanks to the Zoom H4n recorder, the sound turned out to be wide and voluminous.\n\nAlso, don’t forget to check out the Drum Percussion folder."
+        },
+        {
+          "type": "p",
+          "text": "I hope you enjoy my library"
+        }
+      ],
+      "image": "libraries/rhythmic-kalimba.jpg",
+      "imageAlt": "Rhythmic Kalimba Kontakt library by Deigineor",
+      "format": "Kontakt (full version)",
+      "downloadUrl": "https://www.pianobook.co.uk/packs/rhythmic-kalimba/",
+      "demoLinks": [],
+      "collaborator": "",
+      "order": 5
+    },
+    {
+      "title": "Toy Ukulele",
+      "slug": "toy-ukulele",
+      "tagline": "A library of small toy ukulele sounds",
+      "description": [
+        {
+          "type": "p",
+          "text": "For your attention, this is my first small library for the Kontakt.\n\nI recently bought a cheap little ukulele that looks more like a toy than a full musical instrument. Its price is about 10 euros. Despite its price, they play a rather pleasant sound."
+        },
+        {
+          "type": "p",
+          "text": "Soft play without mediator and nylon strings."
+        },
+        {
+          "type": "p",
+          "text": "The library is recorded on two microphones. One condenser and one stereo Zoom h4n, after that the sound was mixed."
+        },
+        {
+          "type": "p",
+          "text": "I hope you enjoy my library – “Toy ukulele”"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Kontakt 6.7.1 +"
+          ]
+        }
+      ],
+      "image": "libraries/toy-ukulele.jpg",
+      "imageAlt": "Toy Ukulele Kontakt library by Deigineor",
+      "format": "Kontakt (full version)",
+      "downloadUrl": "https://www.pianobook.co.uk/packs/toy-ukulele/",
+      "demoLinks": [],
+      "collaborator": "",
+      "order": 6
+    }
+  ]
+}
