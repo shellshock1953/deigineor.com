@@ -5,6 +5,9 @@ import { useState } from 'react'
 /**
  * Click-to-load embed facade: nothing third-party is requested until the
  * visitor activates the player. YouTube loads from youtube-nocookie.com.
+ *
+ * Facades show the provided poster (e.g. album cover) or fall back to the
+ * YouTube thumbnail (maxresdefault with hqdefault fallback).
  */
 
 type EmbedProps =
@@ -14,11 +17,15 @@ type EmbedProps =
 export default function Embed(props: EmbedProps) {
   const [loaded, setLoaded] = useState(false)
   const { kind, title } = props
-  const poster = props.poster
+
+  const fallbackPoster =
+    kind === 'youtube' ? `https://i.ytimg.com/vi/${props.id}/maxresdefault.jpg` : null
+  const initialPoster = props.poster || fallbackPoster
+  const [posterSrc, setPosterSrc] = useState<string | null>(initialPoster)
 
   if (loaded) {
     return (
-      <div className="embed embed--live">
+      <div className={`embed embed--live${kind === 'spotify' ? ' embed--spotify-live' : ''}`}>
         {kind === 'youtube' ? (
           <iframe
             src={`https://www.youtube-nocookie.com/embed/${props.id}?autoplay=1&rel=0`}
@@ -44,16 +51,29 @@ export default function Embed(props: EmbedProps) {
   return (
     <button
       type="button"
-      className={`embed embed--facade${poster ? ' embed--poster' : ''}`}
+      className={`embed embed--facade${posterSrc ? ' embed--poster' : ''}${kind === 'spotify' ? ' embed--spotify' : ''}`}
       onClick={() => setLoaded(true)}
       aria-label={`Play ${title} on ${kind === 'youtube' ? 'YouTube' : 'Spotify'}`}
     >
-      {poster && (
+      {posterSrc && (
         <span
           className="embed__poster"
           aria-hidden="true"
-          style={{ backgroundImage: `url(${poster})` }}
-        />
+          style={{ backgroundImage: `url(${posterSrc})` }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={posterSrc}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            onError={() => {
+              if (kind === 'youtube' && posterSrc.includes('maxresdefault')) {
+                setPosterSrc(`https://i.ytimg.com/vi/${props.id}/hqdefault.jpg`)
+              }
+            }}
+          />
+        </span>
       )}
       <span className="embed__play" aria-hidden="true">
         <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
@@ -65,7 +85,9 @@ export default function Embed(props: EmbedProps) {
           {kind === 'youtube' ? 'YT · LOAD PLAYER' : 'SPOTIFY · LOAD PLAYER'}
         </span>
         <span className="embed__title">{title}</span>
-        <span className="embed__hint">Click to load — nothing loads from {kind === 'youtube' ? 'YouTube' : 'Spotify'} before that</span>
+        <span className="embed__hint">
+          Click to load — nothing loads from {kind === 'youtube' ? 'YouTube' : 'Spotify'} before that
+        </span>
       </span>
     </button>
   )

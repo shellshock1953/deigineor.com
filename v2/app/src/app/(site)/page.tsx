@@ -1,10 +1,10 @@
 import Link from 'next/link'
 
-import { CoverImage, LibraryCard } from '../../components/cards'
+import { CoverImage, LibraryCard, ReleaseCard } from '../../components/cards'
 import Embed from '../../components/Embed'
 import { Wordmark } from '../../components/Logo'
 import Oscilloscope from '../../components/Oscilloscope'
-import { formatDate, KIND_LABELS } from '../../lib/format'
+import { formatDate, KIND_LABELS, releaseIndex } from '../../lib/format'
 import { getLibraries, getReleases, getSite, getVideos } from '../../lib/data'
 import { excerpt } from '../../lib/rich-text'
 
@@ -22,6 +22,8 @@ export default async function Home() {
   ])
 
   const featured = releases.find((r) => r.featured) ?? releases[0]
+  const latest = releases.slice(0, 6)
+  const slugs = releases.map((r) => r.slug)
   const reel = videos.find((v) => v.category === 'wwise') ?? videos[0]
   const strip = libraries.slice(0, 3)
   const aboutExcerpt = excerpt(site.about, 240)
@@ -103,6 +105,15 @@ export default async function Home() {
                 </div>
               </div>
             </div>
+            {latest.length > 0 && (
+              <div className="releases-grid-wrap" style={{ marginTop: 32 }}>
+                <div className="grid">
+                  {latest.map((r) => (
+                    <ReleaseCard key={r.id} release={r} relNumber={releaseIndex(r.slug, slugs)} />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </section>
       )}

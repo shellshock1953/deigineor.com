@@ -650,6 +650,14 @@ button {
   -webkit-mask-image: linear-gradient(to top, transparent 0%, rgba(0, 0, 0, 0.9) 55%);
 }
 
+.embed__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
 .embed__play {
   position: relative;
   display: grid;
