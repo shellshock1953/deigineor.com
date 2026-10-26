@@ -22,7 +22,8 @@ spec:
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
+            # Next ISR writes rendered pages under /app/.next/server; shortcut: writable root, upgrade to a custom cacheHandler if hardening matters
+            readOnlyRootFilesystem: false
             capabilities:
               drop:
                 - ALL
