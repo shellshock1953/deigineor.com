@@ -1,0 +1,89 @@
+:root {
+  --bg: #07070c;
+  --surface: #12121c;
+  --line: #262638;
+  --text: #ecebf5;
+  --muted: #a3a2b8;
+  --cyan: #2de2e6;
+  --magenta: #ff3ec9;
+  --font: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 1rem/1.6 var(--font);
+  overflow-x: hidden;
+}
+a { color: var(--cyan); text-underline-offset: 3px; }
+a:hover { color: var(--magenta); }
+:focus-visible { outline: 3px solid var(--magenta); outline-offset: 3px; border-radius: 2px; }
+.skip { position: absolute; left: -999px; top: 0; background: var(--cyan); color: #000; padding: .5rem 1rem; z-index: 10; }
+.skip:focus { left: 0; }
+
+.top {
+  display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; align-items: center; justify-content: space-between;
+  padding: 1rem 16px; max-width: 72rem; margin: 0 auto;
+}
+.brand { font-weight: 700; letter-spacing: .2em; color: var(--text); text-decoration: none; }
+.top nav { display: flex; gap: 1.25rem; }
+.top nav a { color: var(--muted); text-decoration: none; padding: .25rem 0; }
+.top nav a:hover { color: var(--cyan); }
+
+main { max-width: 72rem; margin: 0 auto; padding: 0 16px 3rem; }
+section { padding-top: 3rem; scroll-margin-top: 1rem; }
+h2 {
+  font-size: .9rem; letter-spacing: .3em; text-transform: uppercase; color: var(--cyan);
+  margin: 0 0 1.5rem; display: flex; align-items: center; gap: 1rem;
+}
+h2::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--line), transparent); }
+
+.hero {
+  padding: 5rem 0 3rem;
+  background:
+    radial-gradient(60% 80% at 15% 0%, rgba(255, 62, 201, .18), transparent 70%),
+    radial-gradient(50% 70% at 90% 20%, rgba(45, 226, 230, .14), transparent 70%);
+}
+.hero h1 {
+  margin: 0; font-size: clamp(2.4rem, 13vw, 7rem); line-height: 1; font-weight: 700; letter-spacing: .06em;
+  background: linear-gradient(90deg, var(--cyan), var(--magenta));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  background-size: 200% 100%; animation: shift 8s ease-in-out infinite alternate;
+  overflow-wrap: anywhere;
+}
+.tag { margin: 1rem 0 0; font-size: 1.1rem; letter-spacing: .25em; text-transform: uppercase; }
+.sub { color: var(--muted); max-width: 36rem; }
+.btn {
+  display: inline-block; padding: .75rem 1.75rem; border: 2px solid var(--cyan); color: var(--cyan);
+  text-decoration: none; text-transform: uppercase; letter-spacing: .15em; font-weight: 700;
+}
+.btn:hover { background: var(--cyan); color: #000; }
+@keyframes shift { to { background-position: 100% 0; } }
+
+.grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); }
+.card { background: var(--surface); border: 1px solid var(--line); transition: transform .2s, border-color .2s; }
+.card:hover, .card:focus-within { transform: translateY(-4px); border-color: var(--magenta); }
+.card img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; }
+.meta { padding: .9rem 1rem 1rem; }
+.meta h3 { margin: 0; font-size: 1.15rem; }
+.meta time { color: var(--muted); font-size: .85rem; }
+.links { display: flex; flex-wrap: wrap; gap: .25rem 1rem; margin: .6rem 0 0; font-size: .9rem; }
+.links a { padding: .2rem 0; }
+
+.prose { max-width: 40rem; }
+.prose h3 { font-size: 1rem; margin: 1.5rem 0 .75rem; color: var(--muted); font-weight: 500; }
+.chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+.chips a { display: inline-block; padding: .45rem 1rem; border: 1px solid var(--line); border-radius: 2rem; text-decoration: none; }
+.chips a:hover { border-color: var(--magenta); }
+
+footer { text-align: center; color: var(--muted); padding: 2rem 16px; border-top: 1px solid var(--line); }
+.nf { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 2rem 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hero h1 { animation: none; }
+  .card { transition: none; }
+  .card:hover, .card:focus-within { transform: none; }
+}
