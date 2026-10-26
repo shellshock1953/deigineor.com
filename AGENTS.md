@@ -20,6 +20,18 @@ Portfolio of the music project "Deigineor" (owner: shellshock1953). Two sites li
 3. GitHub Actions builds the image, pushes `ghcr.io/shellshock1953/deigineor.com/app:sha-<shortsha>`, updates `newTag` in `v2/deploy/kustomization.yaml`, and commits back to `main`.
 4. ArgoCD syncs the deployment to libra. Check status with `just status` or https://v2.deigineor.com.
 
+## Tasks
+
+Tasks live in GitHub Issues of `shellshock1953/deigineor.com`, tracked on the project board
+**https://github.com/users/shellshock1953/projects/2** (Status: Todo / In Progress / Done). History imported from Trello
+carries `trello:<list>` labels.
+
+- New task: `just task-new "<title>" "<body>"` creates the issue and adds it to the board. Never keep task lists in markdown.
+- The board is a user project: the GitHub App token `gh` uses by default cannot see it. Prefix board commands with
+  `AGENT_GH_APP=` so the gh wrapper uses the owner PAT (scope `project`), e.g. `AGENT_GH_APP= gh project item-list 2 --owner shellshock1953`.
+- Project workflows auto-add new issues, move closed items to Done and linked PRs to In Progress, so autopilot
+  (issues labelled `auto:*`) shows up on the board without extra steps. Reference the issue in PRs (`Fixes #N`).
+
 ## Rules
 
 - Only real content (releases, links, text from the legacy site or the owner). Invent nothing.

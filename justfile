@@ -103,3 +103,12 @@ for page in glob.glob("v2/site/*.html"):
     P().feed(open(page).read())
 sys.exit("missing: " + ", ".join(bad)) if bad else print("ok")
 '''
+
+# Create a task (issue) and put it on the project board (users/shellshock1953/projects/2)
+task-new title body="":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    url=$(gh issue create -R shellshock1953/deigineor.com -t "{{title}}" -b "{{body}}")
+    # User projects are invisible to the GitHub App token; AGENT_GH_APP= makes the gh wrapper use the owner PAT.
+    AGENT_GH_APP= gh project item-add 2 --owner shellshock1953 --url "$url" >/dev/null
+    echo "$url"
