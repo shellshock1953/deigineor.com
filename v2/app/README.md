@@ -68,6 +68,6 @@ so the public site does not expose Payload's "create first user" prompt to stran
 
 To access the admin panel:
 1. Print the generated admin password: `just admin-password`
-2. Log in at `https://v2.deigineor.com/admin` as `admin@deigineor.com`
+2. Log in at `https://deigineor.com/admin` as `admin@deigineor.com`
 3. Create the artist's own user account with administrative access
 4. Optionally change the `admin@deigineor.com` email or password

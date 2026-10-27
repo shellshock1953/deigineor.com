@@ -5,28 +5,16 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
     nginx.ingress.kubernetes.io/proxy-body-size: 50m
+    # www.deigineor.com -> deigineor.com; www is in the cert below.
+    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
 spec:
   ingressClassName: nginx
   tls:
-    - hosts:
-        - v2.deigineor.com
-      secretName: v2-deigineor-com-tls
-    # Separate secret: the apex cert cannot issue until DNS moves and must not affect the v2 cert.
     - hosts:
         - deigineor.com
         - www.deigineor.com
       secretName: deigineor-com-tls
   rules:
-    - host: v2.deigineor.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: deigineor
-                port:
-                  name: http
     - host: deigineor.com
       http:
         paths:
@@ -37,7 +25,23 @@ spec:
                 name: deigineor
                 port:
                   name: http
-    - host: www.deigineor.com
+---
+# Old v2 address: keep it alive with its own cert and send everything to the apex.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: deigineor-v2-redirect
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/permanent-redirect: https://deigineor.com$request_uri
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - v2.deigineor.com
+      secretName: v2-deigineor-com-tls
+  rules:
+    - host: v2.deigineor.com
       http:
         paths:
           - path: /

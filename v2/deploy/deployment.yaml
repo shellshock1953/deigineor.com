@@ -56,7 +56,7 @@ spec:
             - name: MEDIA_DIR
               value: /data/media
             - name: NEXT_PUBLIC_SITE_URL
-              value: https://v2.deigineor.com
+              value: https://deigineor.com
             - name: SENTRY_DSN
               valueFrom:
                 secretKeyRef:
