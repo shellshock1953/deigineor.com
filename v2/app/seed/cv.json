@@ -1,0 +1,74 @@
+{
+  "photo": "cv/serhii-sukhomlinov.jpg",
+  "photoAlt": "Serhii Sukhomlinov wearing headphones",
+  "phone": "+380661744324",
+  "email": "deigineor.official@gmail.com",
+  "website": "https://deigineor.com",
+  "links": [
+    { "platform": "Portfolio", "url": "https://deigineor.com" },
+    { "platform": "YouTube", "url": "https://www.youtube.com/channel/UC47vqawmWVk7IHtbcYqYBNw" },
+    { "platform": "Facebook", "url": "https://www.facebook.com/DEIGINEOR/" },
+    { "platform": "Instagram", "url": "https://www.instagram.com/deigineor/" },
+    { "platform": "Spotify", "url": "https://open.spotify.com/artist/0nK8PxMNI2dpZ3SSPchHRB" },
+    { "platform": "Telegram", "url": "https://t.me/deigineor_official" },
+    { "platform": "TikTok", "url": "https://www.tiktok.com/@deigineor_official" }
+  ],
+  "en": {
+    "name": "Sukhomlinov Serhii",
+    "location": "Kosiv, UA",
+    "about": "I have been playing music for over 11 years. I have mastered the principles of sound theory and sound design, so I know how to create the right mood in the listener by immersing them in the right level of involvement. I am always looking for non-typical approaches to writing music, creating sound, recording and processing it.\n\nIn search of new inspiration, I often travel to the mountains, absorb all the energy there and translate it into the intended composition.\n\nI want to learn new methods of recording and processing audio, so I can easily master new programs, DAW, Vst, etc.",
+    "roles": ["Music Composer", "Sound Producer", "Mix Engineer", "Sound Designer", "Music Arrangement"],
+    "education": [
+      { "title": "Mid School", "detail": "9 years" },
+      { "title": "Music School Piano", "detail": "9 years" },
+      { "title": "Lviv College of Culture and Arts", "detail": "4 years" },
+      { "title": "Warsaw University of Sound Engineering", "detail": "3 years" }
+    ],
+    "skills": [
+      { "label": "Instruments", "items": "Piano, Electric Guitar, Bass Guitar, Ukulele, Percussion Drums" },
+      { "label": "Hardware", "items": "Ableton Push 2, Yamaha P-45, Arturia Microfreak, Akai Mpd 218, Mackie Fx 10 Mixer, Focusrite Scarlett 2i2, Electric Guitar Jackson JS22-7, Microphone CM-25" },
+      { "label": "Software", "items": "Bitwig Studio, Ableton, Fl-Studio, Reaper, Audition" }
+    ],
+    "experience": [
+      "Game soundtrack (Ukrainian Visual Novel Jam)",
+      "Recording and compilation of cover tracks",
+      "Mixing, processing and cleaning noises",
+      "Adjustment of concert equipment before the performance of rock group, Shapik: The Quest",
+      "Recording and processing of dubbing actors",
+      "Recording and processing of radio announcers",
+      "Creating music for advertising headphones",
+      "Creating musical composition for a mobile game",
+      "Music design and sound design of the website",
+      "Composing and arranging own tracks on digital platforms"
+    ]
+  },
+  "uk": {
+    "name": "Сухомлинов Сергій",
+    "location": "Косів, Україна",
+    "about": "Я граю музику вже понад 11 років. Я опанував принципи теорії звуку та саунд-дизайну, тому знаю, як створити потрібний настрій у слухача, занурюючи його на потрібний рівень залученості. Я завжди шукаю нетипові підходи до написання музики, створення звуку, його запису та обробки.\n\nУ пошуках нового натхнення я часто їжджу в гори, вбираю там усю енергію та переношу її в задуману композицію.\n\nЯ хочу вивчати нові методи запису та обробки звуку, щоб легко опановувати нові програми, DAW, VST тощо.",
+    "roles": ["Музичний композитор", "Саунд-продюсер", "Інженер зі зведення", "Саунд-дизайнер", "Аранжування музики"],
+    "education": [
+      { "title": "Середня школа", "detail": "9 років" },
+      { "title": "Музична школа, фортепіано", "detail": "9 років" },
+      { "title": "Львівський коледж культури і мистецтв", "detail": "4 роки" },
+      { "title": "Варшавський університет звукової інженерії", "detail": "3 роки" }
+    ],
+    "skills": [
+      { "label": "Інструменти", "items": "Фортепіано, електрогітара, бас-гітара, укулеле, перкусійні ударні" },
+      { "label": "Обладнання", "items": "Ableton Push 2, Yamaha P-45, Arturia Microfreak, Akai Mpd 218, мікшер Mackie Fx 10, Focusrite Scarlett 2i2, електрогітара Jackson JS22-7, мікрофон CM-25" },
+      { "label": "Програми", "items": "Bitwig Studio, Ableton, Fl-Studio, Reaper, Audition" }
+    ],
+    "experience": [
+      "Саундтрек до гри (Ukrainian Visual Novel Jam)",
+      "Запис і компіляція кавер-треків",
+      "Зведення, обробка та очищення від шумів",
+      "Налаштування концертного обладнання перед виступом рок-гурту Shapik: The Quest",
+      "Запис і обробка голосів акторів дубляжу",
+      "Запис і обробка голосів радіоведучих",
+      "Створення музики для реклами навушників",
+      "Створення музичної композиції для мобільної гри",
+      "Музичний дизайн і саунд-дизайн вебсайту",
+      "Створення й аранжування власних треків для цифрових платформ"
+    ]
+  }
+}

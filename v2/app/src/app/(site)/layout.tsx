@@ -7,8 +7,9 @@ import Footer from '../../components/Footer'
 import Header from '../../components/Header'
 import './site.css'
 
+// Cyrillic is for the Ukrainian CV page; Space Grotesk has no Cyrillic, so body text falls back to the system sans.
 const display = Unbounded({
-  subsets: ['latin'],
+  subsets: ['latin', 'cyrillic'],
   variable: '--font-unbounded',
   display: 'swap',
 })
@@ -20,7 +21,7 @@ const body = Space_Grotesk({
 })
 
 const mono = JetBrains_Mono({
-  subsets: ['latin'],
+  subsets: ['latin', 'cyrillic'],
   variable: '--font-jetbrains-mono',
   display: 'swap',
 })

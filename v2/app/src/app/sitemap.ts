@@ -13,6 +13,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base()}/game-audio`, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base()}/instruments`, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base()}/about`, changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${base()}/cv`, changeFrequency: 'monthly', priority: 0.5 },
   ]
 
   // CI builds the image without a database; the base routes are enough there.

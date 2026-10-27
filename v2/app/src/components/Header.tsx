@@ -6,6 +6,7 @@ const NAV = [
   { href: '/game-audio', label: 'Game audio' },
   { href: '/instruments', label: 'Instruments' },
   { href: '/about', label: 'About' },
+  { href: '/cv', label: 'CV' },
 ]
 
 export default function Header() {
