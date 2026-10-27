@@ -5,9 +5,10 @@ Portfolio of the music project "Deigineor" (owner: shellshock1953). Two sites li
 ## Sites
 
 - **Legacy (Hugo + Blonde theme)**: everything outside `v2/` (`content/`, `static/`, `layouts/`, `themes/`, `config.toml`).
-  Deployed to GitHub Pages by `.github/workflows/hugo.yml`, serves https://deigineor.com. Frozen: do not touch unless the owner asks.
-- **v2 (new)**: Next.js + Payload CMS 3 app in `v2/app/`, live at https://v2.deigineor.com.
-  Admin interface at https://v2.deigineor.com/admin. Database is CloudNativePG (`deigineor-postgres`),
+  Retired 2026-10-27: no longer deployed (GitHub Pages off, last state tagged `legacy-hugo-final`). Kept as source/archive.
+  Its old URLs (`/post/<slug>/`, `/archives/`, `/tags/`, ...) are redirected by `v2/app/next.config.ts`. Frozen: do not touch unless the owner asks.
+- **v2 (new)**: Next.js + Payload CMS 3 app in `v2/app/`, live at https://deigineor.com
+  (`www.` and the old `v2.deigineor.com` 301 to it). Admin interface at https://deigineor.com/admin. Database is CloudNativePG (`deigineor-postgres`),
   and uploaded media is stored on a PersistentVolumeClaim (`deigineor-media`) at `/data/media`.
 - **Deploy manifests**: `v2/deploy/` (kustomize), synced by the ArgoCD app `deigineor`, defined in
   `shellshock1953/UES` at `services/helm/argocd-apps/libra.yaml`. Namespace `deigineor`.
@@ -18,7 +19,7 @@ Portfolio of the music project "Deigineor" (owner: shellshock1953). Two sites li
 1. Branch, change, `just check`.
 2. PR, merge when CI is green.
 3. GitHub Actions builds the image, pushes `ghcr.io/shellshock1953/deigineor.com/app:sha-<shortsha>`, updates `newTag` in `v2/deploy/kustomization.yaml`, and commits back to `main`.
-4. ArgoCD syncs the deployment to libra. Check status with `just status` or https://v2.deigineor.com.
+4. ArgoCD syncs the deployment to libra. Check status with `just status` or https://deigineor.com.
 
 ## Tasks
 
@@ -42,5 +43,5 @@ carries `trello:<list>` labels.
 
 - `just check`: render `v2/deploy`, verify local `href`/`src` in `v2/site/*.html` exist, parse the HTML.
 - `just serve`: local preview at http://localhost:8000.
-- `just status`: HTTP status of v2 and pods on libra.
+- `just status`: HTTP status of the site and pods on libra.
 - `just dashboard-sync`: sync Grafana dashboard to monitoring namespace on ara.

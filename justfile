@@ -10,9 +10,9 @@ check:
 serve:
     python3 -m http.server -d v2/site 8000
 
-# Show HTTP status of https://v2.deigineor.com and pods on libra
+# Show HTTP status of https://deigineor.com and pods on libra
 status:
-    curl -sI https://v2.deigineor.com | head -1
+    curl -sI https://deigineor.com | head -1
     KUBECONFIG=~/.kube/dnull/libra kubectl -n deigineor get pods
 
 # Print the initial admin password from the libra cluster
@@ -42,13 +42,13 @@ error-check:
     k="kubectl --kubeconfig {{kube_libra}} -n deigineor"
     email=$($k get deploy deigineor -o jsonpath='{.spec.template.spec.containers[?(@.name=="web")].env[?(@.name=="ADMIN_EMAIL")].value}')
     password=$($k get secret deigineor-admin -o jsonpath='{.data.ADMIN_PASSWORD}' | base64 -d)
-    tok=$(curl -s -X POST "https://v2.deigineor.com/api/users/login" \
+    tok=$(curl -s -X POST "https://deigineor.com/api/users/login" \
       -H "content-type: application/json" \
       -d "{\"email\":\"$email\",\"password\":\"$password\"}" \
       | python3 -c "import json,sys; print(json.load(sys.stdin).get('token',''))")
     if [ -z "$tok" ]; then echo "  admin login failed"; exit 1; fi
     curl -s -o /dev/null -w "  selftest: %{http_code} (500 = threw as intended)\n" \
-      -H "Authorization: JWT $tok" "https://v2.deigineor.com/api/selftest?t=$(date -u +%H%M%S)"
+      -H "Authorization: JWT $tok" "https://deigineor.com/api/selftest?t=$(date -u +%H%M%S)"
     echo "  waiting for GlitchTip to ingest..."
     sleep 20
     just issues

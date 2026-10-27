@@ -39,7 +39,7 @@ jobs:
         with:
           context: v2/app
           file: v2/app/Dockerfile
-          build-args: NEXT_PUBLIC_SITE_URL=https://v2.deigineor.com
+          build-args: NEXT_PUBLIC_SITE_URL=https://deigineor.com
           platforms: linux/amd64
           push: ${{ github.event_name != 'pull_request' }}
           tags: |

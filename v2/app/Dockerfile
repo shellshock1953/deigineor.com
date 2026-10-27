@@ -9,7 +9,7 @@ RUN pnpm install --frozen-lockfile
 
 FROM base AS builder
 # NEXT_PUBLIC_* is inlined at build time, so the public URL is a build argument.
-ARG NEXT_PUBLIC_SITE_URL=https://v2.deigineor.com
+ARG NEXT_PUBLIC_SITE_URL=https://deigineor.com
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
