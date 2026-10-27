@@ -3,6 +3,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import type { Payload } from 'payload'
 
+import cv from '../../seed/cv.json'
 import data from '../../seed/data.json'
 
 const text = (t: string): Record<string, unknown> => ({
@@ -44,6 +45,35 @@ const lexical = (blocks: Block[] | string[]) => ({
   ),
 })
 
+function resolveImgDir(options: SeedOptions) {
+  const defaultSeedDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../seed')
+  const imgDir = options.imgDir ?? path.join(defaultSeedDir, 'img')
+  return !fs.existsSync(imgDir) && fs.existsSync(path.join(defaultSeedDir, 'img'))
+    ? path.join(defaultSeedDir, 'img')
+    : imgDir
+}
+
+// Media is keyed by file name: re-seeding reuses the existing upload.
+async function seedMedia(payload: Payload, imgDir: string, file: string, alt: string) {
+  const filename = path.basename(file)
+  const { docs } = await payload.find({
+    collection: 'media',
+    where: { filename: { equals: filename } },
+    limit: 1,
+    depth: 0,
+    overrideAccess: true,
+  })
+  if (docs[0]) return docs[0].id
+  const filePath = path.join(/* turbopackIgnore: true */ imgDir, file)
+  const created = await payload.create({
+    collection: 'media',
+    data: { alt },
+    filePath,
+    overrideAccess: true,
+  })
+  return created.id
+}
+
 export interface SeedOptions {
   imgDir?: string
 }
@@ -59,12 +89,7 @@ export interface SeedResult {
  * Idempotent (upserts documents by slug, reuses media by filename).
  */
 export async function seed(payload: Payload, options: SeedOptions = {}): Promise<SeedResult> {
-  const defaultSeedDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../seed')
-  let imgDir = options.imgDir ?? path.join(defaultSeedDir, 'img')
-
-  if (!fs.existsSync(imgDir) && fs.existsSync(path.join(defaultSeedDir, 'img'))) {
-    imgDir = path.join(defaultSeedDir, 'img')
-  }
+  const imgDir = resolveImgDir(options)
 
   async function upsert(
     collection: 'releases' | 'videos' | 'libraries',
@@ -84,26 +109,7 @@ export async function seed(payload: Payload, options: SeedOptions = {}): Promise
     console.log(`${docs[0] ? 'updated' : 'created'} ${collection}/${doc.slug}`)
   }
 
-  // Media is keyed by file name: re-seeding reuses the existing upload.
-  async function media(file: string, alt: string) {
-    const filename = path.basename(file)
-    const { docs } = await payload.find({
-      collection: 'media',
-      where: { filename: { equals: filename } },
-      limit: 1,
-      depth: 0,
-      overrideAccess: true,
-    })
-    if (docs[0]) return docs[0].id
-    const filePath = path.join(/* turbopackIgnore: true */ imgDir, file)
-    const created = await payload.create({
-      collection: 'media',
-      data: { alt },
-      filePath,
-      overrideAccess: true,
-    })
-    return created.id
-  }
+  const media = (file: string, alt: string) => seedMedia(payload, imgDir, file, alt)
 
   let releasesCount = 0
   for (const r of data.releases) {
@@ -148,8 +154,10 @@ export async function seed(payload: Payload, options: SeedOptions = {}): Promise
   })
   console.log('updated global/site')
 
+  await seedCv(payload, options)
+
   console.log(
-    `Seeding complete: ${releasesCount} releases, ${librariesCount} libraries, ${videosCount} videos, site global`,
+    `Seeding complete: ${releasesCount} releases, ${librariesCount} libraries, ${videosCount} videos, site and cv globals`,
   )
 
   return {
@@ -157,4 +165,50 @@ export async function seed(payload: Payload, options: SeedOptions = {}): Promise
     videos: videosCount,
     libraries: librariesCount,
   }
+}
+
+type CvText = typeof cv.en
+
+// Array rows are shared between locales, only their text differs.
+const cvLocaleData = (t: CvText) => ({
+  name: t.name,
+  location: t.location,
+  about: t.about,
+  roles: t.roles.map((text) => ({ text })),
+  education: t.education,
+  skills: t.skills,
+  experience: t.experience.map((text) => ({ text })),
+})
+
+/** Seeds the `cv` global from seed/cv.json in both locales (overwrites it; boot seeding only runs when it is empty). */
+export async function seedCv(payload: Payload, options: SeedOptions = {}) {
+  const photo = await seedMedia(payload, resolveImgDir(options), cv.photo, cv.photoAlt)
+  const { phone, email, website, links } = cv
+  await payload.updateGlobal({
+    slug: 'cv',
+    locale: 'en',
+    data: { phone, email, website, links, photo, ...cvLocaleData(cv.en) },
+    overrideAccess: true,
+  })
+
+  // The uk update must reuse the row ids created by the en one, or it would replace the rows.
+  const base = await payload.findGlobal({ slug: 'cv', locale: 'en', depth: 0, overrideAccess: true })
+  const uk = cvLocaleData(cv.uk)
+  const withIds = <T extends object>(rows: T[], ids?: { id?: string | null }[]) =>
+    rows.map((row, i) => ({ ...row, id: ids?.[i]?.id ?? undefined }))
+  await payload.updateGlobal({
+    slug: 'cv',
+    locale: 'uk',
+    data: {
+      name: uk.name,
+      location: uk.location,
+      about: uk.about,
+      roles: withIds(uk.roles, base.roles ?? []),
+      education: withIds(uk.education, base.education ?? []),
+      skills: withIds(uk.skills, base.skills ?? []),
+      experience: withIds(uk.experience, base.experience ?? []),
+    },
+    overrideAccess: true,
+  })
+  console.log('updated global/cv (en, uk)')
 }

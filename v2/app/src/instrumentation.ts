@@ -72,6 +72,14 @@ export async function register() {
           `Database already seeded (${releases.totalDocs} releases found). Skipping content seed.`,
         )
       }
+
+      // The CV global was added after the first seed: fill it once while empty (artist edits win after that).
+      const cv = await payload.findGlobal({ slug: 'cv', depth: 0, overrideAccess: true })
+      if (!cv.name) {
+        console.log('CV global is empty. Seeding it...')
+        const { seedCv } = await import('./seed/run')
+        await seedCv(payload, { imgDir: process.env.SEED_IMG_DIR || '/app/seed/img' })
+      }
     } catch (err) {
       console.error('Failed to seed initial content:', err)
       if (process.env.SENTRY_DSN) {

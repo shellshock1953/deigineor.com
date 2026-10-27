@@ -92,14 +92,16 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: null;
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'uk') | ('en' | 'uk')[];
   globals: {
     site: Site;
+    cv: Cv;
   };
   globalsSelect: {
     site: SiteSelect<false> | SiteSelect<true>;
+    cv: CvSelect<false> | CvSelect<true>;
   };
-  locale: null;
+  locale: 'en' | 'uk';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -710,6 +712,58 @@ export interface Site {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cv".
+ */
+export interface Cv {
+  id: number;
+  name?: string | null;
+  location?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  website?: string | null;
+  photo?: (number | null) | Media;
+  /**
+   * Blank line between paragraphs.
+   */
+  about?: string | null;
+  roles?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  education?:
+    | {
+        title: string;
+        detail?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  skills?:
+    | {
+        label: string;
+        items: string;
+        id?: string | null;
+      }[]
+    | null;
+  experience?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  links?:
+    | {
+        platform: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site_select".
  */
 export interface SiteSelect<T extends boolean = true> {
@@ -731,6 +785,55 @@ export interface SiteSelect<T extends boolean = true> {
         id?: T;
       };
   contactEmail?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cv_select".
+ */
+export interface CvSelect<T extends boolean = true> {
+  name?: T;
+  location?: T;
+  phone?: T;
+  email?: T;
+  website?: T;
+  photo?: T;
+  about?: T;
+  roles?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  education?:
+    | T
+    | {
+        title?: T;
+        detail?: T;
+        id?: T;
+      };
+  skills?:
+    | T
+    | {
+        label?: T;
+        items?: T;
+        id?: T;
+      };
+  experience?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  links?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

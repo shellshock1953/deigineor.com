@@ -2,7 +2,7 @@
 
 Next.js 16 + Payload CMS 3 (admin at `/admin`) + Postgres. Node 22, pnpm.
 
-- Collections: `releases`, `videos`, `libraries` (Instruments & Plugins), `media`, `users`; global `site`.
+- Collections: `releases`, `videos`, `libraries` (Instruments & Plugins), `media`, `users`; globals `site` and `cv`.
 - Public site: placeholder route group `src/app/(site)`; admin and API under `src/app/(payload)`.
 - `GET /healthz` liveness (no DB), `GET /readyz` readiness (checks DB).
 - Selling plugins: a `libraries` entry with `pricing = paid` carries `price`, `currency` and an external `buyUrl`
@@ -20,6 +20,12 @@ pnpm dev                    # http://localhost:3000, admin: /admin (first visit 
 ```
 
 From the repo root: `just app-dev`, `just app-seed`, `just app-check`, `just app-build`.
+
+## CV
+
+Global `cv` (admin: CV) holds the text in two locales (`en`, `uk`, the only localized fields in the app).
+Page `/cv` and PDF `/cv.pdf` (rendered with `@react-pdf/renderer`, fonts in `public/fonts`) take `?lang=uk`.
+Seed: `seed/cv.json`; it is loaded on first boot while the global is empty (`src/instrumentation.ts`) or by `pnpm seed`.
 
 ## Environment
 
