@@ -11,8 +11,33 @@ spec:
     - hosts:
         - v2.deigineor.com
       secretName: v2-deigineor-com-tls
+    # Separate secret: the apex cert cannot issue until DNS moves and must not affect the v2 cert.
+    - hosts:
+        - deigineor.com
+        - www.deigineor.com
+      secretName: deigineor-com-tls
   rules:
     - host: v2.deigineor.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: deigineor
+                port:
+                  name: http
+    - host: deigineor.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: deigineor
+                port:
+                  name: http
+    - host: www.deigineor.com
       http:
         paths:
           - path: /
