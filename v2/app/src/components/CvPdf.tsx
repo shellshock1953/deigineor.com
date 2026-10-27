@@ -68,7 +68,7 @@ function photoSrc(cv: Cv) {
   if (!photo || typeof photo === 'number' || !photo.filename) return null
   // react-pdf embeds JPEG and PNG only.
   if (photo.mimeType !== 'image/jpeg' && photo.mimeType !== 'image/png') return null
-  const file = path.resolve(/* turbopackIgnore: true */ process.env.MEDIA_DIR || './media', photo.filename)
+  const file = path.resolve(/* turbopackIgnore: true */ process.env.MEDIA_DIR || './media', path.basename(photo.filename))
   try {
     return { data: fs.readFileSync(file), format: photo.mimeType === 'image/png' ? ('png' as const) : ('jpg' as const) }
   } catch {
