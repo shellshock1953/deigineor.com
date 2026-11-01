@@ -5,6 +5,7 @@ import type { ReactNode } from 'react'
 
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
+import NavClick from '../../components/NavClick'
 import './site.css'
 
 // Cyrillic is for the Ukrainian CV page; Space Grotesk has no Cyrillic, so body text falls back to the system sans.
@@ -72,6 +73,7 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
         <a className="skip-link" href="#main">
           Skip to content
         </a>
+        <NavClick />
         <Header />
         <main id="main">{children}</main>
         <Footer />
