@@ -66,8 +66,8 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
             // link_out {href} for every external link (streaming, Pianobook, stores), plus data-track buttons
             trackOutgoingLinks={true}
             trackAttributes={true}
-            apiUrl="https://openpanel.libra.dnull.systems/api"
-            scriptUrl="https://openpanel.libra.dnull.systems/op1.js"
+            apiUrl="https://openpanel.dnull.systems/api"
+            scriptUrl="https://openpanel.dnull.systems/op1.js"
           />
         )}
         <a className="skip-link" href="#main">
