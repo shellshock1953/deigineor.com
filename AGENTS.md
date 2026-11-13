@@ -8,7 +8,7 @@ Portfolio of the music project "Deigineor" (owner: shellshock1953). Two sites li
   Retired 2026-10-27: no longer deployed (GitHub Pages off, last state tagged `legacy-hugo-final`). Kept as source/archive.
   Its old URLs (`/post/<slug>/`, `/archives/`, `/tags/`, ...) are redirected by `v2/app/next.config.ts`. Frozen: do not touch unless the owner asks.
 - **v2 (new)**: Next.js + Payload CMS 3 app in `v2/app/`, live at https://deigineor.com
-  (`www.` and the old `v2.deigineor.com` 301 to it). Admin interface at https://deigineor.com/admin. Database is CloudNativePG (`deigineor-postgres`),
+  (`www.` 301s to it; the old `v2.deigineor.com` was retired 2026-11-13). Admin interface at https://deigineor.com/admin. Database is CloudNativePG (`deigineor-postgres`),
   and uploaded media is stored on a PersistentVolumeClaim (`deigineor-media`) at `/data/media`.
 - **Deploy manifests**: `v2/deploy/` (kustomize), synced by the ArgoCD app `deigineor`, defined in
   `shellshock1953/UES` at `services/helm/argocd-apps/libra.yaml`. Namespace `deigineor`.

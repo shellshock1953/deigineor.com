@@ -25,29 +25,3 @@ spec:
                 name: deigineor
                 port:
                   name: http
----
-# Old v2 address: keep it alive with its own cert and send everything to the apex.
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: deigineor-v2-redirect
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
-    nginx.ingress.kubernetes.io/permanent-redirect: https://deigineor.com$request_uri
-spec:
-  ingressClassName: nginx
-  tls:
-    - hosts:
-        - v2.deigineor.com
-      secretName: v2-deigineor-com-tls
-  rules:
-    - host: v2.deigineor.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: deigineor
-                port:
-                  name: http
