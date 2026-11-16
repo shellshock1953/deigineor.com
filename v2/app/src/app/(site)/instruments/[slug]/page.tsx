@@ -5,21 +5,12 @@ import { notFound } from 'next/navigation'
 import PaddleBuyButton from '../../../../components/PaddleBuyButton'
 import { CoverImage, coverUrl } from '../../../../components/cards'
 import { priceLabel } from '../../../../lib/format'
-import { getLibraries, getLibraryBySlug } from '../../../../lib/data'
+import { getLibraryBySlug } from '../../../../lib/data'
 import { getPaddleConfig } from '../../../../lib/paddle'
 import { excerpt } from '../../../../lib/rich-text'
 
-export const revalidate = 60
-
-/** See `/music/[slug]`: params are only listed when the DB is reachable at build. */
-export async function generateStaticParams() {
-  try {
-    const libraries = await getLibraries()
-    return libraries.map((l) => ({ slug: l.slug }))
-  } catch {
-    return []
-  }
-}
+// Dynamic: the sandbox checkout gate reads searchParams (static params + ISR → DYNAMIC_SERVER_USAGE 500).
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({
   params,
