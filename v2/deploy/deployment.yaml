@@ -60,7 +60,7 @@ spec:
             - name: NEXT_PUBLIC_PADDLE_ENV  # read at request time (src/lib/paddle.ts), not a build arg
               value: sandbox
             - name: NEXT_PUBLIC_PADDLE_CLIENT_TOKEN  # public client-side token, not a secret
-              value: __PADDLE_CLIENT_TOKEN__
+              value: test_c1b40aab0058a6276b55c9190ec
             - name: SENTRY_DSN
               valueFrom:
                 secretKeyRef:
