@@ -45,3 +45,9 @@ carries `trello:<list>` labels.
 - `just serve`: local preview at http://localhost:8000.
 - `just status`: HTTP status of the site and pods on libra.
 - `just dashboard-sync`: sync Grafana dashboard to monitoring namespace on ara.
+
+## NotebookLM
+
+Project notebook: **deigineor** (`4c83a6ab-4c1a-4515-b21e-02a27bcd745b`). It holds this project's knowledge: README and agent docs, architecture, decisions and research.
+Keep it up to date. When a PR changes README.md, AGENTS.md or the docs that describe how the project works, replace that source in the notebook. When a decision or research result is worth keeping, add it.
+How: see the "NotebookLM" section of the global agent instructions (`nlm source add 4c83a6ab-4c1a-4515-b21e-02a27bcd745b --file <file.md> --title "<YYYY-MM-DD> <topic>" --wait`).
