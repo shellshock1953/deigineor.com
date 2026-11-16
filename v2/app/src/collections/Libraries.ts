@@ -42,9 +42,12 @@ export const Libraries: CollectionConfig = {
       name: 'price',
       type: 'number',
       min: 0,
-      admin: { condition: (data) => data?.pricing === 'paid' },
-      validate: (value: number | null | undefined, { data }: { data: { pricing?: string } }) =>
-        data?.pricing === 'paid' && value == null ? 'Price is required for paid items.' : true,
+      admin: {
+        condition: (data) => data?.pricing === 'paid',
+        description: 'Leave empty to show "Coming soon" until the item goes on sale.',
+      },
+      validate: (value: number | null | undefined, { data }: { data: { buyUrl?: string } }) =>
+        data?.buyUrl && value == null ? 'Price is required once a buy link is set.' : true,
     },
     {
       name: 'currency',
