@@ -2,9 +2,11 @@ import type { Metadata } from 'next'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { notFound } from 'next/navigation'
 
+import PaddleBuyButton from '../../../../components/PaddleBuyButton'
 import { CoverImage, coverUrl } from '../../../../components/cards'
 import { priceLabel } from '../../../../lib/format'
 import { getLibraries, getLibraryBySlug } from '../../../../lib/data'
+import { getPaddleConfig } from '../../../../lib/paddle'
 import { excerpt } from '../../../../lib/rich-text'
 
 export const revalidate = 60
@@ -43,8 +45,15 @@ export async function generateMetadata({
   }
 }
 
-export default async function InstrumentPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function InstrumentPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>
+  searchParams: Promise<{ checkout?: string }>
+}) {
   const { slug } = await params
+  const { checkout } = await searchParams
   const l = await getLibraryBySlug(slug)
   if (!l) notFound()
 
@@ -52,6 +61,10 @@ export default async function InstrumentPage({ params }: { params: Promise<{ slu
   // Paid items without a price yet are announced, not sold.
   const comingSoon = isPaid && l.price == null
   const actionUrl = comingSoon ? null : isPaid ? l.buyUrl : l.downloadUrl
+  const paddle = getPaddleConfig()
+  // shortcut: sandbox checkout hidden from real visitors; remove the gate when switching to production
+  const paddleVisible = paddle?.env !== 'sandbox' || checkout === 'test'
+  const paddleBuy = isPaid && l.paddlePriceId && l.price != null && paddle && paddleVisible
 
   return (
     <article className="container">
@@ -105,17 +118,28 @@ export default async function InstrumentPage({ params }: { params: Promise<{ slu
           )}
 
           <div className="detail__links">
-            {actionUrl && (
-              <a
-                className="btn btn--primary"
-                href={actionUrl}
-                rel="noopener noreferrer"
-                data-track="library_get"
-                data-library={l.slug}
-                data-action={isPaid ? 'buy' : 'download'}
-              >
-                {isPaid ? `Buy — ${priceLabel(l.price ?? 0, l.currency)}` : 'Download on Pianobook'}
-              </a>
+            {paddleBuy ? (
+              <PaddleBuyButton
+                config={paddle}
+                priceId={l.paddlePriceId!}
+                slug={l.slug}
+                label={`Buy — ${priceLabel(l.price ?? 0, l.currency)}`}
+              />
+            ) : (
+              actionUrl && (
+                <a
+                  className="btn btn--primary"
+                  href={actionUrl}
+                  rel="noopener noreferrer"
+                  data-track="library_get"
+                  data-library={l.slug}
+                  data-action={isPaid ? 'buy' : 'download'}
+                >
+                  {isPaid
+                    ? `Buy — ${priceLabel(l.price ?? 0, l.currency)}`
+                    : 'Download on Pianobook'}
+                </a>
+              )
             )}
             {l.demoLinks?.map((d) => (
               <a

@@ -333,12 +333,19 @@ export interface Library {
   image?: (number | null) | Media;
   kind: 'sample-library' | 'plugin';
   pricing: 'free' | 'paid';
+  /**
+   * Leave empty to show "Coming soon" until the item goes on sale.
+   */
   price?: number | null;
   currency?: ('USD' | 'EUR' | 'UAH') | null;
   /**
    * External checkout link (any payment provider).
    */
   buyUrl?: string | null;
+  /**
+   * Paddle price id (pri_…); enables the Paddle checkout button
+   */
+  paddlePriceId?: string | null;
   /**
    * e.g. VST3, AU, Kontakt
    */
@@ -607,6 +614,7 @@ export interface LibrariesSelect<T extends boolean = true> {
   price?: T;
   currency?: T;
   buyUrl?: T;
+  paddlePriceId?: T;
   platforms?:
     | T
     | {

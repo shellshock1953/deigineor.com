@@ -65,6 +65,14 @@ export const Libraries: CollectionConfig = {
       },
     },
     {
+      name: 'paddlePriceId',
+      type: 'text',
+      admin: {
+        description: 'Paddle price id (pri_…); enables the Paddle checkout button',
+        condition: (data) => data?.pricing === 'paid',
+      },
+    },
+    {
       name: 'platforms',
       type: 'array',
       fields: [{ name: 'platform', type: 'text', required: true }],

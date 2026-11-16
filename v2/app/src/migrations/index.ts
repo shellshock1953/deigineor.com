@@ -1,5 +1,6 @@
 import * as migration_20261026_160149_initial from './20261026_160149_initial';
 import * as migration_20261027_050913_cv from './20261027_050913_cv';
+import * as migration_20261116_202207_paddle_price_id from './20261116_202207_paddle_price_id';
 
 export const migrations = [
   {
@@ -10,6 +11,11 @@ export const migrations = [
   {
     up: migration_20261027_050913_cv.up,
     down: migration_20261027_050913_cv.down,
-    name: '20261027_050913_cv'
+    name: '20261027_050913_cv',
+  },
+  {
+    up: migration_20261116_202207_paddle_price_id.up,
+    down: migration_20261116_202207_paddle_price_id.down,
+    name: '20261116_202207_paddle_price_id'
   },
 ];
