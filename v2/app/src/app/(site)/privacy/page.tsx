@@ -28,8 +28,8 @@ export default function Privacy() {
 
       <h2>Order data</h2>
       <p>
-        {RESELLER} shares with us your name, email, country and order details. We use them only to
-        deliver the product, issue the license and give support.
+        We receive from {RESELLER} your name, email, country and order details. We use them
+        only to deliver the product, issue the license and give support.
       </p>
 
       <h2>Site analytics</h2>
