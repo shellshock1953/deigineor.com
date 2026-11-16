@@ -49,7 +49,9 @@ export default async function InstrumentPage({ params }: { params: Promise<{ slu
   if (!l) notFound()
 
   const isPaid = l.pricing === 'paid'
-  const actionUrl = isPaid ? l.buyUrl : l.downloadUrl
+  // Paid items without a price yet are announced, not sold.
+  const comingSoon = isPaid && l.price == null
+  const actionUrl = comingSoon ? null : isPaid ? l.buyUrl : l.downloadUrl
 
   return (
     <article className="container">
@@ -60,8 +62,16 @@ export default async function InstrumentPage({ params }: { params: Promise<{ slu
         <div>
           <header className="detail__head">
             <div className="detail__meta">
-              <span className="mono mono--accent">{l.kind === 'plugin' ? 'Plugin' : 'Sample library'}</span>
-              <span className="mono">{isPaid ? `Paid · ${priceLabel(l.price ?? 0, l.currency)}` : 'Free'}</span>
+              <span className="mono mono--accent">
+                {l.kind === 'plugin' ? 'Plugin' : 'Sample library'}
+              </span>
+              <span className="mono">
+                {comingSoon
+                  ? 'Coming soon'
+                  : isPaid
+                    ? `Paid · ${priceLabel(l.price ?? 0, l.currency)}`
+                    : 'Free'}
+              </span>
               {l.version && <span className="mono">v{l.version}</span>}
             </div>
             <h1 className="detail__title">{l.title}</h1>
@@ -108,7 +118,12 @@ export default async function InstrumentPage({ params }: { params: Promise<{ slu
               </a>
             )}
             {l.demoLinks?.map((d) => (
-              <a className="btn btn--sm" key={d.id ?? d.label} href={d.url} rel="noopener noreferrer">
+              <a
+                className="btn btn--sm"
+                key={d.id ?? d.label}
+                href={d.url}
+                rel="noopener noreferrer"
+              >
                 {d.label}
               </a>
             ))}

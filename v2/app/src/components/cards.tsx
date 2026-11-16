@@ -72,7 +72,11 @@ export function ReleaseCard({ release, relNumber }: { release: Release; relNumbe
 
 export function LibraryCard({ library }: { library: Library }) {
   const pricing =
-    library.pricing === 'paid' && library.price != null ? priceLabel(library.price, library.currency) : 'Free'
+    library.pricing !== 'paid'
+      ? 'Free'
+      : library.price != null
+        ? priceLabel(library.price, library.currency)
+        : 'Coming soon'
   return (
     <Link className="card card--link" href={`/instruments/${library.slug}`}>
       <div className="card__media">
@@ -81,7 +85,9 @@ export function LibraryCard({ library }: { library: Library }) {
       <div className="card__body">
         <div className="card__meta">
           <span className="mono">{library.kind === 'plugin' ? 'Plugin' : 'Sample library'}</span>
-          <span className={`mono${library.pricing === 'paid' ? '' : ' mono--accent'}`}>{pricing}</span>
+          <span className={`mono${library.pricing === 'paid' ? '' : ' mono--accent'}`}>
+            {pricing}
+          </span>
         </div>
         <h3 className="card__title">{library.title}</h3>
         {library.tagline && <p className="card__tagline">{library.tagline}</p>}
