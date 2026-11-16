@@ -5,7 +5,8 @@ import { RESELLER } from '../../../lib/legal'
 
 export const metadata: Metadata = {
   title: 'Terms of Service',
-  description: 'Terms of Service and End User License Agreement for software sold on deigineor.com.',
+  description:
+    'Terms of Service and End User License Agreement for software sold on deigineor.com.',
 }
 
 // Same rationale as the other pages: no prerender without a DB in CI.
@@ -40,12 +41,14 @@ export default function Terms() {
       </ul>
       <p>You may not:</p>
       <ul>
-        <li>copy, share, redistribute, sublicense, rent or resell the software or your license key;</li>
+        <li>
+          copy, share, redistribute, sublicense, rent or resell the software or your license key;
+        </li>
         <li>reverse engineer, decompile or disassemble the software.</li>
       </ul>
       <p>
-        We keep all rights in the software that are not granted here. The license ends if you
-        breach these terms.
+        We keep all rights in the software that are not granted here. The license ends if you breach
+        these terms.
       </p>
 
       <h2>4. Free libraries</h2>

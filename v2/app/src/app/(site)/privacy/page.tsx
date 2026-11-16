@@ -16,8 +16,8 @@ export default function Privacy() {
     <LegalPage title="Privacy Policy">
       <h2>Who is responsible</h2>
       <p>
-        Bohdan Sukhomlinov, individual entrepreneur (sole proprietor) registered in Ukraine,
-        trading as &quot;Deigineor&quot;. Contact for any data request: <ContactLink />.
+        Bohdan Sukhomlinov, individual entrepreneur (sole proprietor) registered in Ukraine, trading
+        as &quot;Deigineor&quot;. Contact for any data request: <ContactLink />.
       </p>
 
       <h2>Payments</h2>
@@ -28,8 +28,8 @@ export default function Privacy() {
 
       <h2>Order data</h2>
       <p>
-        We receive from {RESELLER} your name, email, country and order details. We use them
-        only to deliver the product, issue the license and give support.
+        We receive from {RESELLER} your name, email, country and order details. We use them only to
+        deliver the product, issue the license and give support.
       </p>
 
       <h2>Site analytics</h2>

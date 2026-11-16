@@ -22,9 +22,7 @@ export default function Refund() {
 
       <h2>How to request it</h2>
       <ul>
-        <li>
-          Through {RESELLER}: use the link in your order email.
-        </li>
+        <li>Through {RESELLER}: use the link in your order email.</li>
         <li>
           Or contact us at <ContactLink /> with the email you used for the order.
         </li>
