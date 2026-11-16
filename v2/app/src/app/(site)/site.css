@@ -1000,8 +1000,14 @@ button {
   display: flex;
   align-items: baseline;
   justify-content: center;
-  gap: 16px;
+  gap: 8px 16px;
+  flex-wrap: wrap;
   margin-top: 26px;
+}
+
+.site-footer__bottom .site-footer__legal a {
+  font-family: inherit;
+  letter-spacing: 0;
 }
 
 .site-footer__bottom a {
