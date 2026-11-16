@@ -23,6 +23,10 @@ export default async function Footer() {
       <div className="site-footer__bottom">
         <Link href="/">DEIGINEOR</Link>
         <p className="mono">© {new Date().getFullYear()}</p>
+        <span className="site-footer__legal">
+          <Link href="/terms">Terms</Link> · <Link href="/privacy">Privacy</Link> ·{' '}
+          <Link href="/refund">Refunds</Link>
+        </span>
       </div>
     </footer>
   )
