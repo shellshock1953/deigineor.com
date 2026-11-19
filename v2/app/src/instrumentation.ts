@@ -26,7 +26,13 @@ export async function register() {
   // Booting Payload applies `prodMigrations`; fail the start loudly if the DB is unreachable.
   if (process.env.NODE_ENV === 'production') {
     const { getPayload } = await import('payload')
-    const payload = await getPayload({ config: (await import('@payload-config')).default })
+    const config = (await import('@payload-config')).default
+    const payload = await getPayload({ config }).catch((err) => {
+      // Next.js keeps serving 500s after a failed instrumentation hook; exit so the kubelet
+      // restarts us once Postgres is back (e.g. after a power cut both start together).
+      console.error('Payload init failed, exiting:', err)
+      process.exit(1)
+    })
 
     // 1. Ensure initial admin user exists before serving requests (prevents unauthenticated first-register).
     const users = await payload.find({
