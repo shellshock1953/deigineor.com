@@ -6,11 +6,13 @@ import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
 import { Libraries } from './collections/Libraries'
+import { Licenses } from './collections/Licenses'
 import { Media } from './collections/Media'
 import { Releases } from './collections/Releases'
 import { Users } from './collections/Users'
 import { Videos } from './collections/Videos'
 import { Cv } from './globals/Cv'
+import { LicenseRevocations } from './globals/LicenseRevocations'
 import { Site } from './globals/Site'
 import { migrations } from './migrations'
 
@@ -18,8 +20,8 @@ const dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default buildConfig({
   admin: { user: Users.slug, importMap: { baseDir: path.resolve(dirname) } },
-  collections: [Users, Media, Releases, Videos, Libraries],
-  globals: [Site, Cv],
+  collections: [Users, Media, Releases, Videos, Libraries, Licenses],
+  globals: [Site, Cv, LicenseRevocations],
   // Only the `cv` global has localized fields; everything else stays single-language.
   localization: { locales: ['en', 'uk'], defaultLocale: 'en' },
   editor: lexicalEditor(),

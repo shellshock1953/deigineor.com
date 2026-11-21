@@ -1,0 +1,26 @@
+{
+  "event_id": "evt_01k0demo0adjustment0updated000",
+  "event_type": "adjustment.updated",
+  "occurred_at": "2026-11-17T05:55:00.000Z",
+  "notification_id": "ntf_01k0demo0adj0notification0000",
+  "data": {
+    "id": "adj_01k0demo0refund000000000000",
+    "transaction_id": "txn_01k0demo0librarium0studio00",
+    "subscription_id": null,
+    "customer_id": "ctm_01k0demo0customer000000000",
+    "action": "refund",
+    "type": "full",
+    "status": "approved",
+    "reason": "customer_request",
+    "currency_code": "USD",
+    "totals": {
+      "subtotal": "50000",
+      "tax": "0",
+      "total": "50000",
+      "fee": "0",
+      "retained_fee": "0"
+    },
+    "created_at": "2026-11-17T05:45:10.000Z",
+    "updated_at": "2026-11-17T05:55:00.000Z"
+  }
+}

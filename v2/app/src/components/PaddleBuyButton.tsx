@@ -7,7 +7,10 @@ import type { PaddleConfig } from '../lib/paddle'
 type PaddleGlobal = {
   Initialized?: boolean
   Environment: { set: (env: string) => void }
-  Initialize: (opts: { token: string }) => void
+  Initialize: (opts: {
+    token: string
+    eventCallback?: (e: { name?: string; data?: { transaction_id?: string } }) => void
+  }) => void
   Checkout: { open: (opts: object) => void }
 }
 
@@ -23,7 +26,18 @@ export function PaddleScript({ env, token }: PaddleConfig) {
         const p = paddle()
         if (!p || p.Initialized) return
         if (env === 'sandbox') p.Environment.set('sandbox')
-        p.Initialize({ token })
+        p.Initialize({
+          token,
+          // Overlay or payment link: land on the page that shows the issued licence.
+          eventCallback: (e) => {
+            const id = e.data?.transaction_id
+            if (e.name === 'checkout.completed' && id) {
+              const url = new URL('/thanks', window.location.origin)
+              url.searchParams.set('txn', id)
+              window.location.href = url.href
+            }
+          },
+        })
       }}
     />
   )
@@ -54,7 +68,6 @@ export default function PaddleBuyButton({
             items: [{ priceId, quantity: 1 }],
             settings: {
               displayMode: 'overlay',
-              successUrl: `${window.location.origin}/instruments/${slug}?purchased=1`,
             },
           })
         }

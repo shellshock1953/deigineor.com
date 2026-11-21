@@ -72,6 +72,7 @@ export interface Config {
     releases: Release;
     videos: Video;
     libraries: Library;
+    licenses: License;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -84,6 +85,7 @@ export interface Config {
     releases: ReleasesSelect<false> | ReleasesSelect<true>;
     videos: VideosSelect<false> | VideosSelect<true>;
     libraries: LibrariesSelect<false> | LibrariesSelect<true>;
+    licenses: LicensesSelect<false> | LicensesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -96,10 +98,12 @@ export interface Config {
   globals: {
     site: Site;
     cv: Cv;
+    'license-revocations': LicenseRevocation;
   };
   globalsSelect: {
     site: SiteSelect<false> | SiteSelect<true>;
     cv: CvSelect<false> | CvSelect<true>;
+    'license-revocations': LicenseRevocationsSelect<false> | LicenseRevocationsSelect<true>;
   };
   locale: 'en' | 'uk';
   widgets: {
@@ -379,6 +383,25 @@ export interface Library {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "licenses".
+ */
+export interface License {
+  id: number;
+  txn: string;
+  product: string;
+  name: string;
+  email: string;
+  /**
+   * The Librarium.lic file content.
+   */
+  licence: string;
+  status: 'active' | 'revoked';
+  paddleCustomerId?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -420,6 +443,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'libraries';
         value: number | Library;
+      } | null)
+    | ({
+        relationTo: 'licenses';
+        value: number | License;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -639,6 +666,21 @@ export interface LibrariesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "licenses_select".
+ */
+export interface LicensesSelect<T extends boolean = true> {
+  txn?: T;
+  product?: T;
+  name?: T;
+  email?: T;
+  licence?: T;
+  status?: T;
+  paddleCustomerId?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -772,6 +814,19 @@ export interface Cv {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "license-revocations".
+ */
+export interface LicenseRevocation {
+  id: number;
+  /**
+   * Current signed revoked.json.
+   */
+  revokedJson?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site_select".
  */
 export interface SiteSelect<T extends boolean = true> {
@@ -842,6 +897,16 @@ export interface CvSelect<T extends boolean = true> {
         url?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "license-revocations_select".
+ */
+export interface LicenseRevocationsSelect<T extends boolean = true> {
+  revokedJson?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

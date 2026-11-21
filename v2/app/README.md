@@ -39,6 +39,7 @@ Seed: `seed/cv.json`; it is loaded on first boot while the global is empty (`src
 | `NEXT_PUBLIC_SITE_URL` | Public URL (metadata base). Inlined at build time: a Docker build argument |
 | `SENTRY_DSN`, `SENTRY_ENVIRONMENT`, `SENTRY_RELEASE` | Error reporting to GlitchTip (off without DSN) |
 | `OPENPANEL_CLIENT_ID` | Enables OpenPanel analytics when set |
+| `PADDLE_WEBHOOK_SECRET`, `PADDLE_API_KEY`, `LICENSE_SIGNING_KEY` | Librarium licence webhook (`POST /api/paddle/webhook`): Paddle notification secret, Paddle API key, Ed25519 seed (64 hex). The route answers 503 until all three are set |
 
 ## Schema changes
 

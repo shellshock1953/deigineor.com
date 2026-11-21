@@ -1,0 +1,42 @@
+{
+  "event_id": "evt_01k0demo0transaction0completed0",
+  "event_type": "transaction.completed",
+  "occurred_at": "2026-11-15T18:42:07.311Z",
+  "notification_id": "ntf_01k0demo0notification000000",
+  "data": {
+    "id": "txn_01k0demo0librarium0studio00",
+    "status": "completed",
+    "customer_id": "ctm_01k0demo0customer000000000",
+    "address_id": "add_01k0demo0address0000000000",
+    "business_id": null,
+    "currency_code": "USD",
+    "origin": "web",
+    "collection_mode": "automatic",
+    "custom_data": null,
+    "created_at": "2026-11-15T18:41:12.004Z",
+    "updated_at": "2026-11-15T18:42:07.201Z",
+    "billed_at": "2026-11-15T18:42:06.000Z",
+    "items": [
+      {
+        "price_id": "pri_01m7jzcn0x29v850z3fwsvx49n",
+        "price": {
+          "id": "pri_01m7jzcn0x29v850z3fwsvx49n",
+          "product_id": "pro_01m7jzcmf52d8hexb0h2heseht",
+          "description": "Librarium Studio (one-time)",
+          "type": "standard",
+          "billing_cycle": null,
+          "unit_price": { "amount": "50000", "currency_code": "USD" }
+        },
+        "quantity": 1,
+        "proration": null
+      }
+    ],
+    "details": {
+      "totals": { "subtotal": "50000", "tax": "0", "total": "50000", "currency_code": "USD" }
+    },
+    "payments": [
+      { "payment_attempt_id": "3d1c0000-0000-4000-8000-000000000000", "status": "captured", "method_details": { "type": "card" } }
+    ],
+    "checkout": { "url": "https://deigineor.com/checkout?_ptxn=txn_01k0demo0librarium0studio00" }
+  }
+}
