@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs'
 import { test } from 'node:test'
 
 import { issueLicense, revocationFor, revocationList } from './issue.mjs'
+import { isRevoked } from './revocations'
 import { verifyPaddleSignature } from './signature'
 
 const fx = (f: string) => readFileSync(new URL(`./fixtures/${f}`, import.meta.url), 'utf8')
@@ -51,4 +52,17 @@ test('revocation list is signed JSON with the entries', () => {
   assert.equal(list.format, 'librarium-revoked')
   assert.deepEqual(JSON.parse(list.payload).revoked, entries)
   assert.match(list.signature, /^[0-9a-f]{128}$/)
+})
+
+test('isRevoked checks stored revocation list', async () => {
+  const seed = fx('DEMO-ONLY-secret.key').trim()
+  const revokedJson = revocationList(seed, '2026-11-17T06:00:00.000Z', [
+    { txn: 'txn_revoked', action: 'refund', adj: 'adj_a', at: '2026-11-17T05:55:00.000Z' },
+  ])
+  const mockPayload = { findGlobal: async () => ({ revokedJson }) } as unknown as Parameters<typeof isRevoked>[0]
+  assert.equal(await isRevoked(mockPayload, 'txn_revoked'), true)
+  assert.equal(await isRevoked(mockPayload, 'txn_active'), false)
+
+  const emptyPayload = { findGlobal: async () => ({}) } as unknown as Parameters<typeof isRevoked>[0]
+  assert.equal(await isRevoked(emptyPayload, 'txn_revoked'), false)
 })

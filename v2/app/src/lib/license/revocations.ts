@@ -26,6 +26,12 @@ export async function getRevokedJson(payload: Payload, seedHex: string | undefin
   return json
 }
 
+/** Returns true if `txn` is already in the stored revocation list. */
+export async function isRevoked(payload: Payload, txn: string): Promise<boolean> {
+  const cur = await read(payload)
+  return cur?.entries.some((e) => e.txn === txn) ?? false
+}
+
 /** Adds an entry and re-signs with a strictly newer `issued_at` (the plugin only installs newer lists). */
 export async function addRevocation(payload: Payload, seedHex: string, entry: RevokedEntry): Promise<void> {
   const cur = await read(payload)

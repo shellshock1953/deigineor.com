@@ -68,7 +68,6 @@ export default function PaddleBuyButton({
             items: [{ priceId, quantity: 1 }],
             settings: {
               displayMode: 'overlay',
-              successUrl: `${window.location.origin}/thanks`,
             },
           })
         }
