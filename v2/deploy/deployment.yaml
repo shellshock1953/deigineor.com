@@ -61,6 +61,24 @@ spec:
               value: sandbox
             - name: NEXT_PUBLIC_PADDLE_CLIENT_TOKEN  # public client-side token, not a secret
               value: test_c1b40aab0058a6276b55c9190ec
+            - name: PADDLE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: deigineor-paddle
+                  key: PADDLE_API_KEY
+                  optional: true
+            - name: PADDLE_WEBHOOK_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: deigineor-paddle
+                  key: PADDLE_WEBHOOK_SECRET
+                  optional: true
+            - name: LICENSE_SIGNING_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: deigineor-paddle
+                  key: LICENSE_SIGNING_KEY
+                  optional: true
             - name: SENTRY_DSN
               valueFrom:
                 secretKeyRef:
