@@ -50,3 +50,8 @@ export function enabledFlags(email?: string | null): string[] {
     .map((f) => f.name)
     .filter((n) => n.startsWith('deigineor.') && isEnabled(n, email))
 }
+
+/** True once real flag values are loaded; callers that would persist a flag-derived change check this first. */
+export function flagsSynced(): boolean {
+  return client()?.isSynchronized() ?? false
+}
