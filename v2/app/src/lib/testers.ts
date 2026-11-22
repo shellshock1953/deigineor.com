@@ -55,6 +55,7 @@ export async function ensureTesterLicences(payload: Payload, email: string, exis
       // Concurrent request won the unique txn race, like the webhook.
       const raced = await payload.find({ collection: 'licenses', where: { txn: { equals: txn } }, limit: 1, depth: 0 })
       if (!raced.docs.length) throw err
+      created.push(raced.docs[0])
     }
   }
   return created
