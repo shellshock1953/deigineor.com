@@ -105,10 +105,12 @@ sys.exit("missing: " + ", ".join(bad)) if bad else print("ok")
 '''
 
 # Create a task (issue) and put it on the project board (users/shellshock1953/projects/2)
+[positional-arguments]
 task-new title body="":
     #!/usr/bin/env bash
     set -euo pipefail
-    url=$(gh issue create -R shellshock1953/deigineor.com -t "{{title}}" -b "{{body}}")
+    # Title and body arrive as $1/$2, never pasted into the script, so quotes and backticks survive.
+    url=$(gh issue create -R shellshock1953/deigineor.com -t "$1" -b "${2:-}")
     # User projects are invisible to the GitHub App token; AGENT_GH_APP= makes the gh wrapper use the owner PAT.
     AGENT_GH_APP= gh project item-add 2 --owner shellshock1953 --url "$url" >/dev/null
     echo "$url"
