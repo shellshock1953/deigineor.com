@@ -1188,3 +1188,31 @@ button {
 .cv-skills dd {
   margin: 2px 0 0;
 }
+
+/* ---------- account ---------- */
+
+.account-form {
+  display: grid;
+  gap: 10px;
+  max-width: 28rem;
+}
+
+.account-form input {
+  padding: 12px 14px;
+  font: inherit;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius);
+}
+
+.account-form button {
+  justify-self: start;
+  cursor: pointer;
+}
+
+.account-item {
+  margin: 0 0 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--hairline);
+}
