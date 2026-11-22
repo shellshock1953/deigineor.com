@@ -55,59 +55,61 @@ export default async function Account({
   }
 
   const [licenses, version] = await Promise.all([licensesFor(email), studioVersion()])
-  const v = version ? ` ${version}` : ''
-
   return (
     <div className="container">
       <header className="page-head">
         <h1>Account</h1>
       </header>
-      <div className="rich-text" style={{ marginTop: 24 }}>
-        <p>
-          Signed in as <strong>{email}</strong>
-        </p>
-        <form method="post" action="/api/account/logout">
-          <button type="submit" className="btn btn--sm">
-            Sign out
-          </button>
-        </form>
-        <h2>Purchases</h2>
+      <div className="account">
+        <div className="account-bar">
+          <p>
+            Signed in as <strong>{email}</strong>
+          </p>
+          <form method="post" action="/api/account/logout">
+            <button type="submit" className="btn btn--sm">
+              Sign out
+            </button>
+          </form>
+        </div>
+        <h2 className="account-heading">Purchases</h2>
         {licenses.length === 0 && <p>No purchases found for this email.</p>}
-        {licenses.map((l) => {
-          const product = PRODUCTS[l.product]
-          const active = l.status === 'active'
-          return (
-            <section key={l.txn} className="account-item">
-              <h3>{product?.title ?? l.product}</h3>
-              <p className="mono">
-                {formatDate(l.createdAt)} · {active ? 'Active' : 'Refunded'}
-              </p>
-              {active && (
-                <>
-                  <p>
-                    <a className="btn btn--primary" href={`/api/licence/${l.txn}`} download="Librarium.lic">
-                      Download licence file
-                    </a>
-                  </p>
-                  {product?.studioDownloads && (
-                    <>
-                      <p>
+        <ul className="account-list">
+          {licenses.map((l) => {
+            const product = PRODUCTS[l.product]
+            const active = l.status === 'active'
+            return (
+              <li key={l.txn} className="account-item">
+                <div className="account-item__head">
+                  <h3 className="account-item__title">{product?.title ?? l.product}</h3>
+                  <span className={`account-status${active ? ' account-status--active' : ''}`}>
+                    {active ? 'Active' : 'Refunded'}
+                  </span>
+                </div>
+                <p className="mono account-item__meta">
+                  Bought {formatDate(l.createdAt)}
+                  {active && product?.studioDownloads && version ? ` · latest version ${version}` : ''}
+                </p>
+                {active && (
+                  <div className="account-item__actions">
+                    {product?.studioDownloads && (
+                      <>
                         <a className="btn btn--primary" href={`/api/download/studio?txn=${l.txn}&os=windows`}>
-                          Download Librarium Studio{v} for Windows
+                          Download for Windows
                         </a>
-                      </p>
-                      <p>
                         <a className="btn btn--primary" href={`/api/download/studio?txn=${l.txn}&os=linux`}>
-                          Download Librarium Studio{v} for Linux
+                          Download for Linux
                         </a>
-                      </p>
-                    </>
-                  )}
-                </>
-              )}
-            </section>
-          )
-        })}
+                      </>
+                    )}
+                    <a className="btn" href={`/api/licence/${l.txn}`} download="Librarium.lic">
+                      Licence file
+                    </a>
+                  </div>
+                )}
+              </li>
+            )
+          })}
+        </ul>
       </div>
     </div>
   )
