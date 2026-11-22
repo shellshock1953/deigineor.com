@@ -11,6 +11,14 @@ const MAX_TRIES = 30 // ~60 s, the webhook normally lands within seconds
 export default function LicenseDownload({ txn, contact }: { txn: string; contact: ReactNode }) {
   const [buyer, setBuyer] = useState<Buyer | null>(null)
   const [gaveUp, setGaveUp] = useState(false)
+  const [version, setVersion] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetch('/api/download/studio/latest', { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => d && setVersion(d.version))
+      .catch(() => {}) // the buttons work without the version label
+  }, [])
 
   useEffect(() => {
     let stop = false
@@ -74,8 +82,18 @@ export default function LicenseDownload({ txn, contact }: { txn: string; contact
         </li>
         <li>The licence works on any of your machines. Keep the file: this page shows it only while the order is active.</li>
       </ol>
-      <h2>Librarium Studio download</h2>
-      <p>Download link will be sent by e-mail.</p>
+      <h2>Librarium Studio download{version ? ` ${version}` : ''}</h2>
+      <p>
+        <a className="btn btn--primary" href={`/api/download/studio?txn=${txn}&os=windows`}>
+          Download Librarium Studio{version ? ` ${version}` : ''} for Windows
+        </a>
+      </p>
+      <p>
+        <a className="btn btn--primary" href={`/api/download/studio?txn=${txn}&os=linux`}>
+          Download Librarium Studio{version ? ` ${version}` : ''} for Linux
+        </a>
+      </p>
+      <p>macOS: coming later.</p>
     </>
   )
 }
