@@ -2,7 +2,7 @@ import { Unleash } from 'unleash-client'
 
 // Unleash (ara, project "default", flags prefixed `deigineor.`). Testers are the segment `deigineor-testers`
 // (userId IN [their emails]); userId is the signed-in /account email. Without Unleash every flag is its fallback.
-type FlagsGlobal = typeof globalThis & { __deigineorUnleash?: Unleash }
+type FlagsGlobal = typeof globalThis & { __deigineorUnleash?: Unleash; __deigineorReady?: Promise<void> }
 const g = globalThis as FlagsGlobal
 
 function client(): Unleash | null {
@@ -17,17 +17,23 @@ function client(): Unleash | null {
   return g.__deigineorUnleash
 }
 
-/** Waits (at most `ms`) for the first sync, so a request right after a pod start sees real flag values. */
-export async function flagsReady(ms = 2000): Promise<void> {
+/**
+ * Waits (at most `ms`, once per process) for the first sync, so a request right after a pod start sees real flag values.
+ * One shared promise: with Unleash unreachable only the first caller(s) wait, later ones return at once.
+ */
+export function flagsReady(ms = 2000): Promise<void> {
   const c = client()
-  if (!c || c.isSynchronized()) return
-  await new Promise<void>((resolve) => {
-    const t = setTimeout(resolve, ms)
-    c.once('synchronized', () => {
+  if (!c || c.isSynchronized()) return Promise.resolve()
+  g.__deigineorReady ??= new Promise<void>((resolve) => {
+    const done = () => {
       clearTimeout(t)
+      c.off('synchronized', done)
       resolve()
-    })
+    }
+    const t = setTimeout(done, ms)
+    c.on('synchronized', done)
   })
+  return g.__deigineorReady
 }
 
 export function isEnabled(name: string, email?: string | null, fallback = false): boolean {
