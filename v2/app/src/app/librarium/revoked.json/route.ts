@@ -1,14 +1,21 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
-import { getRevokedJson } from '../../../lib/license/revocations'
+import { flagsReady, flagsSynced } from '../../../lib/flags'
+import { getRevokedJson, syncTesterRevocations } from '../../../lib/license/revocations'
+import { desiredTesterRevocations } from '../../../lib/testers'
 
 export const dynamic = 'force-dynamic'
 
 // Fetched once per Studio start (docs/licensing.md in VST-DEV): the signed list, or an empty signed one the first time.
 export async function GET() {
   const payload = await getPayload({ config })
-  const json = await getRevokedJson(payload, process.env.LICENSE_SIGNING_KEY)
+  const key = process.env.LICENSE_SIGNING_KEY
+  await flagsReady()
+  let json = await getRevokedJson(payload, key)
+  // Unleash down reads every flag as off: don't re-sign the list from that.
+  // Tester rows revoked through `revoked.*` flags go into the signed list, so the plugin's revoked path can be tested.
+  if (json && key && flagsSynced()) json = (await syncTesterRevocations(payload, key, await desiredTesterRevocations(payload))) ?? json
   if (!json) return new Response(null, { status: 503 })
   return new Response(json, {
     headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300' },

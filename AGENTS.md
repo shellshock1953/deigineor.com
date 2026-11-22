@@ -46,6 +46,23 @@ carries `trello:<list>` labels.
 - `just status`: HTTP status of the site and pods on libra.
 - `just dashboard-sync`: sync Grafana dashboard to monitoring namespace on ara.
 
+## Feature flags (Unleash)
+
+- Unleash runs on ara: UI https://unleash.kudu-skate.ts.net, project `default`; every flag of this site is prefixed `deigineor.`.
+  The app reads it with `UNLEASH_URL` + `UNLEASH_CLIENT_TOKEN` (`src/lib/flags.ts`); without Unleash every flag is off.
+- Testers are the segment `deigineor-testers` (`userId IN [emails]`). The userId is the signed-in `/account` email.
+- Server code: `isEnabled(name, email)` from `src/lib/flags.ts`. Client code: `<FeatureGate flag="deigineor.x" fallback={...}>` (`src/components/FeatureGate.tsx`),
+  which reads `/api/flags` (one fetch per page, fails open: no flags).
+- Flags:
+  - `deigineor.own.<entitlement>`: the tester owns that product without a paid licence.
+  - `deigineor.revoked.<entitlement>`: the tester's licence for it counts as revoked (the same case as an entry in `revoked.json`).
+  - `deigineor.tester`: on for the testers segment; lets a tester without any `own.*` flag get a sign-in link at `/account`.
+  - `deigineor.paddle-sandbox`: once the main Paddle env is `production`, the tester's buy button checks out in the Paddle sandbox
+    (needs `PADDLE_SANDBOX_*` secrets and the library's `paddleSandboxPriceId`; the webhook accepts both accounts). No-op while the main env is sandbox.
+  - `deigineor.sales-paused`: global kill switch. When on, Buy buttons are hidden and `/checkout` says sales are paused. Normally off.
+- Gate a new section: create `deigineor.<name>` in Unleash with the `deigineor-testers` segment, wrap the section in `<FeatureGate>`.
+  When it is ready, enable the flag for everyone, then delete the flag and the gate in a follow-up PR.
+
 ## NotebookLM
 
 Project notebook: **deigineor** (`4c83a6ab-4c1a-4515-b21e-02a27bcd745b`). It holds this project's knowledge: README and agent docs, architecture, decisions and research.

@@ -4,7 +4,8 @@ import config from '@payload-config'
 import { normalizeEmail } from '../../../../lib/account'
 import { issueLicense, revocationFor, type PaddleEvent } from '../../../../lib/license/issue.mjs'
 import { addRevocation, isRevoked } from '../../../../lib/license/revocations'
-import { verifyPaddleSignature } from '../../../../lib/license/signature'
+import { flagsReady, isEnabled } from '../../../../lib/flags'
+import { paddleAccounts, pickPaddleAccount, sandboxBuyer } from '../../../../lib/paddle-account'
 import { sendEmail, SITE_URL } from '../../../../lib/email'
 
 export const dynamic = 'force-dynamic'
@@ -14,19 +15,18 @@ const ENTITLEMENT = 'librarium-studio'
 // Paddle Billing webhook. Non-2xx makes Paddle retry, so transient failures (Paddle API, DB) return 5xx.
 export async function POST(request: Request) {
   const e = process.env
-  const secret = e.PADDLE_WEBHOOK_SECRET
-  const apiKey = e.PADDLE_API_KEY
+  const accounts = paddleAccounts(e)
   const signingKey = e.LICENSE_SIGNING_KEY
-  if (!secret || !apiKey || !signingKey) {
-    console.error('paddle webhook: PADDLE_WEBHOOK_SECRET, PADDLE_API_KEY and LICENSE_SIGNING_KEY must all be set')
+  if (!accounts.length || !signingKey) {
+    console.error('paddle webhook: a Paddle webhook secret + API key pair and LICENSE_SIGNING_KEY must be set')
     return new Response(null, { status: 503 })
   }
 
   // The signature covers the exact bytes: read the text first, parse after.
   const raw = await request.text()
-  if (!verifyPaddleSignature(request.headers.get('paddle-signature'), raw, secret)) {
-    return new Response(null, { status: 401 })
-  }
+  // Main account first, then the sandbox one (testers buying on a production site).
+  const account = pickPaddleAccount(accounts, request.headers.get('paddle-signature'), raw)
+  if (!account) return new Response(null, { status: 401 })
   let event: PaddleEvent
   try {
     event = JSON.parse(raw)
@@ -43,9 +43,17 @@ export async function POST(request: Request) {
     const existing = await payload.find({ collection: 'licenses', where: { txn: { equals: txn } }, limit: 1, depth: 0 })
     if (existing.docs.length) return new Response(null, { status: 200 })
 
-    const base = e.NEXT_PUBLIC_PADDLE_ENV === 'production' ? 'api' : 'sandbox-api'
-    const res = await fetch(`https://${base}.paddle.com/customers/${encodeURIComponent(event.data.customer_id)}`, {
-      headers: { Authorization: `Bearer ${apiKey}` },
+    // A sandbox (test card) purchase on the production site is a licence only for a signed-in tester: the checkout carries
+    // a signed proof of the session email, the email typed into Paddle is not trusted.
+    await flagsReady()
+    const tester = account.testersOnly ? sandboxBuyer(event, isEnabled) : null
+    if (account.testersOnly && !tester) {
+      console.error(`paddle webhook: sandbox purchase ${txn} without a valid tester proof, no licence issued`)
+      return new Response(null, { status: 200 })
+    }
+
+    const res = await fetch(`https://${account.apiBase}.paddle.com/customers/${encodeURIComponent(event.data.customer_id)}`, {
+      headers: { Authorization: `Bearer ${account.apiKey}` },
     })
     if (!res.ok) {
       console.error(`paddle webhook: customer lookup for ${txn} failed: ${res.status}`)
@@ -53,7 +61,7 @@ export async function POST(request: Request) {
     }
     const rawCustomer = await res.json()
     const name = rawCustomer.data.name || rawCustomer.data.email
-    const customer = { ...rawCustomer, data: { ...rawCustomer.data, name } }
+    const customer = { ...rawCustomer, data: { ...rawCustomer.data, name, email: tester ?? rawCustomer.data.email } }
     const licence = issueLicense(signingKey, event, customer, ENTITLEMENT)
     const status = (await isRevoked(payload, txn)) ? ('revoked' as const) : ('active' as const)
     const email = normalizeEmail(customer.data.email) // the buyer account looks licences up by the normalised address

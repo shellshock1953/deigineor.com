@@ -73,6 +73,14 @@ export const Libraries: CollectionConfig = {
       },
     },
     {
+      name: 'paddleSandboxPriceId',
+      type: 'text',
+      admin: {
+        description: 'Price id (pri_…) in the Paddle sandbox account; shown to testers (flag deigineor.paddle-sandbox) while the site sells on production',
+        condition: (data) => data?.pricing === 'paid',
+      },
+    },
+    {
       name: 'platforms',
       type: 'array',
       fields: [{ name: 'platform', type: 'text', required: true }],

@@ -73,6 +73,24 @@ spec:
                   name: deigineor-paddle
                   key: PADDLE_WEBHOOK_SECRET
                   optional: true
+            - name: PADDLE_SANDBOX_CLIENT_TOKEN  # testers' sandbox checkout on a production site; unused while the main env is sandbox
+              valueFrom:
+                secretKeyRef:
+                  name: deigineor-paddle-sandbox
+                  key: PADDLE_SANDBOX_CLIENT_TOKEN
+                  optional: true
+            - name: PADDLE_SANDBOX_API_KEY  # testers' sandbox checkout on a production site; unused while the main env is sandbox
+              valueFrom:
+                secretKeyRef:
+                  name: deigineor-paddle-sandbox
+                  key: PADDLE_SANDBOX_API_KEY
+                  optional: true
+            - name: PADDLE_SANDBOX_WEBHOOK_SECRET  # testers' sandbox checkout on a production site; unused while the main env is sandbox
+              valueFrom:
+                secretKeyRef:
+                  name: deigineor-paddle-sandbox
+                  key: PADDLE_SANDBOX_WEBHOOK_SECRET
+                  optional: true
             - name: LICENSE_SIGNING_KEY
               valueFrom:
                 secretKeyRef:
@@ -90,6 +108,14 @@ spec:
                 secretKeyRef:
                   name: deigineor-resend
                   key: RESEND_API_KEY
+                  optional: true
+            - name: UNLEASH_URL
+              value: http://192.168.2.225:4242/api  # ara Unleash LAN LoadBalancer
+            - name: UNLEASH_CLIENT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: deigineor-unleash
+                  key: UNLEASH_CLIENT_TOKEN
                   optional: true
             - name: SENTRY_DSN
               valueFrom:

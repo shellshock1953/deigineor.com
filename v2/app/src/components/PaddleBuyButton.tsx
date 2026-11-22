@@ -3,6 +3,7 @@
 import Script from 'next/script'
 
 import type { PaddleConfig } from '../lib/paddle'
+import { useFlags } from './FeatureGate'
 
 type PaddleGlobal = {
   Initialized?: boolean
@@ -46,17 +47,24 @@ export function PaddleScript({ env, token }: PaddleConfig) {
 export default function PaddleBuyButton({
   config,
   priceId,
+  sandboxPriceId,
   slug,
   label,
 }: {
   config: PaddleConfig
   priceId: string
+  sandboxPriceId?: string | null
   slug: string
   label: string
 }) {
+  const f = useFlags()
+  // Hidden until flags are known (no flash of a button during a pause); a failed /api/flags counts as no flags.
+  if (!f || f.flags.includes('deigineor.sales-paused')) return null
+  // Testers on a production site buy in the Paddle sandbox, if this library has a sandbox price.
+  const sandbox = f.paddle && sandboxPriceId ? f.paddle : null
   return (
     <>
-      <PaddleScript {...config} />
+      <PaddleScript {...(sandbox ?? config)} />
       <button
         type="button"
         className="btn btn--primary"
@@ -65,10 +73,11 @@ export default function PaddleBuyButton({
         data-action="buy"
         onClick={() =>
           paddle()?.Checkout.open({
-            items: [{ priceId, quantity: 1 }],
+            items: [{ priceId: sandbox ? sandboxPriceId : priceId, quantity: 1 }],
             settings: {
               displayMode: 'overlay',
             },
+            ...(sandbox && { customData: { tester: sandbox.proof } }),
           })
         }
       >

@@ -2,6 +2,8 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 
 import { assetLocation, getLatest } from '../../../../lib/download/studio'
+import { flagsReady } from '../../../../lib/flags'
+import { effectiveStatus } from '../../../../lib/testers'
 
 export const dynamic = 'force-dynamic'
 
@@ -15,9 +17,11 @@ export async function GET(request: Request) {
   if (!/^txn_[0-9a-z]{1,64}$/.test(txn) || (os !== 'windows' && os !== 'linux')) {
     return new Response(null, { status: 404, headers: noStore })
   }
+  await flagsReady()
   const payload = await getPayload({ config })
   const found = await payload.find({ collection: 'licenses', where: { txn: { equals: txn } }, limit: 1, depth: 0 })
-  if (found.docs[0]?.status !== 'active') return new Response(null, { status: 404, headers: noStore })
+  const doc = found.docs[0]
+  if (!doc || effectiveStatus(doc) !== 'active') return new Response(null, { status: 404, headers: noStore })
 
   const token = process.env.GITHUB_RELEASES_TOKEN
   if (!token) return new Response(null, { status: 503, headers: noStore })

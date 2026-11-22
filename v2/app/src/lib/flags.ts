@@ -1,0 +1,63 @@
+import { Unleash } from 'unleash-client'
+
+// Unleash (ara, project "default", flags prefixed `deigineor.`). Testers are the segment `deigineor-testers`
+// (userId IN [their emails]); userId is the signed-in /account email. Without Unleash every flag is its fallback.
+type FlagsGlobal = typeof globalThis & { __deigineorUnleash?: Unleash; __deigineorReady?: Promise<void> }
+const g = globalThis as FlagsGlobal
+
+function client(): Unleash | null {
+  const url = process.env.UNLEASH_URL
+  const token = process.env.UNLEASH_CLIENT_TOKEN
+  if (!url || !token) return null
+  if (!g.__deigineorUnleash) {
+    const c = new Unleash({ appName: 'deigineor-web', url, customHeaders: { Authorization: token }, refreshInterval: 15_000 })
+    c.on('error', (err) => console.error('[unleash] client error:', err))
+    g.__deigineorUnleash = c
+  }
+  return g.__deigineorUnleash
+}
+
+/**
+ * Waits (at most `ms`, once per process) for the first sync, so a request right after a pod start sees real flag values.
+ * One shared promise: with Unleash unreachable only the first caller(s) wait, later ones return at once.
+ */
+export function flagsReady(ms = 2000): Promise<void> {
+  const c = client()
+  if (!c || c.isSynchronized()) return Promise.resolve()
+  g.__deigineorReady ??= new Promise<void>((resolve) => {
+    const done = () => {
+      clearTimeout(t)
+      c.off('synchronized', done)
+      resolve()
+    }
+    const t = setTimeout(done, ms)
+    c.on('synchronized', done)
+  })
+  return g.__deigineorReady
+}
+
+export function isEnabled(name: string, email?: string | null, fallback = false): boolean {
+  const c = client()
+  if (!c || !c.isSynchronized()) return fallback
+  try {
+    return c.isEnabled(name, email ? { userId: email } : {}, fallback)
+  } catch (err) {
+    console.error(`[unleash] failed evaluating ${name}:`, err)
+    return fallback
+  }
+}
+
+/** Names of the `deigineor.*` flags that are on for this visitor (signed-in email or anonymous). */
+export function enabledFlags(email?: string | null): string[] {
+  const c = client()
+  if (!c || !c.isSynchronized()) return []
+  return c
+    .getFeatureToggleDefinitions()
+    .map((f) => f.name)
+    .filter((n) => n.startsWith('deigineor.') && isEnabled(n, email))
+}
+
+/** True once real flag values are loaded; callers that would persist a flag-derived change check this first. */
+export function flagsSynced(): boolean {
+  return client()?.isSynchronized() ?? false
+}
