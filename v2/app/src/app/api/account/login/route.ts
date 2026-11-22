@@ -4,8 +4,7 @@ import config from '@payload-config'
 
 import { normalizeEmail, signToken } from '../../../../lib/account'
 import { SITE_URL, sendEmail } from '../../../../lib/email'
-import { flagsReady } from '../../../../lib/flags'
-import { ownedByFlag } from '../../../../lib/testers'
+import { flagsReady, isEnabled } from '../../../../lib/flags'
 
 export const dynamic = 'force-dynamic'
 
@@ -41,7 +40,7 @@ export async function POST(request: Request) {
     await flagsReady()
     const payload = await getPayload({ config })
     const found = await payload.find({ collection: 'licenses', where: { email: { equals: email } }, limit: 1, depth: 0 })
-    if (!found.docs.length && !ownedByFlag(email).length) return // testers get a link before their first row exists
+    if (!found.docs.length && !isEnabled('deigineor.tester', email)) return // testers get a link before their first row exists
     const link = `${SITE_URL}/api/account/callback?token=${signToken('login', email)}`
     const sent = await sendEmail({
       to: email,

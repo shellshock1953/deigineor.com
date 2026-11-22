@@ -56,6 +56,7 @@ carries `trello:<list>` labels.
 - Flags:
   - `deigineor.own.<entitlement>`: the tester owns that product without a paid licence.
   - `deigineor.revoked.<entitlement>`: the tester's licence for it counts as revoked (the same case as an entry in `revoked.json`).
+  - `deigineor.tester`: on for the testers segment; lets a tester without any `own.*` flag get a sign-in link at `/account`.
   - `deigineor.paddle-sandbox`: once the main Paddle env is `production`, the tester's buy button checks out in the Paddle sandbox
     (needs `PADDLE_SANDBOX_*` secrets and the library's `paddleSandboxPriceId`; the webhook accepts both accounts). No-op while the main env is sandbox.
   - `deigineor.sales-paused`: global kill switch. When on, Buy buttons are hidden and `/checkout` says sales are paused. Normally off.
