@@ -4,6 +4,7 @@ import config from '@payload-config'
 import { issueLicense, revocationFor, type PaddleEvent } from '../../../../lib/license/issue.mjs'
 import { addRevocation, isRevoked } from '../../../../lib/license/revocations'
 import { verifyPaddleSignature } from '../../../../lib/license/signature'
+import { sendEmail, SITE_URL } from '../../../../lib/email'
 
 export const dynamic = 'force-dynamic'
 
@@ -54,21 +55,46 @@ export async function POST(request: Request) {
     const customer = { ...rawCustomer, data: { ...rawCustomer.data, name } }
     const licence = issueLicense(signingKey, event, customer, ENTITLEMENT)
     const status = (await isRevoked(payload, txn)) ? ('revoked' as const) : ('active' as const)
+    const email = String(customer.data.email).trim().toLowerCase()
     const data = {
       txn,
       product: ENTITLEMENT,
       name,
-      email: customer.data.email,
+      email,
       licence,
       status,
       paddleCustomerId: event.data.customer_id,
     }
+    let created = false
     try {
       await payload.create({ collection: 'licenses', data })
+      created = true
     } catch (err) {
       // Concurrent duplicate delivery may race on the unique txn index.
       const raced = await payload.find({ collection: 'licenses', where: { txn: { equals: txn } }, limit: 1, depth: 0 })
       if (!raced.docs.length) throw err
+    }
+    if (created) {
+      const link = `${SITE_URL}/thanks?txn=${encodeURIComponent(txn)}`
+      const accountLink = `${SITE_URL}/account`
+      await sendEmail({
+        to: email,
+        subject: 'Your Librarium Studio licence',
+        text: [
+          'Thank you for buying Librarium Studio.',
+          '',
+          `Download your licence file and Librarium Studio at any time: ${link}`,
+          'Keep this email: the link is your access.',
+          '',
+          `You can also sign in at ${accountLink} with this email address to see all your purchases.`,
+        ].join('\n'),
+        html: [
+          '<p>Thank you for buying Librarium Studio.</p>',
+          `<p>Download your licence file and Librarium Studio at any time: <a href="${link}">${link}</a></p>`,
+          '<p>Keep this email: the link is your access.</p>',
+          `<p>You can also sign in at <a href="${accountLink}">${accountLink}</a> with this email address to see all your purchases.</p>`,
+        ].join('\n'),
+      })
     }
   } else if (event.event_type === 'adjustment.created' || event.event_type === 'adjustment.updated') {
     const txn = revocationFor(event)
