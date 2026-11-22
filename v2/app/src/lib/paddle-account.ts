@@ -1,6 +1,7 @@
 import { verifyPaddleSignature } from './license/signature'
 
-export type PaddleAccount = { secret: string; apiKey: string; apiBase: 'api' | 'sandbox-api' }
+// testersOnly: the extra sandbox account; its purchases are test cards, so they only count for the tester segment.
+export type PaddleAccount = { secret: string; apiKey: string; apiBase: 'api' | 'sandbox-api'; testersOnly?: boolean }
 
 type Env = Record<string, string | undefined>
 
@@ -15,7 +16,7 @@ export function paddleAccounts(e: Env): PaddleAccount[] {
     })
   }
   if (e.PADDLE_SANDBOX_WEBHOOK_SECRET && e.PADDLE_SANDBOX_API_KEY) {
-    list.push({ secret: e.PADDLE_SANDBOX_WEBHOOK_SECRET, apiKey: e.PADDLE_SANDBOX_API_KEY, apiBase: 'sandbox-api' })
+    list.push({ secret: e.PADDLE_SANDBOX_WEBHOOK_SECRET, apiKey: e.PADDLE_SANDBOX_API_KEY, apiBase: 'sandbox-api', testersOnly: true })
   }
   return list
 }

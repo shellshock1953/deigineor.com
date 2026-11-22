@@ -4,6 +4,7 @@ import config from '@payload-config'
 import { normalizeEmail } from '../../../../lib/account'
 import { issueLicense, revocationFor, type PaddleEvent } from '../../../../lib/license/issue.mjs'
 import { addRevocation, isRevoked } from '../../../../lib/license/revocations'
+import { flagsReady, isEnabled } from '../../../../lib/flags'
 import { paddleAccounts, pickPaddleAccount } from '../../../../lib/paddle-account'
 import { sendEmail, SITE_URL } from '../../../../lib/email'
 
@@ -55,6 +56,12 @@ export async function POST(request: Request) {
     const licence = issueLicense(signingKey, event, customer, ENTITLEMENT)
     const status = (await isRevoked(payload, txn)) ? ('revoked' as const) : ('active' as const)
     const email = normalizeEmail(customer.data.email) // the buyer account looks licences up by the normalised address
+    // A sandbox (test card) purchase on the production site is a licence only for testers; anyone else got the token somehow.
+    await flagsReady()
+    if (account.testersOnly && !isEnabled('deigineor.paddle-sandbox', email)) {
+      console.error(`paddle webhook: sandbox purchase ${txn} by a non-tester, no licence issued`)
+      return new Response(null, { status: 200 })
+    }
     const data = {
       txn,
       product: ENTITLEMENT,

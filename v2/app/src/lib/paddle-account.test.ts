@@ -26,6 +26,7 @@ test('picks the account whose secret signed the body', () => {
     apiBase: 'api',
   })
   assert.equal(pickPaddleAccount(accounts, sign('sb-secret'), body, now)?.apiBase, 'sandbox-api')
+  assert.equal(pickPaddleAccount(accounts, sign('sb-secret'), body, now)?.testersOnly, true)
   assert.equal(pickPaddleAccount(accounts, sign('sb-secret'), body, now)?.apiKey, 'sb-key')
 })
 
