@@ -5,7 +5,7 @@ import { createHmac, timingSafeEqual } from 'node:crypto'
 export type Purpose = 'login' | 'session' | 'checkout'
 
 export const SESSION_COOKIE = 'dg_session'
-export const TTL_SECONDS: Record<Purpose, number> = { login: 15 * 60, session: 30 * 24 * 3600, checkout: 2 * 3600 }
+export const TTL_SECONDS: Record<Purpose, number> = { login: 15 * 60, session: 30 * 24 * 3600, checkout: 24 * 3600 }
 
 export const normalizeEmail = (email: string) => email.trim().toLowerCase()
 
