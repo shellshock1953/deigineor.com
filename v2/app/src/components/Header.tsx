@@ -23,6 +23,9 @@ export default function Header() {
           </Link>
         ))}
       </nav>
+      <Link className="site-header__account" href="/account">
+        Account
+      </Link>
     </header>
   )
 }
