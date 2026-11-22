@@ -91,6 +91,14 @@ spec:
                   name: deigineor-resend
                   key: RESEND_API_KEY
                   optional: true
+            - name: UNLEASH_URL
+              value: http://192.168.2.225:4242/api  # ara Unleash LAN LoadBalancer
+            - name: UNLEASH_CLIENT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: deigineor-unleash
+                  key: UNLEASH_CLIENT_TOKEN
+                  optional: true
             - name: SENTRY_DSN
               valueFrom:
                 secretKeyRef:
