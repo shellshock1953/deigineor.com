@@ -1,3 +1,4 @@
+import { after } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
@@ -26,19 +27,26 @@ export async function POST(request: Request) {
 
   const now = Date.now()
   if (now - (lastSent.get(email) ?? 0) < THROTTLE_MS) return reply(true)
+  lastSent.delete(email) // re-insert at the end: the map stays ordered by time, so the sweep stops at the first fresh entry
   lastSent.set(email, now)
-  for (const [k, t] of lastSent) if (now - t >= THROTTLE_MS) lastSent.delete(k)
+  for (const [k, t] of lastSent) {
+    if (now - t < THROTTLE_MS) break
+    lastSent.delete(k)
+  }
 
-  const payload = await getPayload({ config })
-  const found = await payload.find({ collection: 'licenses', where: { email: { equals: email } }, limit: 1, depth: 0 })
-  if (found.docs.length) {
+  // Lookup and send after the response, so its timing doesn't tell whether the address has purchases.
+  after(async () => {
+    const payload = await getPayload({ config })
+    const found = await payload.find({ collection: 'licenses', where: { email: { equals: email } }, limit: 1, depth: 0 })
+    if (!found.docs.length) return
     const link = `${SITE_URL}/api/account/callback?token=${signToken('login', email)}`
-    await sendEmail({
+    const sent = await sendEmail({
       to: email,
       subject: 'Sign in to deigineor.com',
       text: `Use this link to sign in and see your purchases (valid for 15 minutes):\n\n${link}\n\nIf you did not ask for it, ignore this email.`,
       html: `<p>Use this link to sign in and see your purchases (valid for 15 minutes):</p><p><a href="${link}">Sign in to deigineor.com</a></p><p>If you did not ask for it, ignore this email.</p>`,
     })
-  }
+    if (!sent) lastSent.delete(email) // let the buyer retry at once
+  })
   return reply(true)
 }
