@@ -79,6 +79,12 @@ spec:
                   name: deigineor-paddle
                   key: LICENSE_SIGNING_KEY
                   optional: true
+            - name: GITHUB_RELEASES_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: deigineor-github-releases
+                  key: GITHUB_RELEASES_TOKEN
+                  optional: true
             - name: SENTRY_DSN
               valueFrom:
                 secretKeyRef:
