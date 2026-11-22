@@ -25,7 +25,7 @@ export default async function Footer() {
         <p className="mono">© {new Date().getFullYear()}</p>
         <span className="site-footer__legal">
           <Link href="/terms">Terms</Link> · <Link href="/privacy">Privacy</Link> ·{' '}
-          <Link href="/refund">Refunds</Link>
+          <Link href="/refund">Refunds</Link> · <Link href="/account">Account</Link>
         </span>
       </div>
     </footer>

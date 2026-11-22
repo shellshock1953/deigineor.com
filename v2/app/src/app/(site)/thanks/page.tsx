@@ -27,6 +27,9 @@ export default async function Thanks({ searchParams }: { searchParams: Promise<{
             <ContactLink />.
           </p>
         )}
+        <p>
+          Your purchases are always available at <a href="/account">/account</a>: sign in with the email you bought with.
+        </p>
       </div>
     </div>
   )

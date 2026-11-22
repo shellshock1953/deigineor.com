@@ -1,0 +1,114 @@
+import type { Metadata } from 'next'
+
+import { licensesFor, sessionEmail } from '../../../lib/account-server'
+import { getLatest } from '../../../lib/download/studio'
+import { formatDate } from '../../../lib/format'
+import { PRODUCTS } from '../../../lib/products'
+
+export const metadata: Metadata = {
+  title: 'Account',
+  robots: { index: false, follow: false },
+}
+
+// Per-visitor (cookie) and DB-backed: never prerendered.
+export const dynamic = 'force-dynamic'
+
+async function studioVersion(): Promise<string | null> {
+  const token = process.env.GITHUB_RELEASES_TOKEN
+  if (!token) return null
+  return (await getLatest(token).catch(() => null))?.version ?? null
+}
+
+export default async function Account({
+  searchParams,
+}: {
+  searchParams: Promise<{ expired?: string; sent?: string; invalid?: string }>
+}) {
+  const { expired, sent, invalid } = await searchParams
+  const email = await sessionEmail()
+
+  if (!email) {
+    return (
+      <div className="container">
+        <header className="page-head">
+          <h1>Account</h1>
+        </header>
+        <div className="rich-text" style={{ marginTop: 24 }}>
+          {expired && (
+            <p role="alert">That sign-in link has expired or is not valid. Request a new one below.</p>
+          )}
+          {invalid && <p role="alert">Enter a valid email address.</p>}
+          {sent && (
+            <p role="status">If this email has purchases, a sign-in link is on its way. It is valid for 15 minutes.</p>
+          )}
+          <p>Sign in with the email you used at checkout to see your purchases and download them again. We will email you a sign-in link.</p>
+          <form method="post" action="/api/account/login" className="account-form">
+            <label htmlFor="account-email">Email</label>
+            <input id="account-email" name="email" type="email" autoComplete="email" required />
+            <button type="submit" className="btn btn--primary">
+              Email me a sign-in link
+            </button>
+          </form>
+        </div>
+      </div>
+    )
+  }
+
+  const [licenses, version] = await Promise.all([licensesFor(email), studioVersion()])
+  const v = version ? ` ${version}` : ''
+
+  return (
+    <div className="container">
+      <header className="page-head">
+        <h1>Account</h1>
+      </header>
+      <div className="rich-text" style={{ marginTop: 24 }}>
+        <p>
+          Signed in as <strong>{email}</strong>
+        </p>
+        <form method="post" action="/api/account/logout">
+          <button type="submit" className="btn btn--sm">
+            Sign out
+          </button>
+        </form>
+        <h2>Purchases</h2>
+        {licenses.length === 0 && <p>No purchases found for this email.</p>}
+        {licenses.map((l) => {
+          const product = PRODUCTS[l.product]
+          const active = l.status === 'active'
+          return (
+            <section key={l.txn} className="account-item">
+              <h3>{product?.title ?? l.product}</h3>
+              <p className="mono">
+                {formatDate(l.createdAt)} · {active ? 'Active' : 'Refunded'}
+              </p>
+              {active && (
+                <>
+                  <p>
+                    <a className="btn btn--primary" href={`/api/licence/${l.txn}`} download="Librarium.lic">
+                      Download licence file
+                    </a>
+                  </p>
+                  {product?.studioDownloads && (
+                    <>
+                      <p>
+                        <a className="btn btn--primary" href={`/api/download/studio?txn=${l.txn}&os=windows`}>
+                          Download Librarium Studio{v} for Windows
+                        </a>
+                      </p>
+                      <p>
+                        <a className="btn btn--primary" href={`/api/download/studio?txn=${l.txn}&os=linux`}>
+                          Download Librarium Studio{v} for Linux
+                        </a>
+                      </p>
+                    </>
+                  )}
+                </>
+              )}
+            </section>
+          )
+        })}
+      </div>
+    </div>
+  )
+}

@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { isAuthed } from '../fields'
+import { normalizeEmail } from '../lib/account'
 
 // Issued by the Paddle webhook (src/app/api/paddle/webhook). Never public: the buyer gets the file via /api/licence/<txn>.
 export const Licenses: CollectionConfig = {
@@ -11,7 +12,13 @@ export const Licenses: CollectionConfig = {
     { name: 'txn', type: 'text', required: true, unique: true, index: true },
     { name: 'product', type: 'text', required: true },
     { name: 'name', type: 'text', required: true },
-    { name: 'email', type: 'email', required: true },
+    {
+      name: 'email',
+      type: 'email',
+      required: true,
+      // Buyer sign-in matches on the normalised address; also covers rows edited in the admin.
+      hooks: { beforeValidate: [({ value }) => (typeof value === 'string' ? normalizeEmail(value) : value)] },
+    },
     { name: 'licence', type: 'textarea', required: true, admin: { description: 'The Librarium.lic file content.' } },
     {
       name: 'status',

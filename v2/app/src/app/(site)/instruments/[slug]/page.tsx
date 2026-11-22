@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { notFound } from 'next/navigation'
 
+import OwnedDownload from '../../../../components/OwnedDownload'
 import PaddleBuyButton from '../../../../components/PaddleBuyButton'
 import { CoverImage, coverUrl } from '../../../../components/cards'
 import { priceLabel } from '../../../../lib/format'
@@ -132,6 +133,7 @@ export default async function InstrumentPage({
                 </a>
               )
             )}
+            <OwnedDownload slug={l.slug} />
             {l.demoLinks?.map((d) => (
               <a
                 className="btn btn--sm"

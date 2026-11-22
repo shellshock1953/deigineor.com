@@ -1,6 +1,7 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
+import { normalizeEmail } from '../../../../lib/account'
 import { issueLicense, revocationFor, type PaddleEvent } from '../../../../lib/license/issue.mjs'
 import { addRevocation, isRevoked } from '../../../../lib/license/revocations'
 import { verifyPaddleSignature } from '../../../../lib/license/signature'
@@ -55,7 +56,7 @@ export async function POST(request: Request) {
     const customer = { ...rawCustomer, data: { ...rawCustomer.data, name } }
     const licence = issueLicense(signingKey, event, customer, ENTITLEMENT)
     const status = (await isRevoked(payload, txn)) ? ('revoked' as const) : ('active' as const)
-    const email = String(customer.data.email).trim().toLowerCase()
+    const email = normalizeEmail(customer.data.email) // the buyer account looks licences up by the normalised address
     const data = {
       txn,
       product: ENTITLEMENT,
