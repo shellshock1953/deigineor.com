@@ -1,3 +1,5 @@
+import { verifyToken } from './account'
+import type { PaddleEvent } from './license/issue.mjs'
 import { verifyPaddleSignature } from './license/signature'
 
 // testersOnly: the extra sandbox account; its purchases are test cards, so they only count for the tester segment.
@@ -29,4 +31,10 @@ export function pickPaddleAccount(
   nowMs?: number,
 ): PaddleAccount | undefined {
   return accounts.find((a) => verifyPaddleSignature(header, rawBody, a.secret, nowMs))
+}
+
+/** The signed-in tester a sandbox checkout is bound to: `custom_data.tester` is a 'checkout' token (from /api/flags) of an email with the sandbox flag. */
+export function sandboxBuyer(event: PaddleEvent, enabled: (flag: string, email: string) => boolean): string | null {
+  const email = verifyToken('checkout', event.data.custom_data?.tester)
+  return email && enabled('deigineor.paddle-sandbox', email) ? email : null
 }

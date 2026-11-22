@@ -4,7 +4,7 @@ import { useEffect, useState, type ReactNode } from 'react'
 
 import type { PaddleConfig } from '../lib/paddle'
 
-type Flags = { flags: string[]; paddle?: PaddleConfig }
+type Flags = { flags: string[]; paddle?: PaddleConfig & { proof: string } }
 
 // One /api/flags fetch per page load, shared by every gate and buy button. Never rejects: failure means no flags (fail open).
 let cache: Promise<Flags> | undefined

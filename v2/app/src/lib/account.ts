@@ -2,10 +2,10 @@ import { createHmac, timingSafeEqual } from 'node:crypto'
 
 // Stateless buyer sign-in: a signed token carries purpose, email and expiry. No Payload auth collection on purpose,
 // because `isAuthed` is `Boolean(req.user)` and a buyer user would read every licence and the admin.
-export type Purpose = 'login' | 'session'
+export type Purpose = 'login' | 'session' | 'checkout'
 
 export const SESSION_COOKIE = 'dg_session'
-export const TTL_SECONDS: Record<Purpose, number> = { login: 15 * 60, session: 30 * 24 * 3600 }
+export const TTL_SECONDS: Record<Purpose, number> = { login: 15 * 60, session: 30 * 24 * 3600, checkout: 2 * 3600 }
 
 export const normalizeEmail = (email: string) => email.trim().toLowerCase()
 

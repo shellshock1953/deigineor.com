@@ -77,6 +77,7 @@ export default function PaddleBuyButton({
             settings: {
               displayMode: 'overlay',
             },
+            ...(sandbox && { customData: { tester: sandbox.proof } }),
           })
         }
       >

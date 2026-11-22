@@ -5,7 +5,7 @@ import { normalizeEmail } from '../../../../lib/account'
 import { issueLicense, revocationFor, type PaddleEvent } from '../../../../lib/license/issue.mjs'
 import { addRevocation, isRevoked } from '../../../../lib/license/revocations'
 import { flagsReady, isEnabled } from '../../../../lib/flags'
-import { paddleAccounts, pickPaddleAccount } from '../../../../lib/paddle-account'
+import { paddleAccounts, pickPaddleAccount, sandboxBuyer } from '../../../../lib/paddle-account'
 import { sendEmail, SITE_URL } from '../../../../lib/email'
 
 export const dynamic = 'force-dynamic'
@@ -43,6 +43,15 @@ export async function POST(request: Request) {
     const existing = await payload.find({ collection: 'licenses', where: { txn: { equals: txn } }, limit: 1, depth: 0 })
     if (existing.docs.length) return new Response(null, { status: 200 })
 
+    // A sandbox (test card) purchase on the production site is a licence only for a signed-in tester: the checkout carries
+    // a signed proof of the session email, the email typed into Paddle is not trusted.
+    await flagsReady()
+    const tester = account.testersOnly ? sandboxBuyer(event, isEnabled) : null
+    if (account.testersOnly && !tester) {
+      console.error(`paddle webhook: sandbox purchase ${txn} without a valid tester proof, no licence issued`)
+      return new Response(null, { status: 200 })
+    }
+
     const res = await fetch(`https://${account.apiBase}.paddle.com/customers/${encodeURIComponent(event.data.customer_id)}`, {
       headers: { Authorization: `Bearer ${account.apiKey}` },
     })
@@ -52,16 +61,10 @@ export async function POST(request: Request) {
     }
     const rawCustomer = await res.json()
     const name = rawCustomer.data.name || rawCustomer.data.email
-    const customer = { ...rawCustomer, data: { ...rawCustomer.data, name } }
+    const customer = { ...rawCustomer, data: { ...rawCustomer.data, name, email: tester ?? rawCustomer.data.email } }
     const licence = issueLicense(signingKey, event, customer, ENTITLEMENT)
     const status = (await isRevoked(payload, txn)) ? ('revoked' as const) : ('active' as const)
     const email = normalizeEmail(customer.data.email) // the buyer account looks licences up by the normalised address
-    // A sandbox (test card) purchase on the production site is a licence only for testers; anyone else got the token somehow.
-    await flagsReady()
-    if (account.testersOnly && !isEnabled('deigineor.paddle-sandbox', email)) {
-      console.error(`paddle webhook: sandbox purchase ${txn} by a non-tester, no licence issued`)
-      return new Response(null, { status: 200 })
-    }
     const data = {
       txn,
       product: ENTITLEMENT,

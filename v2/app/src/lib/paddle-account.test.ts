@@ -2,7 +2,8 @@ import assert from 'node:assert/strict'
 import { createHmac } from 'node:crypto'
 import { test } from 'node:test'
 
-import { paddleAccounts, pickPaddleAccount } from './paddle-account'
+import { signToken } from './account'
+import { paddleAccounts, pickPaddleAccount, sandboxBuyer } from './paddle-account'
 
 const now = 1_700_000_000_000
 const body = '{"event_type":"transaction.completed"}'
@@ -41,4 +42,15 @@ test('main account on a sandbox site uses the sandbox API; unset sandbox secrets
   assert.equal(accounts.length, 1)
   assert.equal(accounts[0].apiBase, 'sandbox-api')
   assert.equal(paddleAccounts({}).length, 0)
+})
+
+test('sandbox purchase is bound to a signed-in tester through the checkout proof', () => {
+  process.env.PAYLOAD_SECRET = 'test-secret'
+  const ev = (tester?: string) => ({ event_type: 'transaction.completed', occurred_at: '', data: { custom_data: tester ? { tester } : null } })
+  const on = (_f: string, email: string) => email === 't@x.co'
+  assert.equal(sandboxBuyer(ev(signToken('checkout', 'T@x.co')), on), 't@x.co')
+  assert.equal(sandboxBuyer(ev(), on), null) // typed email only, no proof
+  assert.equal(sandboxBuyer(ev(signToken('session', 't@x.co')), on), null) // wrong purpose
+  assert.equal(sandboxBuyer(ev(signToken('checkout', 'u@x.co')), on), null) // not a tester
+  assert.equal(sandboxBuyer(ev('garbage'), on), null)
 })
