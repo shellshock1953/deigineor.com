@@ -1,6 +1,6 @@
-import { createHash } from 'node:crypto'
 import type { Payload } from 'payload'
 
+import { keyedHex } from './account'
 import { isEnabled } from './flags'
 import { issueLicense, type RevokedEntry } from './license/issue.mjs'
 import { PRODUCTS } from './products'
@@ -12,9 +12,9 @@ export const DEV = 'dev'
 type Enabled = (flag: string, email?: string | null) => boolean
 type Row = { email: string; product: string; status: 'active' | 'revoked'; paddleCustomerId?: string | null }
 
-/** Stable id per (email, entitlement); matches `^txn_[0-9a-z]{1,64}$`. */
+/** Stable id per (email, entitlement); matches `^txn_[0-9a-z]{1,64}$`. Keyed: the txn is a bearer secret for /api/licence and the download, so it must not be computable from an email. */
 export function testerTxn(email: string, product: string): string {
-  return `txn_${DEV}${createHash('sha256').update(`${email}|${product}`).digest('hex').slice(0, 24)}`
+  return `txn_${DEV}${keyedHex('deigineor-tester-txn-v1', `${email}|${product}`).slice(0, 24)}`
 }
 
 /** Real rows: the stored status. Tester rows: from the flags, `null` when the tester does not own the product. */

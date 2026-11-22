@@ -9,11 +9,13 @@ export const TTL_SECONDS: Record<Purpose, number> = { login: 15 * 60, session: 3
 
 export const normalizeEmail = (email: string) => email.trim().toLowerCase()
 
-const key = () => {
+const key = (label = 'deigineor-account-v1') => {
   const secret = process.env.PAYLOAD_SECRET
   if (!secret) throw new Error('account: PAYLOAD_SECRET is not set') // fail closed
-  return createHmac('sha256', secret).update('deigineor-account-v1').digest()
+  return createHmac('sha256', secret).update(label).digest()
 }
+/** Hex HMAC of `data` under a key derived from PAYLOAD_SECRET and `label` (a separate key per use). */
+export const keyedHex = (label: string, data: string) => createHmac('sha256', key(label)).update(data).digest('hex')
 const mac = (body: string) => createHmac('sha256', key()).update(body).digest()
 
 export function signToken(purpose: Purpose, email: string, now = Date.now()): string {

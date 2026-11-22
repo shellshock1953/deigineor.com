@@ -4,6 +4,8 @@ import { test } from 'node:test'
 import type { RevokedEntry } from './license/issue.mjs'
 import { effectiveStatus, mergeTesterRevocations, testerTxn } from './testers'
 
+process.env.PAYLOAD_SECRET = 'test-secret'
+
 const flags = (on: string[]) => (name: string, email?: string | null) => on.includes(`${name}@${email}`)
 const own = 'deigineor.own.librarium-studio@t@x.co'
 const rev = 'deigineor.revoked.librarium-studio@t@x.co'
@@ -17,6 +19,9 @@ test('tester txn is stable, lower-case hex and passes the txn check', () => {
   assert.match(a, /^txn_[0-9a-z]{1,64}$/)
   assert.notEqual(a, testerTxn('t@x.co', 'other'))
   assert.notEqual(a, testerTxn('u@x.co', 'librarium-studio'))
+  process.env.PAYLOAD_SECRET = 'other-secret'
+  assert.notEqual(a, testerTxn('t@x.co', 'librarium-studio'))
+  process.env.PAYLOAD_SECRET = 'test-secret'
 })
 
 test('effective status: real rows keep their stored status, tester rows follow the flags', () => {
