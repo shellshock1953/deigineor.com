@@ -10,7 +10,7 @@
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "lint": "eslint .",
-    "test": "node --import tsx --test src/proxy.test.ts src/lib/license/license.test.ts src/lib/download/studio.test.ts src/lib/account.test.ts",
+    "test": "node --import tsx --test src/proxy.test.ts src/lib/license/license.test.ts src/lib/download/studio.test.ts src/lib/account.test.ts src/lib/testers.test.ts",
     "typecheck": "tsc --noEmit",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "migrate": "pnpm payload migrate",

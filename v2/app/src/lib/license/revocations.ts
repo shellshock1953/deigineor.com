@@ -1,6 +1,7 @@
 import type { Payload } from 'payload'
 
 import { revocationList, type RevokedEntry } from './issue.mjs'
+import { mergeTesterRevocations } from '../testers'
 
 const SLUG = 'license-revocations' as const
 
@@ -41,4 +42,17 @@ export async function addRevocation(payload: Payload, seedHex: string, entry: Re
   // shortcut: read-modify-write without a lock, fine at refund volume; add a row lock if two refunds can land in the same ms
   const json = revocationList(seedHex, issuedAt, [...(cur?.entries ?? []), entry])
   await payload.updateGlobal({ slug: SLUG, data: { revokedJson: json } })
+}
+
+/** Brings the `txn_dev*` entries in line with `desired` (tester flags); re-signs only when they differ. Returns the current JSON. */
+export async function syncTesterRevocations(payload: Payload, seedHex: string, desired: RevokedEntry[]): Promise<string | null> {
+  const cur = await read(payload)
+  if (!cur) return null
+  const entries = mergeTesterRevocations(cur.entries, desired)
+  if (!entries) return cur.json
+  let issuedAt = new Date().toISOString()
+  if (issuedAt <= cur.issuedAt) issuedAt = new Date(Date.parse(cur.issuedAt) + 1).toISOString()
+  const json = revocationList(seedHex, issuedAt, entries)
+  await payload.updateGlobal({ slug: SLUG, data: { revokedJson: json } })
+  return json
 }
