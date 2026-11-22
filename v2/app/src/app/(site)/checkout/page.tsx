@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
+import FeatureGate from '../../../components/FeatureGate'
 import { PaddleScript } from '../../../components/PaddleBuyButton'
 import { getPaddleConfig } from '../../../lib/paddle'
 
@@ -18,11 +19,20 @@ export default function Checkout() {
   return (
     <div className="container">
       <h1>Checkout</h1>
-      <p>Your secure checkout opens here. If nothing appears, reload the page.</p>
+      <FeatureGate
+        flag="deigineor.sales-paused"
+        fallback={
+          <>
+            <p>Your secure checkout opens here. If nothing appears, reload the page.</p>
+            {config && <PaddleScript {...config} />}
+          </>
+        }
+      >
+        <p>Sales are paused for a moment, please try again later.</p>
+      </FeatureGate>
       <p>
         <Link href="/instruments">Back to instruments</Link>
       </p>
-      {config && <PaddleScript {...config} />}
     </div>
   )
 }
