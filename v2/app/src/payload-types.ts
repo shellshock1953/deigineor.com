@@ -351,6 +351,10 @@ export interface Library {
    */
   paddlePriceId?: string | null;
   /**
+   * Price id (pri_…) in the Paddle sandbox account; shown to testers (flag deigineor.paddle-sandbox) while the site sells on production
+   */
+  paddleSandboxPriceId?: string | null;
+  /**
    * e.g. VST3, AU, Kontakt
    */
   platforms?:
@@ -642,6 +646,7 @@ export interface LibrariesSelect<T extends boolean = true> {
   currency?: T;
   buyUrl?: T;
   paddlePriceId?: T;
+  paddleSandboxPriceId?: T;
   platforms?:
     | T
     | {

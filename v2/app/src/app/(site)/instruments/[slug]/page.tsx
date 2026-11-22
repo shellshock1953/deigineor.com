@@ -114,6 +114,7 @@ export default async function InstrumentPage({
               <PaddleBuyButton
                 config={paddle}
                 priceId={l.paddlePriceId!}
+                sandboxPriceId={l.paddleSandboxPriceId}
                 slug={l.slug}
                 label={`Buy — ${priceLabel(l.price ?? 0, l.currency)}`}
               />
