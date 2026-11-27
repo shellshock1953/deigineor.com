@@ -19,7 +19,7 @@ Portfolio of the music project "Deigineor" (owner: shellshock1953). Two sites li
 1. Branch, change, `just check`.
 2. PR, merge when CI is green.
 3. GitHub Actions builds the image, pushes `ghcr.io/shellshock1953/deigineor.com/app:sha-<shortsha>`, updates `newTag` in `v2/deploy/kustomization.yaml`, and commits back to `main`.
-4. ArgoCD syncs the deployment to libra. Check status with `just status` or https://deigineor.com.
+4. ArgoCD syncs the deployment to eridanus (served through its Cloudflare tunnel). Check status with `just status` or https://deigineor.com.
 
 ## Tasks
 
