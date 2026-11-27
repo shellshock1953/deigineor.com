@@ -14,7 +14,7 @@ export async function GET(request: Request) {
   const url = new URL(request.url)
   const txn = url.searchParams.get('txn') ?? ''
   const os = url.searchParams.get('os')
-  if (!/^txn_[0-9a-z]{1,64}$/.test(txn) || (os !== 'windows' && os !== 'linux')) {
+  if (!/^txn_[0-9a-z]{1,64}$/.test(txn) || (os !== 'windows' && os !== 'macos' && os !== 'linux')) {
     return new Response(null, { status: 404, headers: noStore })
   }
   await flagsReady()

@@ -1,4 +1,5 @@
-export type Os = 'windows' | 'linux'
+export type Os = 'windows' | 'macos' | 'linux'
+const OS_NAME: Record<Os, string> = { windows: 'Windows', macos: 'macOS', linux: 'Linux' }
 export type Asset = { id: number; name: string }
 export type Release = { tag_name: string; draft: boolean; prerelease: boolean; assets: Asset[] }
 export type Latest = { version: string; assets: Partial<Record<Os, number>> }
@@ -22,14 +23,14 @@ export function pickRelease(releases: Release[]): Release | null {
 
 /** Studio zip for one OS; `LibrariumPlayer-*` and anything else never matches. */
 export function pickAsset(release: Release, os: Os, version: string): Asset | null {
-  const want = `Librarium-${version}-${os === 'windows' ? 'Windows' : 'Linux'}-VST3.zip`
+  const want = `Librarium-${version}-${OS_NAME[os]}-VST3.zip`
   return release.assets.find((a) => a.name === want) ?? null
 }
 
 export function toLatest(release: Release): Latest {
   const version = release.tag_name.replace(/^librarium-v/, '')
   const assets: Latest['assets'] = {}
-  for (const os of ['windows', 'linux'] as const) {
+  for (const os of ['windows', 'macos', 'linux'] as const) {
     const a = pickAsset(release, os, version)
     if (a) assets[os] = a.id
   }

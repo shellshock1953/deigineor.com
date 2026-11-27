@@ -96,6 +96,9 @@ export default async function Account({
                         <a className="btn btn--primary" href={`/api/download/studio?txn=${l.txn}&os=windows`}>
                           Download for Windows
                         </a>
+                        <a className="btn btn--primary" href={`/api/download/studio?txn=${l.txn}&os=macos`}>
+                          Download for macOS
+                        </a>
                         <a className="btn btn--primary" href={`/api/download/studio?txn=${l.txn}&os=linux`}>
                           Download for Linux
                         </a>
