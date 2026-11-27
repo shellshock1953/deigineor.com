@@ -1,4 +1,6 @@
 import Link from 'next/link'
+
+import { STORE_URL } from '../lib/email'
 import { getSite } from '../lib/data'
 
 export default async function Footer({ store = false }: { store?: boolean }) {
@@ -26,7 +28,8 @@ export default async function Footer({ store = false }: { store?: boolean }) {
         <p className="mono">© {new Date().getFullYear()}</p>
         <span className="site-footer__legal">
           <Link href="/terms">Terms</Link> · <Link href="/privacy">Privacy</Link> ·{' '}
-          <Link href="/refund">Refunds</Link> · <Link href="/account">Account</Link>
+          <Link href="/refund">Refunds</Link> ·{' '}
+          {store ? <Link href="/account">Account</Link> : <Link href={STORE_URL}>Store</Link>}
         </span>
       </div>
     </footer>

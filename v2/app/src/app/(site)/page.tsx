@@ -6,6 +6,7 @@ import { Wordmark } from '../../components/Logo'
 import Oscilloscope from '../../components/Oscilloscope'
 import { formatDate, KIND_LABELS, releaseIndex } from '../../lib/format'
 import { getLibraries, getReleases, getSite, getVideos } from '../../lib/data'
+import { STORE_URL } from '../../lib/email'
 import { excerpt } from '../../lib/rich-text'
 
 // Rendered per request: the Docker image is built without a database
@@ -43,8 +44,8 @@ export default async function Home() {
           <Link className="btn" href="/game-audio">
             Game audio
           </Link>
-          <Link className="btn" href="/instruments">
-            Instruments
+          <Link className="btn" href={STORE_URL}>
+            Store
           </Link>
         </div>
         <div className="hero__scope">
@@ -156,7 +157,7 @@ export default async function Home() {
                 <h2 id="instruments-h">Sample libraries & plugins</h2>
               </div>
               <Link className="btn btn--sm" href="/instruments">
-                All instruments
+                Free libraries
               </Link>
             </div>
             <div className="instruments-strip">

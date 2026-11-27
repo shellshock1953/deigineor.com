@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { RichText } from '@payloadcms/richtext-lexical/react'
+import Link from 'next/link'
 
 import { getSite } from '../../../lib/data'
 
@@ -32,6 +33,12 @@ export default async function About() {
           ) : (
             site.shortBio && <p className="page-head__sub">{site.shortBio}</p>
           )}
+
+          <p style={{ marginTop: 24 }}>
+            <Link className="btn btn--sm" href="/instruments">
+              Free Kontakt libraries
+            </Link>
+          </p>
 
           {site.contactEmail && (
             <p style={{ marginTop: 24 }}>
