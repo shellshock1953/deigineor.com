@@ -110,7 +110,7 @@ spec:
                   key: RESEND_API_KEY
                   optional: true
             - name: UNLEASH_URL
-              value: http://192.168.2.225:4242/api  # ara Unleash LAN LoadBalancer
+              value: https://unleash.kudu-skate.ts.net/api  # ara Unleash via the eridanus tailnet egress
             - name: UNLEASH_CLIENT_TOKEN
               valueFrom:
                 secretKeyRef:
