@@ -42,6 +42,15 @@ carries `trello:<list>` labels.
 - Keep v2 usable at 360px width without horizontal scroll; keep alt texts, contrast, focus states and `prefers-reduced-motion`.
 - Do not edit `v2/deploy` casually: ArgoCD applies it to production.
 
+## STORE WORDING: WE SELL SOFTWARE, NOT SAMPLES (Paddle)
+
+Paddle rejected deigineor.com (2026-11) because it read as a music portfolio; Paddle sells software only.
+Everything on store.deigineor.com, product copy, CMS text, emails, checkout item names and the Paddle catalog, must read as SOFTWARE:
+
+- **WRITE "ARRIVAL FOR LIBRARIUM: FREE EDITION / FULL EDITION". NEVER WRITE "SAMPLE PACK", "SAMPLES FOR SALE" OR "KONTAKT LIBRARY" FOR A PAID ITEM.**
+- **A PAID ITEM IS AN INSTRUMENT ADD-ON FOR LIBRARIUM STUDIO WHOSE FULL EDITION IS UNLOCKED INSIDE THE APP BY A LICENCE.** Never sell raw WAV/Kontakt downloads.
+- Product description for Paddle: *"Librarium Studio (sampler application) and instrument add-ons for it; paid editions unlock features inside the app via licence."*
+
 ## Commands (`justfile`)
 
 - `just check`: render `v2/deploy`, verify local `href`/`src` in `v2/site/*.html` exist, parse the HTML.
