@@ -1,6 +1,6 @@
 name: App CI/CD
 
-# Build + deploy run on our own ARC runner (deigineor-runners, dind, libra-worker-ci-1 / sirius).
+# Build runs on ARC runner class deigineor-ci-ram (dind, prefers libra-worker-ram-1), deploy on deigineor-ci-cpu.
 
 on:
   push:
@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: deigineor-runners
+    runs-on: deigineor-ci-ram
     outputs:
       short_sha: ${{ steps.vars.outputs.short_sha }}
     steps:
@@ -52,7 +52,7 @@ jobs:
   deploy:
     needs: build
     if: github.event_name != 'pull_request'
-    runs-on: deigineor-runners
+    runs-on: deigineor-ci-cpu
     concurrency:
       group: deploy-main
       cancel-in-progress: false
