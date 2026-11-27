@@ -3,9 +3,14 @@ kind: Deployment
 metadata:
   name: deigineor
 spec:
-  replicas: 1
+  # Two replicas + surge-only rollout: one pod always serves during a deploy.
+  # The media PVC is ReadWriteOnce, which is fine while eridanus is a single node (both pods share it).
+  replicas: 2
   strategy:
-    type: Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   template:
     spec:
       securityContext:
@@ -158,6 +163,11 @@ spec:
               port: http
             periodSeconds: 15
             timeoutSeconds: 5
+          lifecycle:
+            preStop:
+              # Keep serving while the endpoint removal reaches ingress-nginx, then exit.
+              exec:
+                command: ["sleep", "10"]
           volumeMounts:
             - name: media
               mountPath: /data/media

@@ -66,3 +66,17 @@ test('isRevoked checks stored revocation list', async () => {
   const emptyPayload = { findGlobal: async () => ({}) } as unknown as Parameters<typeof isRevoked>[0]
   assert.equal(await isRevoked(emptyPayload, 'txn_revoked'), false)
 })
+
+test('pgLocked holds the advisory lock around fn and releases the client even when fn throws', async () => {
+  const { pgLocked } = await import('./revocations')
+  const log: string[] = []
+  const pool = {
+    connect: async () => ({
+      query: async (text: string) => void log.push(text.includes('unlock') ? 'unlock' : 'lock'),
+      release: () => void log.push('release'),
+    }),
+  }
+  assert.equal(await pgLocked(pool, async () => (log.push('fn'), 42)), 42)
+  await assert.rejects(pgLocked(pool, async () => { log.push('fn'); throw new Error('boom') }), /boom/)
+  assert.deepEqual(log, ['lock', 'fn', 'unlock', 'release', 'lock', 'fn', 'unlock', 'release'])
+})
