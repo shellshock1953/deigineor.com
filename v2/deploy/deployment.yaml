@@ -58,9 +58,13 @@ spec:
             - name: NEXT_PUBLIC_SITE_URL
               value: https://deigineor.com
             - name: NEXT_PUBLIC_PADDLE_ENV  # read at request time (src/lib/paddle.ts), not a build arg
-              value: sandbox
-            - name: NEXT_PUBLIC_PADDLE_CLIENT_TOKEN  # public client-side token, not a secret
-              value: test_c1b40aab0058a6276b55c9190ec
+              value: production
+            - name: NEXT_PUBLIC_PADDLE_CLIENT_TOKEN  # public client-side token, read at request time
+              valueFrom:
+                secretKeyRef:
+                  name: deigineor-paddle
+                  key: PADDLE_CLIENT_TOKEN
+                  optional: true
             - name: PADDLE_API_KEY
               valueFrom:
                 secretKeyRef:
