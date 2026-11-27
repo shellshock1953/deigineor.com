@@ -219,12 +219,13 @@ button {
   color: var(--accent);
 }
 
-/* Buyer sign-in: after the nav on desktop, beside the brand on narrow screens */
+/* Nav (main site) and Account (store host, no nav) sit at the right edge */
 .site-header__nav {
   margin-left: auto;
 }
 
 .site-header__account {
+  margin-left: auto;
   color: var(--moss);
   text-decoration: none;
   font-size: 0.92rem;

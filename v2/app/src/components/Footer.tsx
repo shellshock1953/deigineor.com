@@ -29,7 +29,13 @@ export default async function Footer({ store = false }: { store?: boolean }) {
         <span className="site-footer__legal">
           <Link href="/terms">Terms</Link> · <Link href="/privacy">Privacy</Link> ·{' '}
           <Link href="/refund">Refunds</Link> ·{' '}
-          {store ? <Link href="/account">Account</Link> : <Link href={STORE_URL}>Store</Link>}
+          {store ? (
+            <Link href="/account">Account</Link>
+          ) : (
+            <>
+              <Link href={STORE_URL}>Store</Link> · <Link href="/instruments">Free Kontakt libraries</Link>
+            </>
+          )}
         </span>
       </div>
     </footer>
