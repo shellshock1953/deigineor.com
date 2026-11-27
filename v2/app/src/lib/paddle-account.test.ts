@@ -3,6 +3,7 @@ import { createHmac } from 'node:crypto'
 import { test } from 'node:test'
 
 import { signToken } from './account'
+import { resolvePaddlePrice } from './paddle'
 import { paddleAccounts, pickPaddleAccount, sandboxBuyer } from './paddle-account'
 
 const now = 1_700_000_000_000
@@ -53,4 +54,39 @@ test('sandbox purchase is bound to a signed-in tester through the checkout proof
   assert.equal(sandboxBuyer(ev(signToken('session', 't@x.co')), on), null) // wrong purpose
   assert.equal(sandboxBuyer(ev(signToken('checkout', 'u@x.co')), on), null) // not a tester
   assert.equal(sandboxBuyer(ev('garbage'), on), null)
+})
+
+test('resolvePaddlePrice computes base price and active checkout discount', () => {
+  const rawPrice = {
+    id: 'pri_1',
+    product_id: 'pro_1',
+    status: 'active',
+    unit_price: { amount: '9900', currency_code: 'USD' },
+  }
+  assert.deepEqual(resolvePaddlePrice(rawPrice, []), { price: 99, currency: 'USD' })
+
+  const pct = {
+    id: 'dsc_10',
+    status: 'active',
+    enabled_for_checkout: true,
+    type: 'percentage' as const,
+    amount: '10',
+    restrict_to: ['pri_1'],
+  }
+  assert.deepEqual(resolvePaddlePrice(rawPrice, [pct]), {
+    price: 89.1,
+    currency: 'USD',
+    originalPrice: 99,
+    discountId: 'dsc_10',
+    discountPercent: 10,
+  })
+
+  // Disabled for checkout or restricted to another price is ignored.
+  assert.deepEqual(
+    resolvePaddlePrice(rawPrice, [
+      { ...pct, enabled_for_checkout: false },
+      { ...pct, restrict_to: ['pri_other'] },
+    ]),
+    { price: 99, currency: 'USD' },
+  )
 })

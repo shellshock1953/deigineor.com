@@ -48,12 +48,14 @@ export default function PaddleBuyButton({
   config,
   priceId,
   sandboxPriceId,
+  discountId,
   slug,
   label,
 }: {
   config: PaddleConfig
   priceId: string
   sandboxPriceId?: string | null
+  discountId?: string | null
   slug: string
   label: string
 }) {
@@ -74,6 +76,7 @@ export default function PaddleBuyButton({
         onClick={() =>
           paddle()?.Checkout.open({
             items: [{ priceId: sandbox ? sandboxPriceId : priceId, quantity: 1 }],
+            ...(discountId && { discountId }),
             settings: {
               displayMode: 'overlay',
             },
