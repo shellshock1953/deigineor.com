@@ -11,7 +11,7 @@ Portfolio of the music project "Deigineor" (owner: shellshock1953). Two sites li
   (`www.` 301s to it; the old `v2.deigineor.com` was retired 2026-11-13). Admin interface at https://deigineor.com/admin. Database is CloudNativePG (`deigineor-postgres`),
   and uploaded media is stored on a PersistentVolumeClaim (`deigineor-media`) at `/data/media`.
 - **Store host**: https://store.deigineor.com is the same app, shop only (store home at `/`, paid `/instruments/<slug>`, checkout, thanks, account, legal pages; `/api/*` on both hosts).
-  `v2/app/src/proxy.ts` + `src/lib/store.ts` decide per `Host`: other paths on the store host redirect to deigineor.com, and `/checkout`, `/thanks`, `/account` on deigineor.com redirect to the store.
+  `v2/app/src/proxy.ts` + `src/lib/store.ts` decide per `Host`: other paths on the store host redirect to deigineor.com, and `/store`, `/checkout`, `/thanks`, `/account` on deigineor.com redirect to the store.
   The Paddle webhook, account emails and licence links use `STORE_URL` (default the store host). It exists so Paddle's domain review sees a software shop, not a music portfolio.
 - **Deploy manifests**: `v2/deploy/` (kustomize), synced by the ArgoCD app `deigineor`, defined in
   `shellshock1953/UES` at `services/helm/argocd-apps/libra.yaml`. Namespace `deigineor`.
