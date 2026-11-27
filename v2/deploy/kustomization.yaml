@@ -15,7 +15,7 @@ resources:
   - ingress.yaml
 images:
   - name: ghcr.io/shellshock1953/deigineor.com/app
-    newTag: sha-d70db96
+    newTag: sha-4ac0c42
 replacements:
   - source:
       kind: Deployment
