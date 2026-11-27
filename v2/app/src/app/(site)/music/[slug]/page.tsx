@@ -9,21 +9,8 @@ import { formatDate, KIND_LABELS, releaseIndex, spotifyEmbedUrl } from '../../..
 import { getReleaseBySlug, getReleases } from '../../../../lib/data'
 import { excerpt } from '../../../../lib/rich-text'
 
-export const revalidate = 60
-
-/**
- * CI builds the image without a database, so params can only be listed when
- * the DB is reachable; unknown slugs are still rendered on demand at runtime
- * (`dynamicParams` default) and cached for 60s.
- */
-export async function generateStaticParams() {
-  try {
-    const releases = await getReleases()
-    return releases.map((r) => ({ slug: r.slug }))
-  } catch {
-    return []
-  }
-}
+// Dynamic: the site layout reads the Host header (store vs main site), so ISR here 500s with DYNAMIC_SERVER_USAGE.
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({
   params,
