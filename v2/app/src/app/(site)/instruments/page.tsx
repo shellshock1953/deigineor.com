@@ -18,7 +18,7 @@ export default async function Instruments() {
   return (
     <div className="container">
       <header className="page-head">
-        <span className="section__kicker">CH 03 · Instruments</span>
+        <span className="section__kicker">CH 03 · Libraries</span>
         <h1>Free Kontakt libraries</h1>
         <p className="page-head__sub">
           {libraries.length} free downloads on Pianobook.

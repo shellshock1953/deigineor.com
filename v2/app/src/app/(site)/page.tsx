@@ -156,9 +156,14 @@ export default async function Home() {
                 <span className="section__kicker">CH 03 · Instruments</span>
                 <h2 id="instruments-h">Sample libraries & plugins</h2>
               </div>
-              <Link className="btn btn--sm" href="/instruments">
-                Free libraries
-              </Link>
+              <div className="section__actions">
+                <Link className="btn btn--sm btn--primary" href={STORE_URL}>
+                  Store
+                </Link>
+                <Link className="btn btn--sm" href="/instruments">
+                  Free libraries
+                </Link>
+              </div>
             </div>
             <div className="instruments-strip">
               {strip.map((l) => (

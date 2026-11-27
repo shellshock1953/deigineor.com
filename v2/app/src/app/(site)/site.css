@@ -399,6 +399,12 @@ button {
   text-transform: uppercase;
 }
 
+.section__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .section__head .btn {
   margin-top: 4px;
 }
