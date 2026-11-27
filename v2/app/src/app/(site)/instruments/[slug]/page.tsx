@@ -6,11 +6,13 @@ import OwnedDownload from '../../../../components/OwnedDownload'
 import PaddleBuyButton from '../../../../components/PaddleBuyButton'
 import { CoverImage, coverUrl } from '../../../../components/cards'
 import { sessionEmail } from '../../../../lib/account-server'
+import { STORE_URL } from '../../../../lib/email'
 import { isEnabled, flagsReady } from '../../../../lib/flags'
 import { priceLabel } from '../../../../lib/format'
 import { getLibraryBySlug } from '../../../../lib/data'
 import { getPaddleConfig, getPaddlePrice } from '../../../../lib/paddle'
 import { excerpt } from '../../../../lib/rich-text'
+import { isStoreRequest } from '../../../../lib/store'
 
 // Dynamic: the sandbox checkout gate reads searchParams (static params + ISR → DYNAMIC_SERVER_USAGE 500).
 export const dynamic = 'force-dynamic'
@@ -49,7 +51,9 @@ export default async function InstrumentPage({
   const { slug } = await params
   const { checkout } = await searchParams
   const l = await getLibraryBySlug(slug)
-  if (!l) notFound()
+  const store = await isStoreRequest()
+  // The store host shows only things for sale.
+  if (!l || (store && l.pricing !== 'paid')) notFound()
 
   const isPaid = l.pricing === 'paid'
   const paddle = getPaddleConfig()
@@ -134,7 +138,12 @@ export default async function InstrumentPage({
           )}
 
           <div className="detail__links">
-            {paddleBuy ? (
+            {paddleBuy && !store ? (
+              // Checkout only opens on the store host.
+              <a className="btn btn--primary" href={`${STORE_URL}/instruments/${l.slug}`} data-track="library_get" data-library={l.slug} data-action="buy">
+                {`Buy — ${priceLabel(displayPrice ?? 0, displayCurrency)}${livePrice?.discountPercent != null ? ` (−${livePrice.discountPercent}%)` : ''}`}
+              </a>
+            ) : paddleBuy ? (
               <PaddleBuyButton
                 config={paddle}
                 priceId={l.paddlePriceId!}
@@ -160,7 +169,7 @@ export default async function InstrumentPage({
               )
             )}
             <OwnedDownload slug={l.slug} />
-            {l.demoLinks?.map((d) => (
+            {!store && l.demoLinks?.map((d) => (
               <a
                 className="btn btn--sm"
                 key={d.id ?? d.label}

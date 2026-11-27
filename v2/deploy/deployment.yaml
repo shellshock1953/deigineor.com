@@ -57,6 +57,8 @@ spec:
               value: /data/media
             - name: NEXT_PUBLIC_SITE_URL
               value: https://deigineor.com
+            - name: STORE_URL  # shop host: account, checkout, licence links (src/lib/email.ts)
+              value: https://store.deigineor.com
             - name: NEXT_PUBLIC_PADDLE_ENV  # read at request time (src/lib/paddle.ts), not a build arg
               value: production
             - name: NEXT_PUBLIC_PADDLE_CLIENT_TOKEN  # public client-side token, read at request time
