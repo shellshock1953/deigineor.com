@@ -1,6 +1,6 @@
 name: CI
 
-# Minimal PR gate on the self-hosted runner (ARC scale set deigineor-runners on
+# Minimal PR gate on the self-hosted runner (ARC scale set deigineor-ci-cpu on
 # libra-worker-ci-1 / sirius). Image builds and deploys stay in app.yml.
 on:
   pull_request:
@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   check:
-    runs-on: deigineor-runners
+    runs-on: deigineor-ci-cpu
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
