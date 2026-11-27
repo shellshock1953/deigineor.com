@@ -12,12 +12,29 @@ function parse(json: string): Stored {
   return { json, issuedAt: p.issued_at, entries: p.revoked }
 }
 
-// shortcut: in-process lock, valid while replicas: 1; move to a pg advisory lock before scaling
+// Writers are serialised across replicas by a Postgres advisory lock. The in-process queue in front
+// keeps each process to one waiting pool connection (waiters holding connections could starve fn).
 // On globalThis like the Unleash client: Next may load this module once per route bundle.
 type LockGlobal = typeof globalThis & { __deigineorRevocationsLock?: Promise<unknown> }
 const lg = globalThis as LockGlobal
-function locked<T>(fn: () => Promise<T>): Promise<T> {
-  const run = (lg.__deigineorRevocationsLock ?? Promise.resolve()).then(fn)
+type PoolLike = { connect(): Promise<{ query(text: string, values?: unknown[]): Promise<unknown>; release(): void }> }
+const LOCK_KEY = 7182026 // app-wide id of the revocation-list lock
+export async function pgLocked<T>(pool: PoolLike, fn: () => Promise<T>): Promise<T> {
+  const client = await pool.connect()
+  try {
+    await client.query('select pg_advisory_lock($1)', [LOCK_KEY])
+    try {
+      return await fn()
+    } finally {
+      await client.query('select pg_advisory_unlock($1)', [LOCK_KEY])
+    }
+  } finally {
+    client.release()
+  }
+}
+function locked<T>(payload: Payload, fn: () => Promise<T>): Promise<T> {
+  const pool = (payload.db as unknown as { pool: PoolLike }).pool
+  const run = (lg.__deigineorRevocationsLock ?? Promise.resolve()).then(() => pgLocked(pool, fn))
   lg.__deigineorRevocationsLock = run.catch(() => {})
   return run
 }
@@ -35,7 +52,7 @@ export async function getRevokedJson(payload: Payload, seedHex: string | undefin
   const cur = await read(payload)
   if (cur) return cur.json
   if (!seedHex) return null
-  return locked(async () => {
+  return locked(payload, async () => {
     const again = await read(payload) // another request may have stored it while we waited
     if (again) return again.json
     const json = revocationList(seedHex, new Date().toISOString(), [])
@@ -52,7 +69,7 @@ export async function isRevoked(payload: Payload, txn: string): Promise<boolean>
 
 /** Adds an entry and re-signs with a strictly newer `issued_at`. */
 export function addRevocation(payload: Payload, seedHex: string, entry: RevokedEntry): Promise<void> {
-  return locked(async () => {
+  return locked(payload, async () => {
     const cur = await read(payload)
     if (cur?.entries.some((e) => e.txn === entry.txn)) return
     const json = revocationList(seedHex, nextIssuedAt(cur), [...(cur?.entries ?? []), entry])
@@ -65,7 +82,7 @@ export async function syncTesterRevocations(payload: Payload, seedHex: string, d
   const quick = await read(payload) // unlocked fast path: nothing to change, no need to queue behind a writer
   if (!quick) return null
   if (!mergeTesterRevocations(quick.entries, desired)) return quick.json
-  return locked(async () => {
+  return locked(payload, async () => {
     const cur = await read(payload)
     if (!cur) return null
     const entries = mergeTesterRevocations(cur.entries, desired)
