@@ -5,7 +5,8 @@ import { LogoMark } from './Logo'
 const NAV = [
   { href: '/music', label: 'Music' },
   { href: '/game-audio', label: 'Game audio' },
-  { href: STORE_URL, label: 'Store' }, // free Kontakt libraries stay at /instruments, off the menu
+  { href: '/instruments', label: 'Libraries' }, // free Kontakt libraries
+  { href: STORE_URL, label: 'Store' },
   { href: '/about', label: 'About' },
   { href: '/cv', label: 'CV' },
 ]
