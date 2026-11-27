@@ -28,7 +28,8 @@ export function releaseIndex(slug: string, newestFirstSlugs: string[]): string {
 
 export function priceLabel(price: number, currency?: string | null): string {
   const symbol = currency === 'EUR' ? '€' : currency === 'UAH' ? '₴' : '$'
-  return `${symbol}${price} ${currency ?? 'USD'}`
+  const amount = Number.isInteger(price) ? String(price) : price.toFixed(2)
+  return `${symbol}${amount} ${currency ?? 'USD'}`
 }
 
 /** Spotify share URL -> embed URL, or null when it's not a Spotify link. */

@@ -1,5 +1,7 @@
 import config from '@payload-config'
 import { getPayload } from 'payload'
+import type { Library } from '../payload-types'
+import { getPaddlePrice } from './paddle'
 
 /**
  * Payload local-API helpers for the public site.
@@ -55,6 +57,12 @@ export async function getVideos() {
   return [...docs].sort((a, b) => rank(a.category) - rank(b.category) || (a.order ?? 0) - (b.order ?? 0))
 }
 
+async function withLivePaddlePrice(doc: Library): Promise<Library> {
+  if (doc.pricing !== 'paid' || !doc.paddlePriceId) return doc
+  const live = await getPaddlePrice(doc.paddlePriceId)
+  return live ? { ...doc, price: live.price, currency: live.currency as Library['currency'] } : doc
+}
+
 export async function getLibraries() {
   const { docs } = await payload().then((p) =>
     p.find({
@@ -66,7 +74,7 @@ export async function getLibraries() {
       overrideAccess: false,
     }),
   )
-  return docs
+  return Promise.all(docs.map(withLivePaddlePrice))
 }
 
 export async function getLibraryBySlug(slug: string) {
@@ -79,5 +87,5 @@ export async function getLibraryBySlug(slug: string) {
       overrideAccess: false,
     }),
   )
-  return docs[0] ?? null
+  return docs[0] ? withLivePaddlePrice(docs[0]) : null
 }
