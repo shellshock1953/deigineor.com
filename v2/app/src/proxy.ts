@@ -1,5 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
 
+import { hostRoute } from './lib/store'
+
 // Real server action ids are long hex hashes; scanners send junk like "x", which makes Next log
 // "The Server Reference ID did not match the expected format" on every hit.
 export function isBogusServerAction(nextAction: string | null): boolean {
@@ -18,6 +20,11 @@ export function proxy(request: NextRequest) {
   ) {
     return new Response(null, { status: 404 })
   }
+  const route = hostRoute(request.headers.get('host'), request.nextUrl.pathname)
+  if (route.kind === 'redirect') {
+    return NextResponse.redirect(`${route.origin}${request.nextUrl.pathname}${request.nextUrl.search}`, 308)
+  }
+  if (route.kind === 'rewrite') return NextResponse.rewrite(new URL(route.path, request.url))
   return NextResponse.next()
 }
 

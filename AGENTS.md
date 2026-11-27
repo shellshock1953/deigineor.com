@@ -10,6 +10,9 @@ Portfolio of the music project "Deigineor" (owner: shellshock1953). Two sites li
 - **v2 (new)**: Next.js + Payload CMS 3 app in `v2/app/`, live at https://deigineor.com
   (`www.` 301s to it; the old `v2.deigineor.com` was retired 2026-11-13). Admin interface at https://deigineor.com/admin. Database is CloudNativePG (`deigineor-postgres`),
   and uploaded media is stored on a PersistentVolumeClaim (`deigineor-media`) at `/data/media`.
+- **Store host**: https://store.deigineor.com is the same app, shop only (store home at `/`, paid `/instruments/<slug>`, checkout, thanks, account, legal pages; `/api/*` on both hosts).
+  `v2/app/src/proxy.ts` + `src/lib/store.ts` decide per `Host`: other paths on the store host redirect to deigineor.com, and `/store`, `/checkout`, `/thanks`, `/account` on deigineor.com redirect to the store.
+  The Paddle webhook, account emails and licence links use `STORE_URL` (default the store host). It exists so Paddle's domain review sees a software shop, not a music portfolio.
 - **Deploy manifests**: `v2/deploy/` (kustomize), synced by the ArgoCD app `deigineor`, defined in
   `shellshock1953/UES` at `services/helm/argocd-apps/libra.yaml`. Namespace `deigineor`.
   Deployed automatically on push to `main` via image build + kustomize image tag bump.
@@ -38,6 +41,15 @@ carries `trello:<list>` labels.
 - Only real content (releases, links, text from the legacy site or the owner). Invent nothing.
 - Keep v2 usable at 360px width without horizontal scroll; keep alt texts, contrast, focus states and `prefers-reduced-motion`.
 - Do not edit `v2/deploy` casually: ArgoCD applies it to production.
+
+## STORE WORDING: WE SELL SOFTWARE, NOT SAMPLES (Paddle)
+
+Paddle rejected deigineor.com (2026-11) because it read as a music portfolio; Paddle sells software only.
+Everything on store.deigineor.com, product copy, CMS text, emails, checkout item names and the Paddle catalog, must read as SOFTWARE:
+
+- **WRITE "ARRIVAL FOR LIBRARIUM: FREE EDITION / FULL EDITION". NEVER WRITE "SAMPLE PACK", "SAMPLES FOR SALE" OR "KONTAKT LIBRARY" FOR A PAID ITEM.**
+- **A PAID ITEM IS AN INSTRUMENT ADD-ON FOR LIBRARIUM STUDIO WHOSE FULL EDITION IS UNLOCKED INSIDE THE APP BY A LICENCE.** Never sell raw WAV/Kontakt downloads.
+- Product description for Paddle: *"Librarium Studio (sampler application) and instrument add-ons for it; paid editions unlock features inside the app via licence."*
 
 ## Commands (`justfile`)
 

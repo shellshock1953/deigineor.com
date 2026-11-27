@@ -1,5 +1,7 @@
 // Transactional email via Resend's REST API (no SDK: one POST). Domain deigineor.com is verified in Resend.
 export const SITE_URL = 'https://deigineor.com'
+// The shop (account, checkout, licence links) lives on its own host; see lib/store.ts.
+export const STORE_URL = (process.env.STORE_URL ?? 'https://store.deigineor.com').replace(/\/$/, '')
 const FROM = 'Deigineor <support@deigineor.com>'
 const REPLY_TO = 'support@deigineor.com'
 

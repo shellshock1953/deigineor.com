@@ -6,6 +6,8 @@ import type { ReactNode } from 'react'
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
 import NavClick from '../../components/NavClick'
+import { STORE_URL } from '../../lib/email'
+import { isStoreRequest } from '../../lib/store'
 import './site.css'
 
 // Cyrillic is for the Ukrainian CV page; Space Grotesk has no Cyrillic, so body text falls back to the system sans.
@@ -27,7 +29,7 @@ const mono = JetBrains_Mono({
   display: 'swap',
 })
 
-export const metadata: Metadata = {
+const siteMetadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'),
   title: { default: 'DEIGINEOR', template: '%s | DEIGINEOR' },
   description:
@@ -46,13 +48,27 @@ export const metadata: Metadata = {
   },
 }
 
+// The store host carries no music-site copy: only the brand and a neutral title.
+const storeMetadata: Metadata = {
+  metadataBase: new URL(STORE_URL),
+  title: { default: 'Store | DEIGINEOR', template: '%s | DEIGINEOR' },
+  openGraph: { type: 'website', siteName: 'DEIGINEOR', title: 'Store | DEIGINEOR', images: ['/opengraph-image'] },
+  twitter: { card: 'summary_large_image' },
+  icons: siteMetadata.icons,
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  return (await isStoreRequest()) ? storeMetadata : siteMetadata
+}
+
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   themeColor: '#07090a',
 }
 
-export default function SiteLayout({ children }: { children: ReactNode }) {
+export default async function SiteLayout({ children }: { children: ReactNode }) {
+  const store = await isStoreRequest()
   // Read per request, not at build time.
   const openPanelClientId = process.env.OPENPANEL_CLIENT_ID
 
@@ -74,9 +90,9 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
           Skip to content
         </a>
         <NavClick />
-        <Header />
+        <Header store={store} />
         <main id="main">{children}</main>
-        <Footer />
+        <Footer store={store} />
       </body>
     </html>
   )

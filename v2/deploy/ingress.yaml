@@ -13,9 +13,20 @@ spec:
     - hosts:
         - deigineor.com
         - www.deigineor.com
+        - store.deigineor.com
       secretName: deigineor-com-tls
   rules:
     - host: deigineor.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: deigineor
+                port:
+                  name: http
+    - host: store.deigineor.com
       http:
         paths:
           - path: /

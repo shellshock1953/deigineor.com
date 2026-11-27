@@ -6,7 +6,7 @@ import { issueLicense, revocationFor, type PaddleEvent } from '../../../../lib/l
 import { addRevocation, isRevoked } from '../../../../lib/license/revocations'
 import { flagsReady, isEnabled } from '../../../../lib/flags'
 import { paddleAccounts, pickPaddleAccount, sandboxBuyer } from '../../../../lib/paddle-account'
-import { sendEmail, SITE_URL } from '../../../../lib/email'
+import { sendEmail, STORE_URL } from '../../../../lib/email'
 
 export const dynamic = 'force-dynamic'
 
@@ -84,8 +84,8 @@ export async function POST(request: Request) {
       if (!raced.docs.length) throw err
     }
     if (created) {
-      const link = `${SITE_URL}/thanks?txn=${encodeURIComponent(txn)}`
-      const accountLink = `${SITE_URL}/account`
+      const link = `${STORE_URL}/thanks?txn=${encodeURIComponent(txn)}`
+      const accountLink = `${STORE_URL}/account`
       await sendEmail({
         to: email,
         subject: 'Your Librarium Studio licence',

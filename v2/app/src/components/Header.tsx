@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { STORE_URL } from '../lib/email'
 import { LogoMark } from './Logo'
 
 const NAV = [
@@ -9,7 +10,9 @@ const NAV = [
   { href: '/cv', label: 'CV' },
 ]
 
-export default function Header() {
+const STORE_NAV = [{ href: '/', label: 'Store' }]
+
+export default function Header({ store = false }: { store?: boolean }) {
   return (
     <header className="site-header">
       <Link className="site-header__brand" href="/" aria-label="DEIGINEOR — home">
@@ -17,15 +20,16 @@ export default function Header() {
         <span className="site-header__name">DEIGINEOR</span>
       </Link>
       <nav className="site-header__nav" aria-label="Main">
-        {NAV.map((item) => (
+        {(store ? STORE_NAV : NAV).map((item) => (
           <Link key={item.href} href={item.href}>
             {item.label}
           </Link>
         ))}
       </nav>
-      <Link className="site-header__account" href="/account">
+      {/* The shop's account lives on the store host; absolute so the main site needs no redirect hop. */}
+      <a className="site-header__account" href={`${store ? '' : STORE_URL}/account`}>
         Account
-      </Link>
+      </a>
     </header>
   )
 }
