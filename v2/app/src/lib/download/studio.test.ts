@@ -13,6 +13,7 @@ const rel = (tag_name: string, names: string[] = [], extra: Partial<Release> = {
 const zips = (v: string) => [
   `Librarium-${v}-Windows-VST3.zip`,
   `Librarium-${v}-Linux-VST3.zip`,
+  `Librarium-${v}-macOS-VST3.zip`,
   `LibrariumPlayer-${v}-Windows-VST3.zip`,
   `Librarium-${v}-VST3.zip`,
 ]
@@ -40,6 +41,7 @@ test('pickAsset: exact Studio zip per OS, never the Player or combined one', () 
   const r = rel('librarium-v1.2.3', zips('1.2.3'))
   assert.equal(pickAsset(r, 'windows', '1.2.3')?.name, 'Librarium-1.2.3-Windows-VST3.zip')
   assert.equal(pickAsset(r, 'linux', '1.2.3')?.name, 'Librarium-1.2.3-Linux-VST3.zip')
+  assert.equal(pickAsset(r, 'macos', '1.2.3')?.name, 'Librarium-1.2.3-macOS-VST3.zip')
   assert.equal(pickAsset(rel('librarium-v1.2.3', ['LibrariumPlayer-1.2.3-Linux-VST3.zip']), 'linux', '1.2.3'), null)
 })
 
