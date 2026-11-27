@@ -77,7 +77,6 @@ export default async function InstrumentPage({
                     ? `Paid · ${priceLabel(l.price ?? 0, l.currency)}`
                     : 'Free'}
               </span>
-              {l.version && <span className="mono">v{l.version}</span>}
             </div>
             <h1 className="detail__title">{l.title}</h1>
             {l.tagline && <p className="detail__tagline">{l.tagline}</p>}
