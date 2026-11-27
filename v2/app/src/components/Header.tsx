@@ -5,7 +5,7 @@ import { LogoMark } from './Logo'
 const NAV = [
   { href: '/music', label: 'Music' },
   { href: '/game-audio', label: 'Game audio' },
-  { href: '/instruments', label: 'Instruments' },
+  { href: STORE_URL, label: 'Store' }, // free Kontakt libraries stay at /instruments, off the menu
   { href: '/about', label: 'About' },
   { href: '/cv', label: 'CV' },
 ]
@@ -26,10 +26,12 @@ export default function Header({ store = false }: { store?: boolean }) {
           </Link>
         ))}
       </nav>
-      {/* The shop's account lives on the store host; absolute so the main site needs no redirect hop. */}
-      <a className="site-header__account" href={`${store ? '' : STORE_URL}/account`}>
-        Account
-      </a>
+      {/* Accounts live only on the store host. */}
+      {store && (
+        <Link className="site-header__account" href="/account">
+          Account
+        </Link>
+      )}
     </header>
   )
 }
