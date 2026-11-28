@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { licensesFor, sessionEmail } from '../../../lib/account-server'
-import { getLatest } from '../../../lib/download/studio'
+import { getLatest, OS_NAME, OSES } from '../../../lib/download/studio'
 import { formatDate } from '../../../lib/format'
 import { PRODUCTS } from '../../../lib/products'
 
@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 // Per-visitor (cookie) and DB-backed: never prerendered.
 export const dynamic = 'force-dynamic'
 
-async function studioVersion(): Promise<string | null> {
+async function studioLatest() {
   const token = process.env.GITHUB_RELEASES_TOKEN
   if (!token) return null
-  return (await getLatest(token).catch(() => null))?.version ?? null
+  return getLatest(token).catch(() => null)
 }
 
 export default async function Account({
@@ -54,7 +54,8 @@ export default async function Account({
     )
   }
 
-  const [licenses, version] = await Promise.all([licensesFor(email), studioVersion()])
+  const [licenses, latest] = await Promise.all([licensesFor(email), studioLatest()])
+  const version = latest?.version
   return (
     <div className="container">
       <header className="page-head">
@@ -93,15 +94,15 @@ export default async function Account({
                   <div className="account-item__actions">
                     {product?.studioDownloads && (
                       <>
-                        <a className="btn btn--primary" href={`/api/download/studio?txn=${l.txn}&os=windows`}>
-                          Download for Windows
-                        </a>
-                        <a className="btn btn--primary" href={`/api/download/studio?txn=${l.txn}&os=macos`}>
-                          Download for macOS
-                        </a>
-                        <a className="btn btn--primary" href={`/api/download/studio?txn=${l.txn}&os=linux`}>
-                          Download for Linux
-                        </a>
+                        {OSES.map((os) =>
+                          !latest || latest.assets[os] ? (
+                            <a key={os} className="btn btn--primary" href={`/api/download/studio?txn=${l.txn}&os=${os}`}>
+                              Download for {OS_NAME[os]}
+                            </a>
+                          ) : (
+                            <span key={os} className="mono">{OS_NAME[os]}: coming soon</span>
+                          ),
+                        )}
                       </>
                     )}
                     <a className="btn" href={`/api/licence/${l.txn}`} download="Librarium.lic">

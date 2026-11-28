@@ -7,5 +7,5 @@ export async function GET() {
   if (!token) return new Response(null, { status: 503 })
   const latest = await getLatest(token).catch(() => null)
   if (!latest) return new Response(null, { status: 502 })
-  return Response.json({ version: latest.version }, { headers: { 'Cache-Control': 'no-store' } })
+  return Response.json({ version: latest.version, os: Object.keys(latest.assets) }, { headers: { 'Cache-Control': 'no-store' } })
 }
