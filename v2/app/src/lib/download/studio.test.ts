@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 
-import { pickAsset, pickRelease, toLatest, type Release } from './studio'
+import { pickAsset, pickRelease, pickReleases, toLatest, type Release } from './studio'
 
 const rel = (tag_name: string, names: string[] = [], extra: Partial<Release> = {}): Release => ({
   tag_name,
+  published_at: '2026-11-21T10:00:00Z',
   draft: false,
   prerelease: false,
   assets: names.map((name, i) => ({ id: i + 1, name })),
@@ -55,11 +56,30 @@ test('pickAsset: exact Player zip per OS, never the Studio one', () => {
 
 test('toLatest: version without tag prefix and asset ids per OS', () => {
   const l = toLatest(rel('librarium-v1.2.3', ['Librarium-1.2.3-Linux-VST3.zip']))
-  assert.deepEqual(l, { version: '1.2.3', assets: { linux: 1 }, player: {} })
+  assert.deepEqual(l, { version: '1.2.3', published: '2026-11-21T10:00:00Z', assets: { linux: 1 }, player: {} })
 })
 
 test('toLatest: Player assets are listed separately and a missing OS has no entry', () => {
   const l = toLatest(rel('librarium-v1.2.3', zips('1.2.3')))
   assert.deepEqual(l.player, { windows: 4, linux: 5 }) // no macOS Player zip in this release
   assert.deepEqual(l.assets, { windows: 1, linux: 2, macos: 3 })
+})
+
+test('pickReleases: ordered by semver, only published librarium tags, latest = first', () => {
+  const list = pickReleases([
+    rel('librarium-v1.9.0'),
+    rel('librarium-v1.15.0'),
+    rel('librarium-v1.16.0', [], { prerelease: true }),
+    rel('librarium-v1.17.0', [], { draft: true }),
+    rel('otherplugin-v9.0.0'),
+    rel('librarium-v1.10.2'),
+  ])
+  assert.deepEqual(list.map((r) => r.tag_name), ['librarium-v1.15.0', 'librarium-v1.10.2', 'librarium-v1.9.0'])
+  assert.equal(pickRelease(list), list[0])
+})
+
+test('toLatest: each version keeps its own assets', () => {
+  const [a, b] = pickReleases([rel('librarium-v1.1.0', zips('1.1.0')), rel('librarium-v1.2.0', ['Librarium-1.2.0-Linux-VST3.zip'])]).map(toLatest)
+  assert.deepEqual([a.version, a.assets, a.player], ['1.2.0', { linux: 1 }, {}])
+  assert.deepEqual([b.version, b.assets.windows, b.player.windows], ['1.1.0', 1, 4])
 })
