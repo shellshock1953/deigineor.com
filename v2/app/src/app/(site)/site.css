@@ -838,10 +838,15 @@ button {
 /* ---------- Player downloads, editions, callouts ---------- */
 
 .downloads {
-  display: grid;
-  gap: 10px;
-  justify-items: start;
-  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.downloads .btn {
+  min-width: min(100%, 15rem);
 }
 
 .downloads p {
@@ -858,7 +863,7 @@ button {
   border: 1px dashed var(--accent);
   border-radius: var(--radius);
   padding: 14px 18px;
-  margin-top: 24px;
+  margin-top: 40px;
 }
 
 .callout--solid {
@@ -867,6 +872,7 @@ button {
 }
 
 .editions {
+  margin-top: 56px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
   gap: 16px;

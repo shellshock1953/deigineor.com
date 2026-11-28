@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 
 import { LibraryCard } from '../../../components/cards'
 import { getLibraries } from '../../../lib/data'
@@ -19,22 +18,15 @@ export default async function Store() {
         <h1>Store</h1>
       </header>
 
-      <div className="grid" style={{ marginTop: 28 }}>
-        {/* Free edition of Librarium: not a CMS library, so a static card. */}
-        <Link className="card card--link" href="/player">
-          <div className="card__body">
-            <div className="card__meta">
-              <span className="mono">Plugin</span>
-              <span className="mono mono--accent">Free</span>
-            </div>
-            <h3 className="card__title">Librarium Player</h3>
-            <p className="card__tagline">Free edition: plays any Librarium instrument.</p>
-          </div>
-        </Link>
-        {libraries.map((l) => (
-          <LibraryCard key={l.id} library={l} />
-        ))}
-      </div>
+      {libraries.length === 0 ? (
+        <p className="empty">Nothing here yet.</p>
+      ) : (
+        <div className="grid" style={{ marginTop: 28 }}>
+          {libraries.map((l) => (
+            <LibraryCard key={l.id} library={l} />
+          ))}
+        </div>
+      )}
     </div>
   )
 }

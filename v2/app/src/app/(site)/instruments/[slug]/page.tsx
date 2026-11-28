@@ -182,7 +182,12 @@ export default async function InstrumentPage({
           )}
 
           <div className="detail__links">
-            {!editions && buy}
+            {buy}
+            {editions && (
+              <a className="btn" href="/player">
+                Download Player free
+              </a>
+            )}
             <OwnedDownload slug={l.slug} />
             {!store && l.demoLinks?.map((d) => (
               <a
@@ -211,9 +216,6 @@ export default async function InstrumentPage({
               <li className="no">UI designer</li>
               <li className="no">Wave Editor and mapping</li>
             </ul>
-            <a className="btn" href="/player">
-              Download free
-            </a>
           </div>
           <div className="edition edition--studio">
             <span className="mono">Studio</span>
@@ -239,7 +241,6 @@ export default async function InstrumentPage({
               <li className="yes">Save your own .lbrp libraries</li>
               <li className="yes">Licence for all your machines</li>
             </ul>
-            {buy}
           </div>
         </section>
       )}
