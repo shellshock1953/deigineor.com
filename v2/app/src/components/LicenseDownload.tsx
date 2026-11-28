@@ -2,6 +2,8 @@
 
 import { useEffect, useState, type ReactNode } from 'react'
 
+import { OS_NAME, OSES, type Os } from '../lib/download/studio'
+
 type Buyer = { name: string; email: string }
 
 const POLL_MS = 2000
@@ -12,11 +14,17 @@ export default function LicenseDownload({ txn, contact }: { txn: string; contact
   const [buyer, setBuyer] = useState<Buyer | null>(null)
   const [gaveUp, setGaveUp] = useState(false)
   const [version, setVersion] = useState<string | null>(null)
+  // null until known (or the lookup failed): then offer every OS and let the download route answer
+  const [built, setBuilt] = useState<Os[] | null>(null)
 
   useEffect(() => {
     fetch('/api/download/studio/latest', { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : null))
-      .then((d) => d && setVersion(d.version))
+      .then((d) => {
+        if (!d) return
+        setVersion(d.version)
+        setBuilt(d.os)
+      })
       .catch(() => {}) // the buttons work without the version label
   }, [])
 
@@ -83,21 +91,17 @@ export default function LicenseDownload({ txn, contact }: { txn: string; contact
         <li>The licence works on any of your machines. Keep the file: this page shows it only while the order is active.</li>
       </ol>
       <h2>Librarium Studio download{version ? ` ${version}` : ''}</h2>
-      <p>
-        <a className="btn btn--primary" href={`/api/download/studio?txn=${txn}&os=windows`}>
-          Download Librarium Studio{version ? ` ${version}` : ''} for Windows
-        </a>
-      </p>
-      <p>
-        <a className="btn btn--primary" href={`/api/download/studio?txn=${txn}&os=macos`}>
-          Download Librarium Studio{version ? ` ${version}` : ''} for macOS
-        </a>
-      </p>
-      <p>
-        <a className="btn btn--primary" href={`/api/download/studio?txn=${txn}&os=linux`}>
-          Download Librarium Studio{version ? ` ${version}` : ''} for Linux
-        </a>
-      </p>
+      {OSES.map((os) =>
+        !built || built.includes(os) ? (
+          <p key={os}>
+            <a className="btn btn--primary" href={`/api/download/studio?txn=${txn}&os=${os}`}>
+              Download Librarium Studio{version ? ` ${version}` : ''} for {OS_NAME[os]}
+            </a>
+          </p>
+        ) : (
+          <p key={os}>{OS_NAME[os]}: coming soon.</p>
+        ),
+      )}
     </>
   )
 }

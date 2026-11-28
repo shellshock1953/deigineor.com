@@ -1,5 +1,6 @@
 export type Os = 'windows' | 'macos' | 'linux'
-const OS_NAME: Record<Os, string> = { windows: 'Windows', macos: 'macOS', linux: 'Linux' }
+export const OSES = ['windows', 'macos', 'linux'] as const
+export const OS_NAME: Record<Os, string> = { windows: 'Windows', macos: 'macOS', linux: 'Linux' }
 export type Asset = { id: number; name: string }
 export type Release = { tag_name: string; draft: boolean; prerelease: boolean; assets: Asset[] }
 export type Latest = { version: string; assets: Partial<Record<Os, number>> }
@@ -30,7 +31,7 @@ export function pickAsset(release: Release, os: Os, version: string): Asset | nu
 export function toLatest(release: Release): Latest {
   const version = release.tag_name.replace(/^librarium-v/, '')
   const assets: Latest['assets'] = {}
-  for (const os of ['windows', 'macos', 'linux'] as const) {
+  for (const os of OSES) {
     const a = pickAsset(release, os, version)
     if (a) assets[os] = a.id
   }
