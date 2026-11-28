@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 
 import { LibraryCard } from '../../../components/cards'
 import { getLibraries } from '../../../lib/data'
+import { STORE_URL } from '../../../lib/email'
+import { OS_NAME, OSES } from '../../../lib/download/studio'
 
 export const metadata: Metadata = {
   title: 'Free Kontakt libraries',
@@ -24,6 +26,16 @@ export default async function Instruments() {
           {libraries.length} free downloads on Pianobook.
         </p>
       </header>
+
+      <div className="callout callout--solid">
+        <span>
+          <strong>Librarium Player</strong> — our own free sampler plugin.{' '}
+          <span className="mono mono--accent">Free · {OSES.map((o) => OS_NAME[o]).join(' · ')}</span>
+        </span>
+        <a className="btn btn--primary" href={`${STORE_URL}/player`}>
+          Get Player →
+        </a>
+      </div>
 
       {libraries.length === 0 ? (
         <p className="empty">Nothing here yet — the signal is still on the way.</p>

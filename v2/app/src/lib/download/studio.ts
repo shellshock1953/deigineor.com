@@ -3,7 +3,7 @@ export const OSES = ['windows', 'macos', 'linux'] as const
 export const OS_NAME: Record<Os, string> = { windows: 'Windows', macos: 'macOS', linux: 'Linux' }
 export type Asset = { id: number; name: string }
 export type Release = { tag_name: string; draft: boolean; prerelease: boolean; assets: Asset[] }
-export type Latest = { version: string; assets: Partial<Record<Os, number>> }
+export type Latest = { version: string; assets: Partial<Record<Os, number>>; player: Partial<Record<Os, number>> }
 
 const REPO = 'deigineor/VST-DEV'
 const TAG = /^librarium-v(\d+)\.(\d+)\.(\d+)$/
@@ -22,20 +22,23 @@ export function pickRelease(releases: Release[]): Release | null {
   return ok[0] ?? null
 }
 
-/** Studio zip for one OS; `LibrariumPlayer-*` and anything else never matches. */
-export function pickAsset(release: Release, os: Os, version: string): Asset | null {
-  const want = `Librarium-${version}-${OS_NAME[os]}-VST3.zip`
+/** Zip of one product for one OS: Studio by default (`LibrariumPlayer-*` and anything else never matches it). */
+export function pickAsset(release: Release, os: Os, version: string, product = 'Librarium'): Asset | null {
+  const want = `${product}-${version}-${OS_NAME[os]}-VST3.zip`
   return release.assets.find((a) => a.name === want) ?? null
 }
 
 export function toLatest(release: Release): Latest {
   const version = release.tag_name.replace(/^librarium-v/, '')
   const assets: Latest['assets'] = {}
+  const player: Latest['player'] = {}
   for (const os of OSES) {
     const a = pickAsset(release, os, version)
     if (a) assets[os] = a.id
+    const p = pickAsset(release, os, version, 'LibrariumPlayer')
+    if (p) player[os] = p.id
   }
-  return { version, assets }
+  return { version, assets, player }
 }
 
 const headers = (token: string, accept: string) => ({

@@ -28,7 +28,7 @@ const next = { kind: 'next' }
 test('store host serves only the shop', () => {
   assert.deepEqual(hostRoute(STORE, '/'), { kind: 'rewrite', path: '/store' })
   assert.deepEqual(hostRoute('Store.Deigineor.com:443', '/'), { kind: 'rewrite', path: '/store' })
-  for (const p of ['/checkout', '/thanks', '/account', '/terms', '/privacy', '/refund', '/instruments/librarium-studio', '/api/paddle/webhook', '/api/media/file/a.jpg', '/librarium/revoked.json', '/_next/data/x.json', '/opengraph-image']) {
+  for (const p of ['/checkout', '/thanks', '/account', '/player', '/terms', '/privacy', '/refund', '/instruments/librarium-studio', '/api/paddle/webhook', '/api/media/file/a.jpg', '/librarium/revoked.json', '/_next/data/x.json', '/opengraph-image']) {
     assert.deepEqual(hostRoute(STORE, p), next, p)
   }
   for (const p of ['/music', '/music/x', '/game-audio', '/about', '/cv', '/instruments', '/instruments/a/b', '/admin', '/apix', '/accounts']) {
@@ -37,7 +37,7 @@ test('store host serves only the shop', () => {
 })
 
 test('main host sends the shop to the store host', () => {
-  for (const p of ['/store', '/checkout', '/thanks', '/account', '/account/x']) assert.deepEqual(hostRoute(MAIN, p), toStore, p)
+  for (const p of ['/store', '/checkout', '/thanks', '/account', '/account/x', '/player']) assert.deepEqual(hostRoute(MAIN, p), toStore, p)
   for (const p of ['/', '/music', '/instruments/x', '/api/paddle/webhook', '/api/account/login', '/accounting', '/admin']) {
     assert.deepEqual(hostRoute(MAIN, p), next, p)
   }

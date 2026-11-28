@@ -13,9 +13,9 @@ export async function isStoreRequest() {
 
 // Everything the store host serves; any other path goes to the main site.
 const STORE_PATHS =
-  /^\/(?:store|checkout|thanks|account|terms|privacy|refund|healthz|readyz|opengraph-image|instruments\/[^/]+|(?:api|librarium|_next)\/.*)?\/?$/
+  /^\/(?:store|checkout|thanks|account|player|terms|privacy|refund|healthz|readyz|opengraph-image|instruments\/[^/]+|(?:api|librarium|_next)\/.*)?\/?$/
 // Shop pages that must not live on the main host.
-const MAIN_TO_STORE = /^\/(?:store|checkout|thanks|account)(?:\/|$)/
+const MAIN_TO_STORE = /^\/(?:store|checkout|thanks|account|player)(?:\/|$)/
 
 export type HostRoute =
   | { kind: 'next' }

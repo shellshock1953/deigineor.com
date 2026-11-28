@@ -15,6 +15,7 @@ const zips = (v: string) => [
   `Librarium-${v}-Linux-VST3.zip`,
   `Librarium-${v}-macOS-VST3.zip`,
   `LibrariumPlayer-${v}-Windows-VST3.zip`,
+  `LibrariumPlayer-${v}-Linux-VST3.zip`,
   `Librarium-${v}-VST3.zip`,
 ]
 
@@ -45,7 +46,20 @@ test('pickAsset: exact Studio zip per OS, never the Player or combined one', () 
   assert.equal(pickAsset(rel('librarium-v1.2.3', ['LibrariumPlayer-1.2.3-Linux-VST3.zip']), 'linux', '1.2.3'), null)
 })
 
+test('pickAsset: exact Player zip per OS, never the Studio one', () => {
+  const r = rel('librarium-v1.2.3', zips('1.2.3'))
+  assert.equal(pickAsset(r, 'windows', '1.2.3', 'LibrariumPlayer')?.name, 'LibrariumPlayer-1.2.3-Windows-VST3.zip')
+  assert.equal(pickAsset(r, 'linux', '1.2.3', 'LibrariumPlayer')?.name, 'LibrariumPlayer-1.2.3-Linux-VST3.zip')
+  assert.equal(pickAsset(rel('librarium-v1.2.3', ['Librarium-1.2.3-macOS-VST3.zip']), 'macos', '1.2.3', 'LibrariumPlayer'), null)
+})
+
 test('toLatest: version without tag prefix and asset ids per OS', () => {
   const l = toLatest(rel('librarium-v1.2.3', ['Librarium-1.2.3-Linux-VST3.zip']))
-  assert.deepEqual(l, { version: '1.2.3', assets: { linux: 1 } })
+  assert.deepEqual(l, { version: '1.2.3', assets: { linux: 1 }, player: {} })
+})
+
+test('toLatest: Player assets are listed separately and a missing OS has no entry', () => {
+  const l = toLatest(rel('librarium-v1.2.3', zips('1.2.3')))
+  assert.deepEqual(l.player, { windows: 4, linux: 5 }) // no macOS Player zip in this release
+  assert.deepEqual(l.assets, { windows: 1, linux: 2, macos: 3 })
 })

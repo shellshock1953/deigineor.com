@@ -11,6 +11,7 @@ import { isEnabled, flagsReady } from '../../../../lib/flags'
 import { priceLabel } from '../../../../lib/format'
 import { getLibraryBySlug } from '../../../../lib/data'
 import { getPaddleConfig, getPaddlePrice } from '../../../../lib/paddle'
+import { PRODUCTS } from '../../../../lib/products'
 import { excerpt } from '../../../../lib/rich-text'
 import { isStoreRequest } from '../../../../lib/store'
 
@@ -72,7 +73,44 @@ export default async function InstrumentPage({
   const actionUrl = comingSoon ? null : isPaid ? l.buyUrl : l.downloadUrl
   // shortcut: sandbox checkout hidden from real visitors unless signed in as a tester or using ?checkout=test
   const paddleVisible = paddle?.env !== 'sandbox' || checkout === 'test' || isTester
+  // The Librarium page shows Player vs Studio editions (Player is free, see /player).
+  const editions = Object.values(PRODUCTS).some((p) => p.librarySlug === l.slug)
   const paddleBuy = isPaid && activePriceId && displayPrice != null && paddle && paddleVisible
+
+  const buy = (
+    <>
+      {paddleBuy && !store ? (
+        // Checkout only opens on the store host.
+        <a className="btn btn--primary" href={`${STORE_URL}/instruments/${l.slug}`} data-track="library_get" data-library={l.slug} data-action="buy">
+          {`Buy — ${priceLabel(displayPrice ?? 0, displayCurrency)}${livePrice?.discountPercent != null ? ` (−${livePrice.discountPercent}%)` : ''}`}
+        </a>
+      ) : paddleBuy ? (
+        <PaddleBuyButton
+          config={paddle}
+          priceId={l.paddlePriceId!}
+          sandboxPriceId={l.paddleSandboxPriceId}
+          discountId={livePrice?.discountId}
+          slug={l.slug}
+          label={`Buy — ${priceLabel(displayPrice ?? 0, displayCurrency)}${livePrice?.discountPercent != null ? ` (−${livePrice.discountPercent}%)` : ''}`}
+        />
+      ) : (
+        actionUrl && (
+          <a
+            className="btn btn--primary"
+            href={actionUrl}
+            rel="noopener noreferrer"
+            data-track="library_get"
+            data-library={l.slug}
+            data-action={isPaid ? 'buy' : 'download'}
+          >
+            {isPaid
+              ? `Buy — ${priceLabel(displayPrice ?? 0, displayCurrency)}`
+              : 'Download on Pianobook'}
+          </a>
+        )
+      )}
+    </>
+  )
 
   return (
     <article className="container">
@@ -108,7 +146,13 @@ export default async function InstrumentPage({
               </span>
             </div>
             <h1 className="detail__title">{l.title}</h1>
-            {l.tagline && <p className="detail__tagline">{l.tagline}</p>}
+            {l.tagline && (
+              <p className="detail__tagline">
+                {editions
+                  ? `${l.tagline.replace(/\.$/, '')}. Two editions: Player to play instruments, Studio to build them.`
+                  : l.tagline}
+              </p>
+            )}
             {l.platforms && l.platforms.length > 0 && (
               <div className="chips">
                 {l.platforms.map((p) => (
@@ -138,36 +182,7 @@ export default async function InstrumentPage({
           )}
 
           <div className="detail__links">
-            {paddleBuy && !store ? (
-              // Checkout only opens on the store host.
-              <a className="btn btn--primary" href={`${STORE_URL}/instruments/${l.slug}`} data-track="library_get" data-library={l.slug} data-action="buy">
-                {`Buy — ${priceLabel(displayPrice ?? 0, displayCurrency)}${livePrice?.discountPercent != null ? ` (−${livePrice.discountPercent}%)` : ''}`}
-              </a>
-            ) : paddleBuy ? (
-              <PaddleBuyButton
-                config={paddle}
-                priceId={l.paddlePriceId!}
-                sandboxPriceId={l.paddleSandboxPriceId}
-                discountId={livePrice?.discountId}
-                slug={l.slug}
-                label={`Buy — ${priceLabel(displayPrice ?? 0, displayCurrency)}${livePrice?.discountPercent != null ? ` (−${livePrice.discountPercent}%)` : ''}`}
-              />
-            ) : (
-              actionUrl && (
-                <a
-                  className="btn btn--primary"
-                  href={actionUrl}
-                  rel="noopener noreferrer"
-                  data-track="library_get"
-                  data-library={l.slug}
-                  data-action={isPaid ? 'buy' : 'download'}
-                >
-                  {isPaid
-                    ? `Buy — ${priceLabel(displayPrice ?? 0, displayCurrency)}`
-                    : 'Download on Pianobook'}
-                </a>
-              )
-            )}
+            {!editions && buy}
             <OwnedDownload slug={l.slug} />
             {!store && l.demoLinks?.map((d) => (
               <a
@@ -182,6 +197,52 @@ export default async function InstrumentPage({
           </div>
         </div>
       </div>
+
+      {editions && (
+        <section className="editions" aria-label="Editions">
+          <div className="edition">
+            <span className="mono">Player</span>
+            <h2>Play instruments</h2>
+            <div className="edition__cost">Free</div>
+            <ul>
+              <li className="yes">Loads any .lbrp instrument</li>
+              <li className="yes">Browser with categories, tags, search</li>
+              <li className="yes">Presets, effects, mod and pitch wheels</li>
+              <li className="no">UI designer</li>
+              <li className="no">Wave Editor and mapping</li>
+            </ul>
+            <a className="btn" href="/player">
+              Download free
+            </a>
+          </div>
+          <div className="edition edition--studio">
+            <span className="mono">Studio</span>
+            <h2>Build instruments</h2>
+            <div className="edition__cost">
+              {comingSoon ? (
+                'Coming soon'
+              ) : (
+                <>
+                  {livePrice?.originalPrice != null && (
+                    <>
+                      <s style={{ opacity: 0.65, fontSize: '0.9rem' }}>{priceLabel(livePrice.originalPrice, displayCurrency)}</s>{' '}
+                    </>
+                  )}
+                  {priceLabel(displayPrice ?? 0, displayCurrency)}
+                </>
+              )}
+            </div>
+            <ul>
+              <li className="yes">Everything in Player</li>
+              <li className="yes">UI designer with grid snapping</li>
+              <li className="yes">Per-zone Wave Editor, mapping</li>
+              <li className="yes">Save your own .lbrp libraries</li>
+              <li className="yes">Licence for all your machines</li>
+            </ul>
+            {buy}
+          </div>
+        </section>
+      )}
     </article>
   )
 }
