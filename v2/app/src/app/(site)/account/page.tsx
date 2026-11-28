@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 
 import { licensesFor, sessionEmail } from '../../../lib/account-server'
-import { getLatest, OS_NAME, OSES } from '../../../lib/download/studio'
+import { PreviousVersions } from '../../../components/PreviousVersions'
+import { getReleases, OS_NAME, OSES } from '../../../lib/download/studio'
 import { formatDate } from '../../../lib/format'
 import { PRODUCTS } from '../../../lib/products'
 
@@ -13,10 +14,10 @@ export const metadata: Metadata = {
 // Per-visitor (cookie) and DB-backed: never prerendered.
 export const dynamic = 'force-dynamic'
 
-async function studioLatest() {
+async function studioReleases() {
   const token = process.env.GITHUB_RELEASES_TOKEN
-  if (!token) return null
-  return getLatest(token).catch(() => null)
+  if (!token) return []
+  return getReleases(token).catch(() => [])
 }
 
 export default async function Account({
@@ -54,7 +55,8 @@ export default async function Account({
     )
   }
 
-  const [licenses, latest] = await Promise.all([licensesFor(email), studioLatest()])
+  const [licenses, releases] = await Promise.all([licensesFor(email), studioReleases()])
+  const latest = releases[0]
   const version = latest?.version
   return (
     <div className="container">
@@ -109,6 +111,9 @@ export default async function Account({
                       Licence file
                     </a>
                   </div>
+                )}
+                {active && product?.studioDownloads && (
+                  <PreviousVersions releases={releases} zip="assets" href={(v, os) => `/api/download/studio?txn=${l.txn}&os=${os}&version=${v}`} />
                 )}
               </li>
             )

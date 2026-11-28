@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
-import { OS_NAME, OSES, getLatest } from '../../../lib/download/studio'
+import { PreviousVersions } from '../../../components/PreviousVersions'
+import { OS_NAME, OSES, getReleases } from '../../../lib/download/studio'
 
 export const metadata: Metadata = {
   title: 'Librarium Player',
@@ -13,7 +14,8 @@ export const dynamic = 'force-dynamic'
 
 export default async function Player() {
   const token = process.env.GITHUB_RELEASES_TOKEN
-  const latest = token ? await getLatest(token).catch(() => null) : null
+  const releases = token ? await getReleases(token).catch(() => []) : []
+  const latest = releases[0]
 
   return (
     <div className="container">
@@ -38,6 +40,7 @@ export default async function Player() {
           ),
         )}
       </div>
+      <PreviousVersions releases={releases} zip="player" href={(v, os) => `/api/download/player?os=${os}&version=${v}`} />
 
       <div className="callout">
         <span>Want to build your own instruments?</span>

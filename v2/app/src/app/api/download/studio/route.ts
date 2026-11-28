@@ -1,7 +1,7 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
-import { assetLocation, getLatest } from '../../../../lib/download/studio'
+import { assetLocation, getRelease, versionParam } from '../../../../lib/download/studio'
 import { flagsReady } from '../../../../lib/flags'
 import { effectiveStatus } from '../../../../lib/testers'
 
@@ -14,7 +14,8 @@ export async function GET(request: Request) {
   const url = new URL(request.url)
   const txn = url.searchParams.get('txn') ?? ''
   const os = url.searchParams.get('os')
-  if (!/^txn_[0-9a-z]{1,64}$/.test(txn) || (os !== 'windows' && os !== 'macos' && os !== 'linux')) {
+  const version = versionParam(url)
+  if (!/^txn_[0-9a-z]{1,64}$/.test(txn) || (os !== 'windows' && os !== 'macos' && os !== 'linux') || version === null) {
     return new Response(null, { status: 404, headers: noStore })
   }
   await flagsReady()
@@ -25,7 +26,7 @@ export async function GET(request: Request) {
 
   const token = process.env.GITHUB_RELEASES_TOKEN
   if (!token) return new Response(null, { status: 503, headers: noStore })
-  const id = (await getLatest(token))?.assets[os]
+  const id = (await getRelease(token, version))?.assets[os]
   if (!id) return new Response(null, { status: 404, headers: noStore })
   const location = await assetLocation(token, id)
   if (!location) return new Response(null, { status: 502, headers: noStore })

@@ -1369,6 +1369,37 @@ button {
   list-style: none;
 }
 
+.previous-versions {
+  margin-top: 16px;
+}
+
+.previous-versions summary {
+  cursor: pointer;
+  width: fit-content;
+}
+
+.previous-versions ul {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+}
+
+.previous-versions li {
+  margin: 4px 0;
+  overflow-wrap: anywhere;
+}
+
+.previous-versions a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.previous-versions p {
+  margin: 8px 0 0;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
 .account-item {
   margin: 0;
   padding: 20px;
