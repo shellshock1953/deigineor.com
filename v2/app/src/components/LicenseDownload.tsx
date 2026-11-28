@@ -89,11 +89,15 @@ export default function LicenseDownload({ txn, contact }: { txn: string; contact
         </a>
       </p>
       <p>
+        <a className="btn btn--primary" href={`/api/download/studio?txn=${txn}&os=macos`}>
+          Download Librarium Studio{version ? ` ${version}` : ''} for macOS
+        </a>
+      </p>
+      <p>
         <a className="btn btn--primary" href={`/api/download/studio?txn=${txn}&os=linux`}>
           Download Librarium Studio{version ? ` ${version}` : ''} for Linux
         </a>
       </p>
-      <p>macOS: coming later.</p>
     </>
   )
 }
