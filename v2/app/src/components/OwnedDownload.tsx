@@ -13,11 +13,9 @@ export default function OwnedDownload({ slug }: { slug: string }) {
     const entitlement = Object.keys(PRODUCTS).find((k) => PRODUCTS[k].librarySlug === slug && PRODUCTS[k].studioDownloads)
     if (!entitlement) return
     fetch('/api/account/me', { cache: 'no-store' })
-      .then((r) => {
-        if (r.status === 401) setSignedOut(true)
-        return r.ok ? r.json() : null
-      })
-      .then(async (me: { products: string[] } | null) => {
+      .then((r) => (r.ok ? r.json() : null))
+      .then(async (me: { email: string | null; products: string[] } | null) => {
+        if (me && !me.email) setSignedOut(true)
         if (!me?.products.includes(entitlement)) return
         const latest = await fetch('/api/download/studio/latest', { cache: 'no-store' })
           .then((r) => (r.ok ? r.json() : null))
